@@ -4,6 +4,8 @@
   --background: #000000;
   --foreground: #ffffff;
   --accent-blue: #3B82F6;
+  --gradient-cyan: #00FFFF;
+  --gradient-violet: #8A2BE2;
 }
 
 /* Глобальные переменные для темы */
@@ -50,4 +52,17 @@ body {
 *:focus-visible {
   outline: 2px solid var(--accent-blue);
   outline-offset: 2px;
+}
+
+/* Класс для градиента */
+.luminous-aurora-gradient {
+  background: linear-gradient(90deg, var(--gradient-cyan), var(--gradient-violet));
+}
+
+/* Класс для текста с градиентом */
+.luminous-aurora-text {
+  background: linear-gradient(90deg, var(--gradient-cyan), var(--gradient-violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }

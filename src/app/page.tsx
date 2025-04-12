@@ -17,6 +17,28 @@ export default function Home() {
       <Navbar />
 
       <main className="pt-32 pb-20 container mx-auto px-4">
+        {/* Секция с логотипом */}
+        <section className="max-w-3xl mx-auto text-center mb-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
+            whileHover={{ scale: 1.05 }}
+            className="flex justify-center mb-8"
+          >
+            <Image 
+              src="/images/logo-updated.png" 
+              alt="OptimaAI Logo" 
+              width={350} 
+              height={120} 
+              className="w-auto h-auto select-none"
+              draggable="false"
+              priority
+              style={{ pointerEvents: 'none' }}
+            />
+          </motion.div>
+        </section>
+        
         {/* Секция с анимированным заголовком */}
         <section className="max-w-3xl mx-auto text-center mb-16">
           <motion.h1

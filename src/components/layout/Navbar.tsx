@@ -51,9 +51,12 @@ const Navbar = () => {
               className="relative group"
             >
               <span 
-                className={`text-sm font-medium transition-colors duration-300 ${
-                  activeLink === link.path ? 'luminous-aurora-text' : 'text-white hover:luminous-aurora-text'
+                className={`text-sm font-medium tracking-tight transition-colors duration-300 ${
+                  activeLink === link.path 
+                    ? 'luminous-aurora-text font-semibold' 
+                    : 'text-white hover:luminous-aurora-text'
                 }`}
+                style={{ fontFamily: 'var(--font-sans)' }}
               >
                 {link.name}
               </span>
@@ -62,12 +65,12 @@ const Navbar = () => {
               {activeLink === link.path && (
                 <motion.span 
                   layoutId="navbar-indicator"
-                  className="absolute -bottom-1 left-0 right-0 h-0.5 luminous-aurora-gradient" 
+                  className="absolute -bottom-1 left-0 right-0 h-0.5 luminous-aurora-gradient rounded-full" 
                 />
               )}
               
               {/* Эффект при наведении */}
-              <span className="absolute -bottom-1 left-0 right-0 h-0.5 luminous-aurora-gradient scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out" />
+              <span className="absolute -bottom-1 left-0 right-0 h-0.5 luminous-aurora-gradient rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out" />
             </Link>
           ))}
         </nav>

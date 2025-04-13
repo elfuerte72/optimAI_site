@@ -85,18 +85,42 @@ const ChatBot = () => {
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex flex-col items-center justify-center h-[500px] px-4"
+            className="flex flex-col items-center px-4 pt-28"
           >
             <motion.h2
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-2xl md:text-4xl text-white font-bold mb-8 text-center"
+              className="text-2xl md:text-4xl text-white font-bold mb-4 text-center"
             >
               Чем я могу помочь?
             </motion.h2>
             
-            {/* Блок с предложениями удален по запросу пользователя */}
+            {/* Форма ввода сразу после заголовка */}
+            <div className="w-full max-w-2xl mt-2">
+              <form onSubmit={handleSendMessage} className="relative bg-gray-900 rounded-xl shadow-lg border border-gray-800">
+                <div className="px-3 py-2 flex items-end">
+                  <textarea
+                    ref={inputRef}
+                    rows={1}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Спросите что-нибудь..."
+                    className="flex-1 bg-transparent border-0 resize-none focus:ring-0 focus:outline-none text-white py-1 px-2 max-h-[150px] overflow-y-auto"
+                    disabled={isLoading}
+                    style={{ height: '24px' }}
+                  />
+                  <button
+                    type="submit"
+                    disabled={isLoading || !inputValue.trim()}
+                    className={`p-1 rounded-md ${inputValue.trim() ? 'text-white bg-gradient-to-r from-cyan-500 to-purple-500' : 'text-gray-400'}`}
+                  >
+                    <Send className="w-5 h-5" />
+                  </button>
+                </div>
+              </form>
+            </div>
           </motion.div>
         ) : (
           <div className="h-[500px] overflow-y-auto py-4 px-6 bg-black">
@@ -145,39 +169,35 @@ const ChatBot = () => {
         )}
       </div>
       
-      {/* Форма отправки сообщения в стиле ChatGPT */}
-      <div className="p-3 mt-auto bg-black">
-        <div className="max-w-3xl mx-auto">
-          <form onSubmit={handleSendMessage} className="relative bg-gray-900 rounded-xl shadow-lg border border-gray-800">
-            <div className="px-3 py-2 flex items-end">
-              {/* Иконка плюса удалена по запросу пользователя */}
-              <textarea
-                ref={inputRef}
-                rows={1}
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Спросите что-нибудь..."
-                className="flex-1 bg-transparent border-0 resize-none focus:ring-0 focus:outline-none text-white py-1 px-2 max-h-[150px] overflow-y-auto"
-                disabled={isLoading}
-                style={{ height: '24px' }}
-              />
-              <button
-                type="submit"
-                disabled={isLoading || !inputValue.trim()}
-                className={`p-1 rounded-md ${inputValue.trim() ? 'text-white bg-gradient-to-r from-cyan-500 to-purple-500' : 'text-gray-400'}`}
-              >
-                <Send className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="text-center border-t border-gray-800 px-3 py-2 text-xs text-gray-500">
-              OptimaAI может выдавать неточную информацию. Версия Demo 1.0
-            </div>
-          </form>
-          
-          {/* Кнопки поиска и исследования удалены по запросу пользователя */}
+      {/* Форма отправки сообщения (показывается только в режиме чата) */}
+      {showChat && (
+        <div className="p-3 mt-auto bg-black">
+          <div className="max-w-3xl mx-auto">
+            <form onSubmit={handleSendMessage} className="relative bg-gray-900 rounded-xl shadow-lg border border-gray-800">
+              <div className="px-3 py-2 flex items-end">
+                <textarea
+                  ref={inputRef}
+                  rows={1}
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Спросите что-нибудь..."
+                  className="flex-1 bg-transparent border-0 resize-none focus:ring-0 focus:outline-none text-white py-1 px-2 max-h-[150px] overflow-y-auto"
+                  disabled={isLoading}
+                  style={{ height: '24px' }}
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading || !inputValue.trim()}
+                  className={`p-1 rounded-md ${inputValue.trim() ? 'text-white bg-gradient-to-r from-cyan-500 to-purple-500' : 'text-gray-400'}`}
+                >
+                  <Send className="w-5 h-5" />
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

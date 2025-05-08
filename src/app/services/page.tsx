@@ -1,148 +1,182 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Bot, UserCheck, BarChart3, FileText, LineChart, Copy, X } from "lucide-react";
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Navbar from '@/components/layout/Navbar';
+import BookIcon from '@/images/book.svg';
+import AutoIcon from '@/images/auto.svg';
+import AgentIcon from '@/images/agent.svg';
+
+// Типы для наших сервисов
+interface ServiceDetail {
+  title: string;
+  items: string[];
+}
+
+interface Service {
+  id: string;
+  title: string;
+  icon: string;
+  details: ServiceDetail[];
+}
 
 export default function Services() {
-  // Состояние для отслеживания открытых деталей услуг
-  const [openService, setOpenService] = useState<number | null>(null);
-
+  // Состояние для отслеживания открытых деталей
+  const [expandedServices, setExpandedServices] = useState<Record<string, boolean>>({});
+  
   useEffect(() => {
-    // Устанавливаем заголовок страницы при загрузке
     document.title = "Услуги — OptimaAI";
   }, []);
 
-  // Функция для переключения открытого/закрытого состояния услуги
-  const toggleService = (index: number) => {
-    setOpenService(openService === index ? null : index);
-  };
-
-  // Массив данных услуг
-  const services = [
+  // Данные о сервисах
+  const services: Service[] = [
     {
-      title: "Автоматизация процессов с ИИ",
-      description: "Анализ рабочих процессов на предмет автоматизации",
+      id: 'training',
+      title: 'Обучение',
+      icon: BookIcon,
       details: [
-        "Внедрение ИИ-ассистентов в отделы продаж, поддержки, HR, документооборот",
-        "Интеграция с корпоративными системами (CRM, ERP, СЭД, 1С, SAP и др.)"
-      ],
-      icon: <Bot className="w-10 h-10 text-blue-400 mb-4 group-hover:text-blue-500 transition-colors duration-300" />
+        { 
+          title: 'Форматы',
+          items: ['Промптинг / Метапромптинг']
+        },
+        {
+          title: 'Формат',
+          items: ['онлайн/офлайн, индивидуальные и групповые занятия']
+        },
+        {
+          title: 'Стоимость',
+          items: ['от 20 000 ₽ за человека']
+        },
+        {
+          title: 'Ценность',
+          items: ['навык эффективной работы с ИИ, экономия времени, повышение продуктивности']
+        }
+      ]
     },
     {
-      title: "ИИ-ассистенты для сотрудников",
-      description: "Персональные помощники для решения ежедневных задач",
+      id: 'automation',
+      title: 'Автоматизация',
+      icon: AutoIcon,
       details: [
-        "Обработка писем, создание отчетов, генерация документов",
-        "Голосовые интерфейсы и ассистенты"
-      ],
-      icon: <UserCheck className="w-10 h-10 text-blue-400 mb-4 group-hover:text-blue-500 transition-colors duration-300" />
+        {
+          title: 'Интеграция',
+          items: ['Внедрение ИИ в CRM, Notion, таблицы, мессенджеры и др.']
+        },
+        {
+          title: 'Адаптация',
+          items: ['Адаптация под текущую систему клиента']
+        },
+        {
+          title: 'Поддержка',
+          items: ['Постподдержка и обучение']
+        }
+      ]
     },
     {
-      title: "Работа с большими данными",
-      description: "Предиктивная аналитика и прогнозирование",
+      id: 'agents',
+      title: 'Создание агентов',
+      icon: AgentIcon,
       details: [
-        "Обнаружение аномалий в данных",
-        "Автоматическая генерация отчетов и визуализация"
-      ],
-      icon: <BarChart3 className="w-10 h-10 text-blue-400 mb-4 group-hover:text-blue-500 transition-colors duration-300" />
-    },
-    {
-      title: "Цифровизация документооборота",
-      description: "Распознавание и структурирование документов",
-      details: [
-        "Автоматическая маршрутизация и классификация",
-        "Проверка на соответствие шаблонам и нормативам"
-      ],
-      icon: <FileText className="w-10 h-10 text-blue-400 mb-4 group-hover:text-blue-500 transition-colors duration-300" />
-    },
-    {
-      title: "Контроль качества и KPI (AI Monitoring)",
-      description: "Этичный мониторинг процессов и показателей",
-      details: [
-        "Анализ эффективности команд и выявление узких мест",
-        "Уведомления о перегрузках, снижении активности, рисках"
-      ],
-      icon: <LineChart className="w-10 h-10 text-blue-400 mb-4 group-hover:text-blue-500 transition-colors duration-300" />
-    },
-    {
-      title: "Цифровой двойник организации",
-      description: "Моделирование процессов и решений",
-      details: [
-        "Симуляция сценариев развития и цифровое планирование",
-        "Создание обученных ИИ-моделей для внутренних нужд"
-      ],
-      icon: <Copy className="w-10 h-10 text-blue-400 mb-4 group-hover:text-blue-500 transition-colors duration-300" />
+        {
+          title: 'Разработка',
+          items: ['ИИ-ассистенты и кастомные LLM']
+        },
+        {
+          title: 'Развёртывание',
+          items: ['Локально (на ресурсах клиента) или через Яндекс/Сбер/другое']
+        },
+        {
+          title: 'Процесс',
+          items: ['Полный цикл: разработка, интеграция, обучение, поддержка']
+        }
+      ]
     }
   ];
+
+  // Функция для переключения видимости деталей
+  const toggleDetails = (serviceId: string) => {
+    setExpandedServices(prev => ({
+      ...prev,
+      [serviceId]: !prev[serviceId]
+    }));
+  };
 
   return (
     <div className="min-h-screen bg-black">
       <Navbar />
-      
-      <main className="pt-32 pb-20 container mx-auto px-4">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-4xl md:text-5xl font-bold text-white text-center mb-16"
-        >
-          Наши услуги
-        </motion.h1>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 * index }}
-              whileHover={{ scale: 1.05 }}
-              className={`bg-gray-900 p-8 rounded-2xl shadow-md hover:shadow-blue-400/20 transition-all duration-300 text-left group relative ${openService === index ? 'border border-blue-400' : 'hover:border hover:border-blue-400'}`}
+      <main className="flex flex-col pt-24 px-6 max-w-4xl mx-auto">
+        <h1 
+          className="text-3xl md:text-4xl font-bold text-white mb-12 mt-8"
+          style={{ fontFamily: 'var(--font-sans)', letterSpacing: '-0.02em' }}
+        >
+          
+        </h1>
+
+        <ul className="space-y-12">
+          {services.map((service) => (
+            <li 
+              key={service.id}
+              className="border border-gray-800 rounded-lg p-6 transition-all"
             >
-              {service.icon}
-              <h3 className="text-xl font-semibold text-white mb-2">
-                {service.title}
-              </h3>
-              <p className="text-gray-300 mb-4">
-                {service.description}
-              </p>
-              
-              <button 
-                onClick={() => toggleService(index)}
-                className="px-4 py-2 text-sm rounded-md bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/40 transition-all duration-300"
-              >
-                {openService === index ? 'Скрыть' : 'Подробнее'}
-              </button>
-              
-              <AnimatePresence>
-                {openService === index && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="mt-4 pt-4 border-t border-gray-700 relative"
-                  >
-                    <ul className="space-y-2 text-gray-300 list-disc pl-5">
-                      {service.details.map((detail, i) => (
-                        <li key={i}>{detail}</li>
-                      ))}
-                    </ul>
-                    <button 
-                      onClick={() => setOpenService(null)}
-                      className="absolute top-4 right-0 p-1 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors text-gray-400 hover:text-white"
-                      aria-label="Закрыть"
+              <div className="flex items-start gap-6">
+                <div className="bg-gray-900 p-3 rounded-lg flex-shrink-0">
+                  <Image 
+                    src={service.icon} 
+                    alt={service.title}
+                    width={32} 
+                    height={32} 
+                    className="w-8 h-8"
+                    style={{ filter: 'invert(1)' }}
+                  />
+                </div>
+                
+                <div className="flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <h2 className="text-xl font-medium text-white">{service.title}</h2>
+                    
+                    <button
+                      onClick={() => toggleDetails(service.id)}
+                      className="text-sm text-gray-400 hover:text-white px-3 py-1 rounded-md border border-gray-700 hover:border-gray-500 transition-all"
+                      aria-expanded={!!expandedServices[service.id]}
+                      style={{ 
+                        transform: expandedServices[service.id] ? 'scale(0.98)' : 'scale(1)',
+                        opacity: expandedServices[service.id] ? '0.9' : '1'
+                      }}
                     >
-                      <X size={16} />
+                      {expandedServices[service.id] ? 'Скрыть' : 'Подробнее'}
                     </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
+                  </div>
+                  
+                  <div 
+                    className="overflow-hidden transition-all"
+                    style={{ 
+                      maxHeight: expandedServices[service.id] ? '500px' : '0px', 
+                      opacity: expandedServices[service.id] ? 1 : 0,
+                      marginTop: expandedServices[service.id] ? '16px' : '0px',
+                      transitionProperty: 'max-height, opacity, margin',
+                      transitionDuration: '300ms',
+                      transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+                    }}
+                  >
+                    <div className="space-y-4">
+                      {service.details.map((detail, index) => (
+                        <div key={index} className="border-t border-gray-800 pt-4 first:border-0 first:pt-0">
+                          <h3 className="text-sm font-medium text-gray-400 mb-1">{detail.title}</h3>
+                          <ul className="space-y-1">
+                            {detail.items.map((item, itemIndex) => (
+                              <li key={itemIndex} className="text-white text-sm">{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </main>
     </div>
   );

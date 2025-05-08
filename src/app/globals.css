@@ -29,6 +29,24 @@ body {
   transition-duration: 150ms;
 }
 
+/* Smooth brightness transition for navbar items (60fps) */
+.nav-link-hover {
+  transition: filter 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+}
+
+.nav-link-hover:hover {
+  filter: brightness(1.25);
+  will-change: filter;
+}
+
+/* Hamburger menu transition */
+.hamburger-line {
+  transform-origin: center;
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.0),
+              opacity 0.2s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+  will-change: transform, opacity;
+}
+
 /* Стилизация скроллбара */
 ::-webkit-scrollbar {
   width: 6px;

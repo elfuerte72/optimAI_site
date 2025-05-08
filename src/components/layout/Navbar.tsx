@@ -57,12 +57,13 @@ const Navbar = () => {
       <header 
         className={`fixed top-0 left-0 right-0 z-50 ${
           scrolled 
-            ? 'bg-black/80 backdrop-blur-md' 
-            : 'bg-black'
+            ? 'bg-black/40 backdrop-blur-md' 
+            : 'bg-transparent'
         }`}
         style={{ 
-          willChange: 'background-color',
-          transition: 'background-color 0.3s ease'
+          willChange: 'background-color, backdrop-filter',
+          transition: 'background-color 0.3s ease, backdrop-filter 0.3s ease',
+          borderBottom: scrolled ? '1px solid rgba(255, 255, 255, 0.05)' : 'none'
         }}
       >
         <div className="flex justify-start px-6 py-4">
@@ -111,11 +112,13 @@ const Navbar = () => {
       
       {/* Sidebar menu */}
       <div 
-        className="fixed left-0 top-0 bottom-0 w-56 md:w-64 bg-black z-40 flex flex-col pt-24 px-6 will-change-transform gpu-accelerated"
+        className="fixed left-0 top-0 bottom-0 w-56 md:w-64 bg-black/20 backdrop-blur-lg z-40 flex flex-col pt-24 px-6 will-change-transform gpu-accelerated"
         style={{
           transform: isMenuOpen ? 'translateX(0)' : 'translateX(-100%)',
           transition: 'transform 0.3s ease',
-          visibility: isMenuOpen ? 'visible' : 'hidden'
+          visibility: isMenuOpen ? 'visible' : 'hidden',
+          borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+          background: 'linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1))'
         }}
       >
         <nav className="flex flex-col gap-8">

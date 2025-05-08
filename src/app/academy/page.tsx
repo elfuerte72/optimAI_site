@@ -78,7 +78,7 @@ export default function Academy() {
     
     // Предварительная загрузка изображений
     const preloadImages = () => {
-      const imageUrls = [
+      const imageUrls: string[] = [
         // Добавьте пути к изображениям, которые используются на странице
       ];
       imageUrls.forEach(url => {

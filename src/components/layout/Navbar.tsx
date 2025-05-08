@@ -60,7 +60,7 @@ const Navbar = () => {
             : 'bg-black'
         }`}
       >
-        <div className="flex items-center px-6 py-4">
+        <div className="flex justify-start px-6 py-4">
           {/* Кнопка переключения меню */}
           <motion.button 
             className="relative z-50 w-8 h-8 flex items-center justify-center rounded-full menu-button focus:outline-none"
@@ -121,7 +121,7 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="fixed left-0 top-0 bottom-0 w-64 md:w-80 bg-black z-40 flex flex-col pt-24 px-6"
+              className="fixed left-0 top-0 bottom-0 w-56 md:w-64 bg-black z-40 flex flex-col pt-24 px-6"
             >
               <nav className="flex flex-col gap-8">
                 {navLinks.map((link, index) => (

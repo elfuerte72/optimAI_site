@@ -62,35 +62,42 @@ const Navbar = () => {
       >
         <div className="flex items-center px-6 py-4">
           {/* Кнопка переключения меню */}
-          <button 
-            className="relative z-50 w-10 h-10 flex items-center justify-center focus:outline-none" 
+          <motion.button 
+            className="relative z-50 w-8 h-8 flex items-center justify-center rounded-full menu-button focus:outline-none"
             onClick={toggleMenu}
             aria-expanded={isMenuOpen}
             aria-label={isMenuOpen ? "Закрыть меню" : "Открыть меню"}
+            whileTap={{ scale: 0.92 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
           >
-            <div className="flex flex-col justify-center items-center w-6 h-6 relative">
-              {/* Верхняя полоса */}
-              <span 
-                className={`hamburger-line block absolute h-0.5 w-full bg-white ${
-                  isMenuOpen ? 'rotate-45 top-2.5' : 'top-1'
-                }`}
+            <div className="flex justify-center items-center w-5 h-5 relative">
+              <motion.span 
+                className="menu-line absolute"
+                animate={{
+                  width: '100%',
+                  top: isMenuOpen ? '50%' : '30%',
+                  rotate: isMenuOpen ? 45 : 0,
+                  translateY: isMenuOpen ? '-50%' : 0
+                }}
+                transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
               />
               
-              {/* Средняя полоса */}
-              <span 
-                className={`hamburger-line block absolute h-0.5 w-full bg-white ${
-                  isMenuOpen ? 'opacity-0' : 'opacity-100'
-                }`}
-              />
-              
-              {/* Нижняя полоса */}
-              <span 
-                className={`hamburger-line block absolute h-0.5 w-full bg-white ${
-                  isMenuOpen ? '-rotate-45 top-2.5' : 'top-4'
-                }`}
+              <motion.span 
+                className="menu-line absolute"
+                animate={{
+                  width: isMenuOpen ? '100%' : '70%',
+                  bottom: isMenuOpen ? '50%' : '30%',
+                  rotate: isMenuOpen ? -45 : 0,
+                  translateY: isMenuOpen ? '50%' : 0,
+                  alignSelf: !isMenuOpen ? 'flex-end' : 'center'
+                }}
+                transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
+                style={{ alignSelf: !isMenuOpen ? 'flex-end' : 'center' }}
               />
             </div>
-          </button>
+          </motion.button>
         </div>
       </header>
       

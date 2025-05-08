@@ -84,3 +84,44 @@ body {
   background-clip: text;
   color: transparent;
 }
+/* Улучшенный стиль для кнопки навигации */
+.menu-button {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform;
+}
+
+.menu-button:active {
+  transform: scale(0.95);
+}
+
+/* Линии кнопки меню */
+.menu-line {
+  background-color: white;
+  height: 1.5px;
+  width: 100%;
+  position: absolute;
+  transform-origin: center center;
+  transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+              opacity 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+              width 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+              top 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+              bottom 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform, opacity, width, top, bottom;
+  border-radius: 2px;
+}
+
+/* Стилизированная подсветка при наведении */
+.menu-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.menu-button:hover::after {
+  opacity: 1;
+}

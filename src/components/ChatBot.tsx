@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Send } from 'lucide-react';
 
 // Типы сообщений
@@ -82,19 +81,10 @@ const ChatBot = () => {
       {/* Область сообщений и чата */}
       <div className="flex-grow">
         {!showChat ? (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex flex-col items-center px-4 pt-28"
-          >
-            <motion.h2
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-2xl md:text-4xl text-white font-bold mb-4 text-center"
-            >
+          <div className="flex flex-col items-center px-4 pt-20">
+            <h2 className="text-2xl md:text-4xl text-white font-bold mb-4 text-center">
               Чем я могу помочь?
-            </motion.h2>
+            </h2>
             
             {/* Форма ввода сразу после заголовка */}
             <div className="w-full max-w-2xl mt-2">
@@ -121,50 +111,40 @@ const ChatBot = () => {
                 </div>
               </form>
             </div>
-          </motion.div>
+          </div>
         ) : (
-          <div className="h-[500px] overflow-y-auto py-4 px-6 bg-black">
-            <AnimatePresence>
-              {messages.map((message) => (
-                <motion.div
-                  key={message.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className={`py-5 ${message.isBot ? 'bg-black' : 'bg-gray-950 border-t border-b border-gray-800'}`}
-                >
-                  <div className="max-w-3xl mx-auto flex">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-4 ${message.isBot ? 'bg-gradient-to-r from-cyan-500 to-purple-500' : 'bg-gray-700'}`}>
-                      {message.isBot ? 'A' : 'В'}
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-white">{message.text}</p>
-                    </div>
+          <div className="h-[600px] overflow-y-auto py-4 px-6 bg-black">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`py-5 ${message.isBot ? 'bg-black' : 'bg-gray-950 border-t border-b border-gray-800'}`}
+              >
+                <div className="max-w-3xl mx-auto flex">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-4 ${message.isBot ? 'bg-gradient-to-r from-cyan-500 to-purple-500' : 'bg-gray-700'}`}>
+                    {message.isBot ? 'A' : 'В'}
                   </div>
-                </motion.div>
-              ))}
-              
-              {isLoading && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="py-5 bg-black"
-                >
-                  <div className="max-w-3xl mx-auto flex">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 flex items-center justify-center mr-4">
-                      A
-                    </div>
-                    <div className="flex space-x-2 items-center">
-                      <div className="w-2 h-2 rounded-full bg-gray-500 animate-pulse"></div>
-                      <div className="w-2 h-2 rounded-full bg-gray-500 animate-pulse delay-100"></div>
-                      <div className="w-2 h-2 rounded-full bg-gray-500 animate-pulse delay-200"></div>
-                    </div>
+                  <div className="flex-1">
+                    <p className="text-white">{message.text}</p>
                   </div>
-                </motion.div>
-              )}
-              <div ref={messagesEndRef} />
-            </AnimatePresence>
+                </div>
+              </div>
+            ))}
+            
+            {isLoading && (
+              <div className="py-5 bg-black">
+                <div className="max-w-3xl mx-auto flex">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 flex items-center justify-center mr-4">
+                    A
+                  </div>
+                  <div className="flex space-x-2 items-center">
+                    <div className="w-2 h-2 rounded-full bg-gray-500 animate-pulse"></div>
+                    <div className="w-2 h-2 rounded-full bg-gray-500 animate-pulse delay-100"></div>
+                    <div className="w-2 h-2 rounded-full bg-gray-500 animate-pulse delay-200"></div>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
           </div>
         )}
       </div>

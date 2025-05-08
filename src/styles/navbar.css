@@ -1,0 +1,23 @@
+/* Menu line styles */
+.menu-line {
+  background-color: white;
+  height: 2px;
+  border-radius: 9999px;
+  will-change: transform;
+  transform-origin: center;
+}
+
+/* Optimize performance by informing browser about elements that will change */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Hardware acceleration for smooth animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}

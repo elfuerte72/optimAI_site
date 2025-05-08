@@ -48,7 +48,7 @@ const Navbar = () => {
   const navLinks = [
     { path: '/', name: 'Главная' },
     { path: '/services', name: 'Услуги' },
-    { path: '/about', name: 'О нас' },
+    { path: '/academy', name: 'Академия OptimaAI' },
     { path: '/partners', name: 'Наши партнеры' }
   ];
 

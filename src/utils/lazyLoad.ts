@@ -1,62 +1,79 @@
-/**
- * Utility for lazy loading images and other resources
- */
+import { setupIntersectionObserver } from './performance';
 
 /**
- * Set up an Intersection Observer to lazy load elements
- * @param selector CSS selector for elements to lazy load
- * @param options Custom options for the Intersection Observer
+ * Sets up lazy loading for below-the-fold elements
+ * - Lazy loads images with data-src attributes
+ * - Loads components when they come into view
  */
-export function setupLazyLoading(
-  selector: string = '[data-lazy]',
-  options: IntersectionObserverInit = { 
-    rootMargin: '200px 0px', 
-    threshold: 0.01 
-  }
-): void {
-  // Check if Intersection Observer is supported
-  if (!('IntersectionObserver' in window)) {
-    // For browsers that don't support Intersection Observer, load all immediately
-    const elements = document.querySelectorAll(selector);
-    elements.forEach(loadElement);
-    return;
-  }
+export const setupLazyLoading = (): void => {
+  if (typeof window === 'undefined') return;
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        loadElement(entry.target);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, options);
-
-  // Observe all elements with the data-lazy attribute
-  document.querySelectorAll(selector).forEach(element => {
-    observer.observe(element);
+  // Lazy load images
+  setupIntersectionObserver('[data-src]', 0.01, (element) => {
+    const img = element as HTMLImageElement;
+    if (img.dataset.src) {
+      img.src = img.dataset.src;
+      delete img.dataset.src;
+      
+      img.onload = () => {
+        img.classList.add('loaded');
+        img.classList.remove('lazy-image');
+      };
+    }
   });
-}
+
+  // Lazy load background images
+  setupIntersectionObserver('[data-bg]', 0.01, (element) => {
+    const el = element as HTMLElement;
+    if (el.dataset.bg) {
+      el.style.backgroundImage = `url(${el.dataset.bg})`;
+      delete el.dataset.bg;
+      
+      // Add a loaded class for transition effects
+      setTimeout(() => {
+        el.classList.add('bg-loaded');
+      }, 50);
+    }
+  });
+
+  // Animate elements into view
+  setupIntersectionObserver('.animate-on-scroll', 0.1, (element) => {
+    setTimeout(() => {
+      element.classList.add('in-view');
+    }, 100);
+  });
+};
 
 /**
- * Load a lazy element (image, iframe, etc.)
- * @param element The DOM element to load
+ * Preloads critical images to improve LCP
+ * @param imageUrls Array of image URLs to preload
  */
-function loadElement(element: Element): void {
-  if (element instanceof HTMLImageElement) {
-    const src = element.dataset.src;
-    if (src) {
-      element.src = src;
-      element.classList.add('loaded');
-    }
-  } else if (element instanceof HTMLIFrameElement) {
-    const src = element.dataset.src;
-    if (src) {
-      element.src = src;
-      element.classList.add('loaded');
-    }
-  }
+export const preloadCriticalImages = (imageUrls: string[]): void => {
+  if (typeof window === 'undefined') return;
   
-  // Remove the lazy attribute to prevent reloading
-  element.removeAttribute('data-lazy');
-  element.removeAttribute('data-src');
-}
+  imageUrls.forEach(url => {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = url;
+    document.head.appendChild(link);
+  });
+};
+
+/**
+ * Preloads fonts to avoid CLS
+ * @param fontUrls Array of font URLs to preload
+ */
+export const preloadFonts = (fontUrls: string[]): void => {
+  if (typeof window === 'undefined') return;
+  
+  fontUrls.forEach(url => {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'font';
+    link.type = 'font/woff2';
+    link.crossOrigin = 'anonymous';
+    link.href = url;
+    document.head.appendChild(link);
+  });
+};

@@ -54,51 +54,36 @@ const Navbar = () => {
 
   return (
     <>
-      <header 
-        className={`fixed top-0 left-0 right-0 z-50 ${
-          scrolled 
-            ? 'bg-black/40 backdrop-blur-md' 
-            : 'bg-transparent'
-        }`}
-        style={{ 
-          willChange: 'background-color, backdrop-filter',
-          transition: 'background-color 0.3s ease, backdrop-filter 0.3s ease',
-          borderBottom: scrolled ? '1px solid rgba(255, 255, 255, 0.05)' : 'none'
-        }}
+      {/* Плавающая кнопка бургер-меню без горизонтальной панели */}
+      <button 
+        className="fixed top-6 left-6 z-50 w-8 h-8 flex items-center justify-center rounded-full menu-button focus:outline-none"
+        onClick={toggleMenu}
+        aria-expanded={isMenuOpen}
+        aria-label={isMenuOpen ? "Закрыть меню" : "Открыть меню"}
       >
-        <div className="flex justify-start px-6 py-4">
-          {/* Кнопка переключения меню */}
-          <button 
-            className="relative z-50 w-8 h-8 flex items-center justify-center rounded-full menu-button focus:outline-none"
-            onClick={toggleMenu}
-            aria-expanded={isMenuOpen}
-            aria-label={isMenuOpen ? "Закрыть меню" : "Открыть меню"}
-          >
-            <div className="flex justify-center items-center w-5 h-5 relative">
-              <span 
-                className="menu-line absolute will-change-transform gpu-accelerated" 
-                style={{ 
-                  width: '100%',
-                  top: isMenuOpen ? '50%' : '30%',
-                  transform: isMenuOpen ? 'translateY(-50%) rotate(45deg)' : 'none',
-                  transition: 'transform 0.25s ease, top 0.25s ease, width 0.25s ease' 
-                }}
-              />
-              
-              <span 
-                className="menu-line absolute will-change-transform gpu-accelerated" 
-                style={{ 
-                  width: isMenuOpen ? '100%' : '70%',
-                  bottom: isMenuOpen ? '50%' : '30%',
-                  transform: isMenuOpen ? 'translateY(50%) rotate(-45deg)' : 'none',
-                  alignSelf: !isMenuOpen ? 'flex-end' : 'center',
-                  transition: 'transform 0.25s ease, bottom 0.25s ease, width 0.25s ease'
-                }}
-              />
-            </div>
-          </button>
+        <div className="flex justify-center items-center w-5 h-5 relative">
+          <span 
+            className="menu-line absolute will-change-transform gpu-accelerated" 
+            style={{ 
+              width: '100%',
+              top: isMenuOpen ? '50%' : '30%',
+              transform: isMenuOpen ? 'translateY(-50%) rotate(45deg)' : 'none',
+              transition: 'transform 0.25s ease, top 0.25s ease, width 0.25s ease' 
+            }}
+          />
+          
+          <span 
+            className="menu-line absolute will-change-transform gpu-accelerated" 
+            style={{ 
+              width: isMenuOpen ? '100%' : '70%',
+              bottom: isMenuOpen ? '50%' : '30%',
+              transform: isMenuOpen ? 'translateY(50%) rotate(-45deg)' : 'none',
+              alignSelf: !isMenuOpen ? 'flex-end' : 'center',
+              transition: 'transform 0.25s ease, bottom 0.25s ease, width 0.25s ease'
+            }}
+          />
         </div>
-      </header>
+      </button>
       
       {/* Overlay */}
       <div 

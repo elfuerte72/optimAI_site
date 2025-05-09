@@ -49,7 +49,7 @@ const Navbar = () => {
     { path: '/', name: 'Главная' },
     { path: '/services', name: 'Услуги' },
     { path: '/academy', name: 'Академия OptimaAI' },
-    { path: '/partners', name: 'Наши партнеры' }
+    { path: '/news', name: 'Отзывы и новости' }
   ];
 
   return (

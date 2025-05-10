@@ -7,11 +7,17 @@ import '@/styles/navbar.css';
 
 // Компонент навигационной панели в стиле Apple
 const Navbar = () => {
-  const [activeLink, setActiveLink] = useState('/');
+  // Move these to useEffect to avoid hydration mismatches
+  const [activeLink, setActiveLink] = useState('');
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isContactHovered, setIsContactHovered] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    // Set mounted state to true after component mounts on client
+    setIsMounted(true);
+    
     // Обновляем активную ссылку при изменении пути
     setActiveLink(window.location.pathname);
 
@@ -42,7 +48,9 @@ const Navbar = () => {
   }, [isMenuOpen]);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    if (isMounted) {
+      setIsMenuOpen(!isMenuOpen);
+    }
   };
 
   const navLinks = [
@@ -52,6 +60,22 @@ const Navbar = () => {
     { path: '/news', name: 'Отзывы и новости' }
   ];
 
+  // Return a completely static component for SSR
+  // This ensures server and initial client render match exactly
+  if (!isMounted) {
+    return (
+      <>
+        <div className="fixed top-6 left-6 z-50 w-8 h-8 flex items-center justify-center rounded-full menu-button">
+          <div className="flex justify-center items-center w-5 h-5 relative">
+            <span className="menu-line absolute" style={{width: '100%', top: '30%'}} />
+            <span className="menu-line absolute" style={{width: '70%', bottom: '30%', alignSelf: 'flex-end'}} />
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Only render interactive elements after client-side hydration is complete
   return (
     <>
       {/* Плавающая кнопка бургер-меню без горизонтальной панели */}
@@ -106,7 +130,7 @@ const Navbar = () => {
           background: 'linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1))'
         }}
       >
-        <nav className="flex flex-col gap-8">
+        <nav className="flex flex-col gap-8 flex-grow">
           {navLinks.map((link) => (
             <div key={link.path}>
               <Link 
@@ -133,6 +157,31 @@ const Navbar = () => {
             </div>
           ))}
         </nav>
+        
+        {/* Кнопка связи с менеджером */}
+        <a
+          href="https://t.me/optimaai_tg"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative mb-8 group"
+          onClick={() => setIsMenuOpen(false)}
+          onMouseEnter={() => setIsContactHovered(true)}
+          onMouseLeave={() => setIsContactHovered(false)}
+        >
+          <span 
+            className="text-xl font-medium tracking-tight text-white flex items-center"
+            style={{ fontFamily: 'var(--font-sans)' }}
+          >
+            <svg 
+              className={`w-5 h-5 mr-2 transform transition-transform duration-300 ${isContactHovered ? 'translate-x-1' : ''}`} 
+              fill="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"></path>
+            </svg>
+            Связаться с менеджером
+          </span>
+        </a>
       </div>
     </>
   );

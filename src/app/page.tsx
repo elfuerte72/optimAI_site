@@ -28,12 +28,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="bg-black">
       <Navbar />
 
-      <main className="flex flex-col items-center justify-center min-h-screen px-4">
+      <main className="flex flex-col items-center justify-center px-4 py-12">
         {/* Секция с логотипом - высокий приоритет */}
-        <section className="max-w-3xl mx-auto text-center mb-12 mt-16">
+        <section className="max-w-3xl mx-auto text-center mb-12">
           <div className="flex justify-center mb-8">
             <Image 
               src="/images/logo-updated.png" 

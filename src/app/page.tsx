@@ -54,14 +54,13 @@ export default function Home() {
             className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6"
             style={{ fontFamily: 'var(--font-sans)', letterSpacing: '-0.02em' }}
           >
-            Ваш партнёр в мире искусственного интеллекта
+            Ваш проводник в мир искусственного интеллекта
           </h1>
 
           <p
             className="text-lg text-gray-300 max-w-2xl mx-auto"
             style={{ fontFamily: 'var(--font-sans)', fontWeight: 300, lineHeight: 1.6 }}
           >
-            OptimaAI помогает внедрить ИИ в бизнес, автоматизировать процессы и обучить команду пользоваться нейросетями эффективно.
           </p>
         </section>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Send } from 'lucide-react';
+import Image from 'next/image';
 
 // Типы сообщений
 type Message = {
@@ -83,7 +83,7 @@ const ChatBot = () => {
         {!showChat ? (
           <div className="flex flex-col items-center px-4 pt-20">
             <h2 className="text-2xl md:text-4xl text-white font-bold mb-4 text-center">
-              Чем я могу помочь?
+              Спроси помощника
             </h2>
             
             {/* Форма ввода сразу после заголовка */}
@@ -96,7 +96,7 @@ const ChatBot = () => {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="Спросите что-нибудь..."
+                    placeholder="Задайте мне интересующий вас вопрос..."
                     className="flex-1 bg-transparent border-0 resize-none focus:ring-0 focus:outline-none text-white py-1 px-2 max-h-[150px] overflow-y-auto"
                     disabled={isLoading}
                     style={{ height: '24px' }}
@@ -104,9 +104,15 @@ const ChatBot = () => {
                   <button
                     type="submit"
                     disabled={isLoading || !inputValue.trim()}
-                    className={`p-1 rounded-md ${inputValue.trim() ? 'text-white bg-gradient-to-r from-cyan-500 to-purple-500' : 'text-gray-400'}`}
+                    className={`p-1 rounded-md ${inputValue.trim() ? 'text-white' : 'text-gray-400'}`}
                   >
-                    <Send className="w-5 h-5" />
+                    <Image 
+                      src="/images/send_message_icon.svg" 
+                      alt="Отправить" 
+                      width={24} 
+                      height={24} 
+                      className="w-6 h-6"
+                    />
                   </button>
                 </div>
               </form>
@@ -169,9 +175,15 @@ const ChatBot = () => {
                 <button
                   type="submit"
                   disabled={isLoading || !inputValue.trim()}
-                  className={`p-1 rounded-md ${inputValue.trim() ? 'text-white bg-gradient-to-r from-cyan-500 to-purple-500' : 'text-gray-400'}`}
+                  className={`p-1 rounded-md ${inputValue.trim() ? 'text-white' : 'text-gray-400'}`}
                 >
-                  <Send className="w-5 h-5" />
+                  <Image 
+                    src="/images/send_message_icon.svg" 
+                    alt="Отправить" 
+                    width={24} 
+                    height={24} 
+                    className="w-6 h-6"
+                  />
                 </button>
               </div>
             </form>

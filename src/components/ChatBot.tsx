@@ -19,6 +19,13 @@ const ChatBot = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
+  // Готовые вопросы для быстрого выбора
+  const quickQuestions = [
+    "Чем занимается компания?",
+    "Как связаться с менеджером?",
+    "Подробней об услугах компании"
+  ];
+
   // Скролл к последнему сообщению при добавлении нового
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -64,6 +71,14 @@ const ChatBot = () => {
       // Фокус на поле ввода после ответа
       inputRef.current?.focus();
     }, 1000);
+  };
+
+  // Обработка быстрого вопроса
+  const handleQuickQuestion = (question: string) => {
+    setInputValue(question);
+    // Имитация отправки формы
+    const event = { preventDefault: () => {} } as React.FormEvent;
+    handleSendMessage(event);
   };
 
   // Регулировка высоты textarea при нажатии Enter
@@ -116,6 +131,20 @@ const ChatBot = () => {
                   </button>
                 </div>
               </form>
+              
+              {/* Готовые вопросы */}
+              <div className="flex flex-wrap gap-2 justify-center mt-8">
+                {quickQuestions.map((question, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleQuickQuestion(question)}
+                    className="py-2.5 px-4 rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition-colors border border-gray-700"
+                    disabled={isLoading}
+                  >
+                    {question}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         ) : (

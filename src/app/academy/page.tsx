@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, memo } from 'react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { LazyMotion, domAnimation } from 'framer-motion';
 import { useRef } from 'react';
 import Navbar from '@/components/layout/Navbar';
@@ -36,13 +36,12 @@ const FormatCard = memo(({ format, index }: { format: FormatDetail; index: numbe
   return (
     <motion.li 
       ref={ref}
-      className="border border-gray-800 rounded-lg p-6 transition-all hover:border-gray-700"
+      className="border border-gray-800 rounded-lg p-6 transition-all hover:border-gray-700 will-change-transform"
       initial="hidden"
       animate={isInView ? 'visible' : 'hidden'}
       variants={variants}
       whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
       whileTap={{ scale: 0.99 }}
-      style={{ willChange: 'transform' }}
     >
       <div className="space-y-4">
         <h2 className="text-xl font-medium text-white">{format.title}</h2>
@@ -73,23 +72,6 @@ const FormatCard = memo(({ format, index }: { format: FormatDetail; index: numbe
 FormatCard.displayName = 'FormatCard';
 
 export default function Academy() {
-  useEffect(() => {
-    document.title = "Академия — OptimaAI";
-    
-    // Предварительная загрузка изображений
-    const preloadImages = () => {
-      const imageUrls: string[] = [
-        // Добавьте пути к изображениям, которые используются на странице
-      ];
-      imageUrls.forEach(url => {
-        const img = new Image();
-        img.src = url;
-      });
-    };
-    
-    preloadImages();
-  }, []);
-
   // Данные о форматах обучения
   const formats: FormatDetail[] = [
     {
@@ -112,25 +94,18 @@ export default function Academy() {
 
         <main className="flex flex-col pt-24 px-6 max-w-4xl mx-auto">
           {/* Hero Section */}
-          <AnimatePresence>
-            <motion.h1 
-              className="text-3xl md:text-4xl font-bold text-center mb-16 mt-8"
-              style={{ 
-                fontFamily: 'var(--font-geist-sans)', 
-                letterSpacing: '-0.02em',
-                willChange: 'opacity, transform'
-              }}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                type: 'spring',
-                damping: 20,
-                stiffness: 100
-              }}
-            >
-              Обучение, которое делает взаимодействие с ИИ осознанным и результативным
-            </motion.h1>
-          </AnimatePresence>
+          <motion.h1 
+            className="text-3xl md:text-4xl font-bold text-center mb-16 mt-8 tracking-[-0.02em] will-change-[opacity,transform]"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ 
+              type: 'spring',
+              damping: 20,
+              stiffness: 100
+            }}
+          >
+            Обучение, которое делает взаимодействие с ИИ осознанным и результативным
+          </motion.h1>
 
           {/* Formats Section */}
           <section className="mb-16">

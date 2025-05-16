@@ -22,11 +22,11 @@ export default function Footer() {
               <Image 
                 src="/images/logo-updated.png" 
                 alt="OptimaAI Logo" 
-                width={180} 
-                height={60} 
-                className="w-auto h-auto select-none"
+                width={150} 
+                height={50} 
+                className="h-8 w-auto select-none pointer-events-none"
                 draggable="false"
-                style={{ pointerEvents: 'none' }}
+                priority
               />
             </Link>
             <p className="text-gray-400 text-sm">

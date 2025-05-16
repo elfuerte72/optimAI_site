@@ -10,12 +10,84 @@ type Message = {
   isBot: boolean;
 };
 
+// Новый тип для ответа API
+interface ApiChatResponse {
+  reply: string;
+}
+
+// Новый тип для ошибки API
+interface ApiChatError {
+  error: string;
+}
+
+// Компонент для формы ввода сообщения
+interface MessageInputFormProps {
+  inputValue: string;
+  onInputChange: (value: string) => void;
+  onSubmit: (e: React.FormEvent) => Promise<void>;
+  isLoading: boolean;
+  inputRef: React.Ref<HTMLTextAreaElement>;
+  onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  placeholder?: string;
+}
+
+const MessageInputForm: React.FC<MessageInputFormProps> = ({
+  inputValue,
+  onInputChange,
+  onSubmit,
+  isLoading,
+  inputRef,
+  onKeyDown,
+  placeholder = "Задайте мне интересующий вас вопрос..."
+}) => {
+  // Автоматическая регулировка высоты текстового поля
+  useEffect(() => {
+    const currentInputRef = typeof inputRef === 'function' ? null : inputRef?.current;
+    if (currentInputRef) {
+      currentInputRef.style.height = '24px'; // Сброс высоты для пересчета
+      currentInputRef.style.height = `${Math.min(currentInputRef.scrollHeight, 150)}px`;
+    }
+  }, [inputValue, inputRef]);
+
+  return (
+    <form onSubmit={onSubmit} className="relative bg-gray-900 rounded-xl shadow-lg border border-gray-800">
+      <div className="px-3 py-2 flex items-end">
+        <textarea
+          ref={inputRef}
+          rows={1}
+          value={inputValue}
+          onChange={(e) => onInputChange(e.target.value)}
+          onKeyDown={onKeyDown}
+          placeholder={placeholder}
+          className="flex-1 bg-transparent border-0 resize-none focus:ring-0 focus:outline-none text-white py-1 px-2 max-h-[150px] overflow-y-auto"
+          disabled={isLoading}
+          style={{ height: '24px' }} // Начальная высота, будет изменена useEffect
+        />
+        <button
+          type="submit"
+          disabled={isLoading || !inputValue.trim()}
+          className={`p-1 rounded-md ${inputValue.trim() ? 'text-white' : 'text-gray-400'}`}
+        >
+          <Image 
+            src="/images/send_message_icon.svg" 
+            alt="Отправить" 
+            width={24} 
+            height={24} 
+            className="w-6 h-6"
+          />
+        </button>
+      </div>
+    </form>
+  );
+};
+
 // Компонент чата с ИИ
 const ChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null); // Состояние для ошибок API
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -31,46 +103,77 @@ const ChatBot = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Автоматическая регулировка высоты текстового поля
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.style.height = '24px';
-      inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 150)}px`;
-    }
-  }, [inputValue]);
-
   // Обработка отправки сообщения
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!inputValue.trim()) return;
+    setApiError(null); // Сброс предыдущей ошибки
     
+    const userMessageText = inputValue;
     // Добавляем сообщение пользователя
     const userMessage: Message = {
       id: Date.now().toString(),
-      text: inputValue,
+      text: userMessageText,
       isBot: false,
     };
     
     setMessages(prev => [...prev, userMessage]);
-    setInputValue('');
+    setInputValue(''); // Очищаем поле ввода сразу
     setIsLoading(true);
-    setShowChat(true);
+    if (!showChat) setShowChat(true); // Показываем чат, если он был скрыт
     
-    // Имитация ответа от бота (в реальном проекте здесь будет запрос к API)
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: userMessageText }),
+      });
+
+      if (!response.ok) {
+        let errorText = `Ошибка API: ${response.status}`;
+        try {
+          const errorData: ApiChatError | { detail?: string } = await response.json();
+          if (typeof errorData === 'object' && errorData !== null) {
+            if ('error' in errorData && typeof errorData.error === 'string') {
+              errorText = errorData.error;
+            } else if ('detail' in errorData && typeof errorData.detail === 'string') {
+              errorText = errorData.detail;
+            }
+          }
+        } catch (jsonError) {
+          // Ошибка парсинга JSON, используем стандартный текст ошибки
+        }
+        throw new Error(errorText);
+      }
+
+      const data: ApiChatResponse = await response.json();
+      
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: `Спасибо за ваше сообщение! В полной версии здесь будет ответ от ИИ на ваш запрос: "${userMessage.text}"`,
+        text: data.reply,
         isBot: true,
       };
       
       setMessages(prev => [...prev, botMessage]);
+
+    } catch (error) {
+      console.error("Ошибка при отправке сообщения:", error);
+      const errorMessage = error instanceof Error ? error.message : "Не удалось получить ответ от бота. Пожалуйста, попробуйте позже.";
+      setApiError(errorMessage);
+      const botErrorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: errorMessage,
+        isBot: true,
+      };
+      setMessages(prev => [...prev, botErrorMessage]);
+    } finally {
       setIsLoading(false);
-      
       // Фокус на поле ввода после ответа
       inputRef.current?.focus();
-    }, 1000);
+    }
   };
 
   // Обработка быстрого вопроса
@@ -82,7 +185,7 @@ const ChatBot = () => {
   };
 
   // Регулировка высоты textarea при нажатии Enter
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       if (inputValue.trim()) {
@@ -103,34 +206,15 @@ const ChatBot = () => {
             
             {/* Форма ввода сразу после заголовка */}
             <div className="w-full max-w-2xl mt-2">
-              <form onSubmit={handleSendMessage} className="relative bg-gray-900 rounded-xl shadow-lg border border-gray-800">
-                <div className="px-3 py-2 flex items-end">
-                  <textarea
-                    ref={inputRef}
-                    rows={1}
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Задайте мне интересующий вас вопрос..."
-                    className="flex-1 bg-transparent border-0 resize-none focus:ring-0 focus:outline-none text-white py-1 px-2 max-h-[150px] overflow-y-auto"
-                    disabled={isLoading}
-                    style={{ height: '24px' }}
-                  />
-                  <button
-                    type="submit"
-                    disabled={isLoading || !inputValue.trim()}
-                    className={`p-1 rounded-md ${inputValue.trim() ? 'text-white' : 'text-gray-400'}`}
-                  >
-                    <Image 
-                      src="/images/send_message_icon.svg" 
-                      alt="Отправить" 
-                      width={24} 
-                      height={24} 
-                      className="w-6 h-6"
-                    />
-                  </button>
-                </div>
-              </form>
+              <MessageInputForm
+                inputValue={inputValue}
+                onInputChange={setInputValue}
+                onSubmit={handleSendMessage}
+                isLoading={isLoading}
+                inputRef={inputRef}
+                onKeyDown={handleKeyDown}
+                placeholder="Задайте мне интересующий вас вопрос..."
+              />
               
               {/* Готовые вопросы */}
               <div className="flex flex-wrap gap-2 justify-center mt-8">
@@ -154,17 +238,32 @@ const ChatBot = () => {
                 key={message.id}
                 className={`py-5 ${message.isBot ? 'bg-black' : 'bg-gray-950 border-t border-b border-gray-800'}`}
               >
-                <div className="max-w-3xl mx-auto flex">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-4 ${message.isBot ? 'bg-gradient-to-r from-cyan-500 to-purple-500' : 'bg-gray-700'}`}>
-                    {message.isBot ? 'A' : 'В'}
+                <div className="max-w-3xl mx-auto flex items-start">
+                  <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-4 ${message.isBot ? 'bg-gradient-to-r from-cyan-500 to-purple-500' : 'bg-gray-700'}`}>
+                    {message.isBot ? 
+                      <Image src="/images/logo-updated.png" alt="AI" width={20} height={20} /> :
+                       'В'}
                   </div>
                   <div className="flex-1">
-                    <p className="text-white">{message.text}</p>
+                    <p className="text-white whitespace-pre-wrap">{message.text}</p>
                   </div>
                 </div>
               </div>
             ))}
             
+            {apiError && (
+              <div className="py-5 bg-black">
+                <div className="max-w-3xl mx-auto flex items-start">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-red-500 flex items-center justify-center mr-4">
+                    !
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-red-400 whitespace-pre-wrap">{apiError}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {isLoading && (
               <div className="py-5 bg-black">
                 <div className="max-w-3xl mx-auto flex">
@@ -188,34 +287,15 @@ const ChatBot = () => {
       {showChat && (
         <div className="p-3 mt-auto bg-black">
           <div className="max-w-3xl mx-auto">
-            <form onSubmit={handleSendMessage} className="relative bg-gray-900 rounded-xl shadow-lg border border-gray-800">
-              <div className="px-3 py-2 flex items-end">
-                <textarea
-                  ref={inputRef}
-                  rows={1}
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Спросите что-нибудь..."
-                  className="flex-1 bg-transparent border-0 resize-none focus:ring-0 focus:outline-none text-white py-1 px-2 max-h-[150px] overflow-y-auto"
-                  disabled={isLoading}
-                  style={{ height: '24px' }}
-                />
-                <button
-                  type="submit"
-                  disabled={isLoading || !inputValue.trim()}
-                  className={`p-1 rounded-md ${inputValue.trim() ? 'text-white' : 'text-gray-400'}`}
-                >
-                  <Image 
-                    src="/images/send_message_icon.svg" 
-                    alt="Отправить" 
-                    width={24} 
-                    height={24} 
-                    className="w-6 h-6"
-                  />
-                </button>
-              </div>
-            </form>
+            <MessageInputForm
+              inputValue={inputValue}
+              onInputChange={setInputValue}
+              onSubmit={handleSendMessage}
+              isLoading={isLoading}
+              inputRef={inputRef}
+              onKeyDown={handleKeyDown}
+              placeholder="Спросите что-нибудь..."
+            />
           </div>
         </div>
       )}

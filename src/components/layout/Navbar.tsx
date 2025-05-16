@@ -2,31 +2,32 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { rafThrottle } from '@/utils/performance';
 import '@/styles/navbar.css';
+import { motion } from 'framer-motion';
 
 // Компонент навигационной панели в стиле Apple
 const Navbar = () => {
-  // Move these to useEffect to avoid hydration mismatches
-  const [activeLink, setActiveLink] = useState('');
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isContactHovered, setIsContactHovered] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    // Set mounted state to true after component mounts on client
     setIsMounted(true);
-    
-    // Обновляем активную ссылку при изменении пути
-    setActiveLink(window.location.pathname);
+  }, []);
 
-    // Оптимизированный обработчик скролла
+  useEffect(() => {
+    if (!isMounted) {
+      return;
+    }
+    
     const handleScroll = rafThrottle(() => {
       setScrolled(window.scrollY > 10);
     });
 
-    // Закрыть меню при нажатии клавиши Escape
     const handleEscKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setIsMenuOpen(false);
     };
@@ -34,7 +35,6 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('keydown', handleEscKey);
     
-    // Заблокировать прокрутку тела при открытом меню
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -44,8 +44,9 @@ const Navbar = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('keydown', handleEscKey);
+      document.body.style.overflow = '';
     };
-  }, [isMenuOpen]);
+  }, [isMenuOpen, isMounted]);
 
   const toggleMenu = () => {
     if (isMounted) {
@@ -60,56 +61,53 @@ const Navbar = () => {
     { path: '/news', name: 'Отзывы и новости' }
   ];
 
-  // Return a completely static component for SSR
-  // This ensures server and initial client render match exactly
   if (!isMounted) {
     return (
       <>
         <div className="fixed top-6 left-6 z-50 w-8 h-8 flex items-center justify-center rounded-full menu-button">
-          <div className="flex justify-center items-center w-5 h-5 relative">
-            <span className="menu-line absolute" style={{width: '100%', top: '30%'}} />
-            <span className="menu-line absolute" style={{width: '70%', bottom: '30%', alignSelf: 'flex-end'}} />
+          <div className="w-5 h-5 flex flex-col justify-center items-center" style={{ gap: '3px' }}>
+            <span className="block w-5 h-0.5 bg-white rounded-sm" />
+            <span className="block w-5 h-0.5 bg-white rounded-sm" />
           </div>
         </div>
       </>
     );
   }
 
-  // Only render interactive elements after client-side hydration is complete
   return (
     <>
-      {/* Плавающая кнопка бургер-меню без горизонтальной панели */}
       <button 
-        className="fixed top-6 left-6 z-50 w-8 h-8 flex items-center justify-center rounded-full menu-button focus:outline-none"
+        className="menu-button p-2 rounded-md focus:outline-none relative w-8 h-8 fixed top-6 left-6 z-50"
         onClick={toggleMenu}
         aria-expanded={isMenuOpen}
+        aria-controls="mobile-menu"
         aria-label={isMenuOpen ? "Закрыть меню" : "Открыть меню"}
       >
-        <div className="flex justify-center items-center w-5 h-5 relative">
-          <span 
-            className="menu-line absolute will-change-transform gpu-accelerated" 
-            style={{ 
-              width: '100%',
-              top: isMenuOpen ? '50%' : '30%',
-              transform: isMenuOpen ? 'translateY(-50%) rotate(45deg)' : 'none',
-              transition: 'transform 0.25s ease, top 0.25s ease, width 0.25s ease' 
+        <span className="sr-only">{isMenuOpen ? "Закрыть меню" : "Открыть меню"}</span>
+        <motion.div
+          className="flex flex-col items-center justify-center w-full h-full"
+          animate={isMenuOpen ? "open" : "closed"}
+          initial={false}
+        >
+          <motion.span
+            className="block w-5 h-0.5 bg-white rounded-sm"
+            variants={{
+              closed: { rotate: 0, y: -2.5 },
+              open: { rotate: 45, y: 0 },
             }}
+            transition={{ duration: 0.25, ease: [0.76, 0, 0.24, 1] }}
           />
-          
-          <span 
-            className="menu-line absolute will-change-transform gpu-accelerated" 
-            style={{ 
-              width: isMenuOpen ? '100%' : '70%',
-              bottom: isMenuOpen ? '50%' : '30%',
-              transform: isMenuOpen ? 'translateY(50%) rotate(-45deg)' : 'none',
-              alignSelf: !isMenuOpen ? 'flex-end' : 'center',
-              transition: 'transform 0.25s ease, bottom 0.25s ease, width 0.25s ease'
+          <motion.span
+            className="block w-5 h-0.5 bg-white rounded-sm"
+            variants={{
+              closed: { rotate: 0, y: 2.5 },
+              open: { rotate: -45, y: 0 },
             }}
+            transition={{ duration: 0.25, ease: [0.76, 0, 0.24, 1] }}
           />
-        </div>
+        </motion.div>
       </button>
       
-      {/* Overlay */}
       <div 
         className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 will-change-opacity ${isMenuOpen ? 'visible' : 'invisible'}`}
         style={{ 
@@ -119,15 +117,12 @@ const Navbar = () => {
         onClick={() => setIsMenuOpen(false)}
       />
       
-      {/* Sidebar menu */}
       <div 
-        className="fixed left-0 top-0 bottom-0 w-56 md:w-64 bg-black/20 backdrop-blur-lg z-40 flex flex-col pt-24 px-6 will-change-transform gpu-accelerated"
+        className="fixed left-0 top-0 bottom-0 w-56 md:w-64 backdrop-blur-lg z-40 flex flex-col pt-24 px-6 will-change-transform gpu-accelerated nav-mobile-menu-bg"
         style={{
           transform: isMenuOpen ? 'translateX(0)' : 'translateX(-100%)',
           transition: 'transform 0.3s ease',
           visibility: isMenuOpen ? 'visible' : 'hidden',
-          borderRight: '1px solid rgba(255, 255, 255, 0.1)',
-          background: 'linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1))'
         }}
       >
         <nav className="flex flex-col gap-8 flex-grow">
@@ -140,15 +135,13 @@ const Navbar = () => {
               >
                 <span 
                   className={`text-xl font-medium tracking-tight text-white ${
-                    activeLink === link.path ? 'font-semibold' : ''
+                    pathname === link.path ? 'font-semibold' : ''
                   }`}
-                  style={{ fontFamily: 'var(--font-sans)' }}
                 >
                   {link.name}
                 </span>
                 
-                {/* Подсветка текущей страницы */}
-                {activeLink === link.path && (
+                {pathname === link.path && (
                   <span 
                     className="absolute -left-3 top-1/2 -translate-y-1/2 h-4 w-0.5 bg-white rounded-full" 
                   />
@@ -158,7 +151,6 @@ const Navbar = () => {
           ))}
         </nav>
         
-        {/* Кнопка связи с менеджером */}
         <a
           href="https://t.me/optimaai_tg"
           target="_blank"
@@ -169,8 +161,7 @@ const Navbar = () => {
           onMouseLeave={() => setIsContactHovered(false)}
         >
           <span 
-            className="text-xl font-medium tracking-tight text-white flex items-center"
-            style={{ fontFamily: 'var(--font-sans)' }}
+            className="text-xl font-tight text-white flex items-center"
           >
             <svg 
               className={`w-5 h-5 mr-2 transform transition-transform duration-300 ${isContactHovered ? 'translate-x-1' : ''}`} 

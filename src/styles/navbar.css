@@ -11,34 +11,20 @@
   transform: scale(0.95);
 }
 
-.menu-line {
-  display: block;
-  width: 100%;
-  height: 2px;
-  background-color: white;
-  border-radius: 1px;
-  transform: translateZ(0); /* Force GPU acceleration */
-}
-
 /* Navigation menu animations - optimized for performance */
-.nav-enter {
-  opacity: 0;
-  transform: translateX(-100%);
+/* These .nav-* classes are likely unused if Framer Motion handles animations directly. */
+/* Verify and remove if confirmed unused. For now, commenting out. */
+/* 
+Removed unused .nav-enter, .nav-exit, .nav-enter-active, .nav-exit-active classes 
+as Framer Motion handles animations directly.
+*/
+
+/* Added for Navbar.tsx mobile menu background and border */
+.nav-mobile-menu-bg {
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1));
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.nav-enter-active {
-  opacity: 1;
-  transform: translateX(0%);
-  transition: opacity 300ms, transform 300ms;
-}
-
-.nav-exit {
-  opacity: 1;
-  transform: translateX(0%);
-}
-
-.nav-exit-active {
-  opacity: 0;
-  transform: translateX(-100%);
-  transition: opacity 300ms, transform 300ms;
-}
+/* 
+Removed unused .nav-link-custom styling as it does not appear to be used.
+*/

@@ -11,66 +11,39 @@ interface Review {
   clientName: string;
 }
 
-const mockReviews: Review[] = [
-  {
-    id: '1',
-    category: 'Обучение',
-    text: 'Благодаря обучению в OptimaAI, наша команда теперь эффективно использует нейросети в повседневной работе, что значительно ускорило процессы разработки.',
-    clientName: 'Алексей М.',
-  },
-  {
-    id: '2',
-    category: 'Обучение',
-    text: 'Курсы по ИИ помогли мне переосмыслить подход к аналитике данных. Теперь я делаю за день то, что раньше занимало неделю.',
-    clientName: 'Екатерина С.',
-  },
-  {
-    id: '3',
-    category: 'Автоматизация',
-    text: 'Автоматизировали процесс обработки клиентских заявок с помощью ИИ. Скорость обработки выросла в 5 раз, а количество ошибок снизилось на 80%.',
-    clientName: 'Дмитрий К.',
-  },
-  {
-    id: '4',
-    category: 'Автоматизация',
-    text: 'OptimaAI помогла нам создать систему автоматической категоризации товаров, что значительно упростило работу с каталогом.',
-    clientName: 'Ольга П.',
-  },
-  {
-    id: '5',
-    category: 'Агенты',
-    text: 'ИИ-агенты от OptimaAI теперь круглосуточно отвечают на вопросы наших клиентов. Уровень удовлетворенности клиентов вырос на 40%.',
-    clientName: 'Сергей В.',
-  },
-  {
-    id: '6',
-    category: 'Агенты',
-    text: 'Внедрили агента для первичного скрининга резюме. Процесс найма стал эффективнее, а HR-специалисты могут сосредоточиться на более важных задачах.',
-    clientName: 'Марина Д.',
-  },
-];
-
 export default function ReviewsSection() {
   const [selectedCategory, setSelectedCategory] = useState<ReviewCategory>('Обучение');
-  const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Simulate API fetch
     const fetchReviews = async () => {
       setIsLoading(true);
-      // In a real application, replace this with actual API call
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-      const filtered = mockReviews.filter(review => review.category === selectedCategory);
-      setFilteredReviews(filtered);
-      setIsLoading(false);
+      setApiError(null);
+      try {
+        const response = await fetch(`/api/reviews?category=${encodeURIComponent(selectedCategory)}`);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Ошибка API: ${response.status}`);
+        }
+        const data: Review[] = await response.json();
+        setReviews(data);
+      } catch (error) {
+        console.error("Ошибка при загрузке отзывов:", error);
+        const errorMessage = error instanceof Error ? error.message : "Не удалось загрузить отзывы.";
+        setApiError(errorMessage);
+        setReviews([]);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchReviews();
   }, [selectedCategory]);
 
   const categories: ReviewCategory[] = ['Обучение', 'Автоматизация', 'Агенты'];
+  const uniquePanelId = `reviews-panel-${selectedCategory.toLowerCase().replace(/\s+/g, '-')}`;
 
   return (
     <section className="max-w-5xl mx-auto w-full py-16">
@@ -80,10 +53,14 @@ export default function ReviewsSection() {
       
       {/* Category Tabs */}
       <div className="flex justify-center mb-10">
-        <div className="inline-flex rounded-md shadow-sm bg-gray-900 p-1">
+        <div role="tablist" aria-label="Категории отзывов" className="inline-flex rounded-md shadow-sm bg-gray-900 p-1">
           {categories.map((category) => (
             <button
               key={category}
+              id={`tab-${category.toLowerCase().replace(/\s+/g, '-')}`}
+              role="tab"
+              aria-selected={selectedCategory === category}
+              aria-controls={uniquePanelId}
               onClick={() => setSelectedCategory(category)}
               className={`px-4 py-2 text-sm rounded-md transition-all duration-200 ${
                 selectedCategory === category
@@ -97,8 +74,13 @@ export default function ReviewsSection() {
         </div>
       </div>
 
-      {/* Reviews Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Reviews Grid - Tab Panel */}
+      <div 
+        id={uniquePanelId}
+        role="tabpanel"
+        aria-labelledby={`tab-${selectedCategory.toLowerCase().replace(/\s+/g, '-')}`}
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
         {isLoading ? (
           // Loading skeleton
           Array.from({ length: 2 }).map((_, index) => (
@@ -114,8 +96,17 @@ export default function ReviewsSection() {
               </div>
             </div>
           ))
+        ) : apiError ? (
+          <div className="col-span-1 md:col-span-2 text-center text-red-400 bg-gray-900 p-6 rounded-lg">
+            <p><strong>Ошибка:</strong> {apiError}</p>
+            <p>Пожалуйста, попробуйте обновить страницу или выбрать другую категорию.</p>
+          </div>
+        ) : reviews.length === 0 ? (
+          <div className="col-span-1 md:col-span-2 text-center text-gray-400 bg-gray-900 p-6 rounded-lg">
+            <p>Отзывов в этой категории пока нет.</p>
+          </div>
         ) : (
-          filteredReviews.map((review) => (
+          reviews.map((review) => (
             <div key={review.id} className="bg-gray-900 rounded-lg p-6 transition-all duration-300 hover:bg-gray-800">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 rounded-full bg-blue-900 flex items-center justify-center text-white font-medium">

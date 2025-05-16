@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import dynamic from 'next/dynamic';
-import { setupLazyLoading } from '@/utils/lazyLoad';
+// import { setupLazyLoading } from '@/utils/lazyLoad'; // Removed as it seems unused
 import Link from 'next/link';
 
 // Lazy load ChatBot component
@@ -13,18 +13,18 @@ const ChatBot = dynamic(() => import('@/components/ChatBot'), {
   ssr: false,
 });
 
-// Lazy load ReviewsAndNewsSection component
-const ReviewsAndNewsSection = dynamic(() => import('@/components/reviews/ReviewsAndNewsSection'), {
-  loading: () => <div className="w-full h-40 bg-gray-900 animate-pulse rounded-lg mt-12"></div>,
-  ssr: false,
-});
+// Lazy load ReviewsAndNewsSection component - TODO: Decide if this component should be used on the homepage or remove this import.
+// const ReviewsAndNewsSection = dynamic(() => import('@/components/reviews/ReviewsAndNewsSection'), {
+//   loading: () => <div className="w-full h-40 bg-gray-900 animate-pulse rounded-lg mt-12"></div>,
+//   ssr: false,
+// });
 
 export default function Home() {
   useEffect(() => {
-    document.title = "OptimaAI — Сила в простоте";
+    // document.title = "OptimaAI — Сила в простоте"; // Redundant: title is set in root layout metadata
     
     // Set up lazy loading for below-the-fold elements
-    setupLazyLoading();
+    // setupLazyLoading(); // Removed as its features (data-src, data-bg, animate-on-scroll) are not used
   }, []);
 
   return (
@@ -40,10 +40,9 @@ export default function Home() {
               alt="OptimaAI Logo" 
               width={300} 
               height={100} 
-              className="w-auto h-auto select-none"
+              className="w-auto h-auto select-none pointer-events-none"
               draggable="false"
               priority
-              style={{ pointerEvents: 'none' }}
             />
           </div>
         </section>
@@ -51,17 +50,17 @@ export default function Home() {
         {/* Секция с заголовком */}
         <section className="max-w-3xl mx-auto text-center mb-12">
           <h1
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6"
-            style={{ fontFamily: 'var(--font-sans)', letterSpacing: '-0.02em' }}
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 font-sans tracking-[-0.02em]"
           >
             Ваш проводник в мир искусственного интеллекта
           </h1>
 
+          {/* Empty paragraph removed 
           <p
             className="text-lg text-gray-300 max-w-2xl mx-auto"
             style={{ fontFamily: 'var(--font-sans)', fontWeight: 300, lineHeight: 1.6 }}
           >
-          </p>
+          </p> */}
         </section>
 
         {/* Секция с чат-ботом - низкий приоритет, загружаем лениво */}

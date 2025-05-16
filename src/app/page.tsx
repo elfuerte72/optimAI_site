@@ -68,19 +68,6 @@ export default function Home() {
         <section className="max-w-4xl mx-auto w-full">
           <ChatBot />
         </section>
-        
-        {/* Секция с отзывами и новостями - низкий приоритет, загружаем лениво */}
-        <section className="max-w-5xl mx-auto w-full">
-          <ReviewsAndNewsSection />
-          <div className="text-center mt-6">
-            <Link 
-              href="/news" 
-              className="inline-block px-6 py-2 text-blue-400 hover:text-blue-300 transition-colors duration-200"
-            >
-              Подробнее →
-            </Link>
-          </div>
-        </section>
       </main>
     </div>
   );

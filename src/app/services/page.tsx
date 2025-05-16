@@ -413,9 +413,9 @@ export default function ServicesPage() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          Современные AI решения
+          
           <br className="hidden sm:block" />
-          для бизнеса и жизни.
+          
         </motion.h1>
         <motion.p 
           className="text-lg md:text-xl text-gray-300 mb-10 max-w-xl"
@@ -423,7 +423,7 @@ export default function ServicesPage() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          AI. Без боли, без ерунды.
+          
         </motion.p>
         
         <motion.button 

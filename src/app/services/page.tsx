@@ -7,7 +7,7 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import BookIcon from '@/images/book.svg';
 import AutoIcon from '@/images/auto.svg';
 import AgentIcon from '@/images/agent.svg';
-import { ChevronDownIcon, ChevronUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 const TELEGRAM_SIGNUP_URL = 'https://t.me/your_telegram_bot_or_contact';
 const TELEGRAM_BOT_TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'; 
@@ -19,19 +19,46 @@ interface ServiceCardProps {
   title: string;
   description: string; 
   details: Array<{ title: string; items: string[] }>;
+  isExpanded: boolean;
+  onToggle: () => void;
 }
 
-const ServiceCard: React.FC<Omit<ServiceCardProps, 'onOpenModal'>> = ({ id, icon, title, description, details }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const ServiceCard: React.FC<ServiceCardProps> = ({ id, icon, title, description, details, isExpanded, onToggle }) => {
   const cardRef = useRef(null);
-  const isInView = useInView(cardRef, { once: true, amount: 0.3 });
+  const [hasBeenInView, setHasBeenInView] = useState(false);
+  const isInView = useInView(cardRef, { amount: 0.3 });
+
+  useEffect(() => {
+    if (isInView && !hasBeenInView) {
+      setHasBeenInView(true);
+    }
+  }, [isInView, hasBeenInView]);
+
+  const detailVariants = {
+    open: {
+      opacity: 1,
+      maxHeight: '500px',
+      marginTop: '16px',
+      marginBottom: '16px',
+      display: 'block',
+    },
+    collapsed: {
+      opacity: 0,
+      maxHeight: '0px',
+      marginTop: '0px',
+      marginBottom: '0px',
+      transitionEnd: {
+        display: 'none',
+      },
+    },
+  };
 
   return (
     <motion.div
       ref={cardRef}
       className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 md:p-8 shadow-2xl transition-all duration-300 hover:scale-[1.01] hover:shadow-white/10 flex flex-col"
       initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+      animate={hasBeenInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       <div className="flex items-start gap-4 mb-4">
@@ -48,37 +75,30 @@ const ServiceCard: React.FC<Omit<ServiceCardProps, 'onOpenModal'>> = ({ id, icon
       </div>
       <p className="text-gray-300 mb-4 text-sm md:text-base flex-grow">{description}</p>
       
-      <AnimatePresence initial={false}>
-        {isExpanded && (
-          <motion.div
-            key={`service-details-${id}`}
-            initial="collapsed"
-            animate="open"
-            exit="collapsed"
-            variants={{
-              open: { opacity: 1, maxHeight: '500px', marginTop: '16px', marginBottom: '16px' },
-              collapsed: { opacity: 0, maxHeight: 0, marginTop: '0px', marginBottom: '0px' }
-            }}
-            transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
-            className="overflow-hidden"
-          >
-            <div className="space-y-3 border-t border-white/10 pt-4">
-              {details.map((detail, index) => (
-                <div key={index}>
-                  <h4 className="text-sm font-medium text-gray-200 mb-1">{detail.title}</h4>
-                  <ul className="list-disc list-inside space-y-1 pl-1">
-                    {detail.items.map((item, itemIndex) => (
-                      <li key={itemIndex} className="text-gray-300 text-xs md:text-sm">{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+      <motion.div
+        key={`service-details-${id}`}
+        initial={false}
+        animate={isExpanded ? "open" : "collapsed"}
+        variants={detailVariants}
+        transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
+        className="overflow-hidden"
+      >
+        <div className="space-y-3 border-t border-white/10 pt-4">
+          {details.map((detail, index) => (
+            <div key={index}>
+              <h4 className="text-sm font-medium text-gray-200 mb-1">{detail.title}</h4>
+              <ul className="list-disc list-inside space-y-1 pl-1">
+                {detail.items.map((item, itemIndex) => (
+                  <li key={itemIndex} className="text-gray-300 text-xs md:text-sm">{item}</li>
+                ))}
+              </ul>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          ))}
+        </div>
+      </motion.div>
+      
       <button
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={onToggle}
         className="mt-auto w-full bg-white/10 hover:bg-white/20 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 text-sm md:text-base"
         aria-expanded={isExpanded}
       >
@@ -88,7 +108,7 @@ const ServiceCard: React.FC<Omit<ServiceCardProps, 'onOpenModal'>> = ({ id, icon
   );
 };
 
-const servicesData: Omit<ServiceCardProps, 'onOpenModal'>[] = [
+const servicesData: Omit<ServiceCardProps, 'isExpanded' | 'onToggle'>[] = [
   {
     id: 'education',
     icon: BookIcon,
@@ -167,7 +187,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ onClose }) => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    const message = `Новая заявка:\nИмя: ${name}\nТелефон: ${phone}\nЗадача/Вопрос: ${task}`;
+    const message = `Новая заявка:\\nИмя: ${name}\\nТелефон: ${phone}\\nЗадача/Вопрос: ${task}`;
 
     if (TELEGRAM_BOT_TOKEN === 'YOUR_TELEGRAM_BOT_TOKEN' || TELEGRAM_CHAT_ID === 'YOUR_TELEGRAM_CHAT_ID') {
       console.warn('Telegram Bot Token or Chat ID not configured. Simulating submission.');
@@ -227,7 +247,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ onClose }) => {
 
   return (
     <motion.div
-      className="fixed inset-0 bg-black/80 /* backdrop-blur-sm */ flex items-center justify-center z-[999] p-4"
+      className="fixed inset-0 bg-black/80 flex items-center justify-center z-[999] p-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -338,6 +358,12 @@ export default function ServicesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showMobileCta, setShowMobileCta] = useState(false);
   const heroCtaRef = useRef<HTMLButtonElement>(null); 
+  
+  const [expandedCardId, setExpandedCardId] = useState<string | null>(null);
+
+  const handleToggleCard = (cardId: string) => {
+    setExpandedCardId(prevId => (prevId === cardId ? null : cardId));
+  };
 
   useEffect(() => {
     document.title = "Услуги — OptimaAI";
@@ -386,71 +412,32 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-black text-white flex flex-col relative overflow-x-hidden">
       <Navbar />
 
-      {/* Hero Section */}
-      <motion.section 
-        className="min-h-screen flex flex-col items-center justify-center text-center px-4 relative"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="absolute inset-0 overflow-hidden -z-10">
-          <motion.div
-            className="absolute top-1/4 left-1/4 w-1/2 h-1/2 bg-gradient-to-br from-white/5 to-white/0 rounded-full filter blur-3xl"
-            animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1], rotate: [0, 15, 0]}}
-            transition={{ duration: 20, repeat: Infinity, repeatType: "mirror" }}
-          />
-           <motion.div
-            className="absolute bottom-1/4 right-1/4 w-1/3 h-1/3 bg-gradient-to-tl from-white/5 to-white/0 rounded-full filter blur-2xl"
-            animate={{ scale: [1, 1.05, 1], opacity: [0.05, 0.15, 0.05], rotate: [0, -10, 0]}}
-            transition={{ duration: 25, repeat: Infinity, repeatType: "mirror", delay: 5 }}
-          />
-        </div>
-
-        <motion.h1 
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
-          style={{ fontFamily: 'var(--font-sans)', letterSpacing: '-0.03em', textShadow: '0 2px 20px rgba(255,255,255,0.1)' }}
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          
-          <br className="hidden sm:block" />
-          
-        </motion.h1>
-        <motion.p 
-          className="text-lg md:text-xl text-gray-300 mb-10 max-w-xl"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          
-        </motion.p>
-        
-        <motion.button 
-          ref={heroCtaRef} 
-          onClick={openModal} 
-          className="bg-white text-black font-bold text-lg md:text-xl py-3 px-8 md:py-4 md:px-10 rounded-full shadow-xl hover:shadow-white/20 transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/30"
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.6 }}
-        >
-          Записаться
-        </motion.button>
-      </motion.section>
-
-      {/* Service Cards Section */}
+      {/* Service Cards Section - теперь первый основной блок */}
       <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 relative">
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent -z-1" />
-        <h2 
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 md:mb-20 text-white"
-            style={{ fontFamily: 'var(--font-sans)', letterSpacing: '-0.02em' }}
-        >
-            Наши услуги
-        </h2>
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 pt-0 md:pt-0">
           {servicesData.map((service) => (
-            <ServiceCard key={service.id} {...service} />
+            <ServiceCard 
+              key={service.id} 
+              {...service} 
+              isExpanded={expandedCardId === service.id}
+              onToggle={() => handleToggleCard(service.id)}
+            />
           ))}
+        </div>
+        
+        <div className="mt-12 md:mt-16 flex justify-center">
+          <motion.button
+            ref={heroCtaRef} 
+            onClick={openModal} 
+            className="bg-white text-black font-bold text-lg md:text-xl py-3 px-8 md:py-4 md:px-10 rounded-full shadow-xl hover:shadow-white/20 transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/30"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
+          >
+            Записаться
+          </motion.button>
         </div>
          <div className="absolute inset-x-0 bottom-0  h-px bg-gradient-to-r from-transparent via-white/20 to-transparent -z-1" />
       </section>

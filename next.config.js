@@ -6,15 +6,23 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     minimumCacheTTL: 60 * 60 * 24 * 7, // 7 days
   },
+  outputFileTracingExcludes: {
+    '*': [
+      'node_modules/@swc/core-linux-x64-gnu',
+      'node_modules/@swc/core-linux-x64-musl',
+      'node_modules/@esbuild/linux-x64',
+    ],
+  },
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ['framer-motion', '@headlessui/react'],
-    outputFileTracingExcludes: {
-      '*': [
-        'node_modules/@swc/core-linux-x64-gnu',
-        'node_modules/@swc/core-linux-x64-musl',
-        'node_modules/@esbuild/linux-x64',
-      ],
+    turbo: {
+      loaders: {
+        // Конфигурация лоадеров Turbopack
+      },
+      rules: {
+        // Конфигурация правил Turbopack
+      },
     },
   },
   headers: async () => {

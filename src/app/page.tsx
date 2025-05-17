@@ -4,6 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '@/components/layout/Navbar';
 import ServicesSection from '@/components/services-section';
+import LogoAnimation from '@/components/logo-animation';
+import FeatureCard from '@/components/feature-card';
 import { motion, Variants } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
@@ -30,52 +32,9 @@ const wordVariants: Variants = {
   }),
 };
 
-// Interface for Light Streaks
-interface LightStreak {
-  id: string;
-  length: number; // Length of the streak
-  angle: number;  // Angle for radial positioning
-  animationDelay: number; // Delay for staggered animation
-  animationDuration: number; // Duration of the streak's burst
-}
-
-// Variants for Light Streaks
-const streakVariants: Variants = {
-  hidden: { 
-    opacity: 0, 
-    scaleX: 0, 
-    transition: { duration: 0.1 } // Quick fade/shrink out
-  },
-  hover: (streak: LightStreak) => ({
-    opacity: [0, 0.9, 0], // Fade in, visible, fade out
-    scaleX: 1,
-    transition: {
-      delay: streak.animationDelay,
-      duration: streak.animationDuration,
-      ease: "easeOut", // Streak shoots out quickly
-      times: [0, 0.7, 1] // Controls timing of opacity keyframes (70% of duration to be visible)
-    },
-  }),
-};
+// Удалена анимация Light Streaks в пользу нового компонента
 
 export default function HomePage() {
-  const [isLogoHovered, setIsLogoHovered] = useState(false);
-  const [lightStreaks, setLightStreaks] = useState<LightStreak[]>([]);
-
-  useEffect(() => {
-    const numStreaks = 40; // Number of light streaks
-    const generatedStreaks: LightStreak[] = [];
-    for (let i = 0; i < numStreaks; i++) {
-      generatedStreaks.push({
-        id: `streak-${i}`,
-        length: 30 + Math.random() * 70, // Streak length: 30px to 100px
-        angle: Math.random() * 360, // Random angle from 0 to 360 degrees
-        animationDelay: Math.random() * 0.4, // Staggered appearance up to 0.4s
-        animationDuration: 0.3 + Math.random() * 0.4, // Burst duration: 0.3s to 0.7s
-      });
-    }
-    setLightStreaks(generatedStreaks);
-  }, []); // Empty dependency array ensures this runs once on client after mount
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
@@ -89,44 +48,7 @@ export default function HomePage() {
         variants={sectionVariants}
       >
         <div className="relative z-10 flex flex-col items-center">
-          <motion.div
-            className="mb-8 relative group isolate" 
-            onHoverStart={() => setIsLogoHovered(true)}
-            onHoverEnd={() => setIsLogoHovered(false)}
-            style={{ cursor: 'default' }}
-          >
-            <Image
-              src="/images/logo-updated.png"
-              alt="OptimaAI Logo"
-              width={288}
-              height={96}
-              priority
-              className="pointer-events-none relative z-10"
-            />
-            {/* Container for streaks, centered on the logo */}
-            <div 
-              className="absolute inset-0 flex items-center justify-center pointer-events-none"
-              style={{ width: '100%', height: '100%' }}
-            >
-              {lightStreaks.map((streak) => (
-                <motion.div
-                  key={streak.id}
-                  className="absolute bg-white opacity-70 blur-[0.5px]"
-                  style={{
-                    width: streak.length, // Initial width controlled by variant's scaleX
-                    height: '1.5px', // Thickness of the streak
-                    transformOrigin: 'left center', // Scale from the left (center of the logo)
-                    rotate: `${streak.angle}deg`, // Apply rotation
-                    // Position absolutely, rotation handles radial distribution from center
-                  }}
-                  variants={streakVariants}
-                  initial="hidden"
-                  animate={isLogoHovered ? "hover" : "hidden"}
-                  custom={streak}
-                />
-              ))}
-            </div>
-          </motion.div>
+          <LogoAnimation />
           
           <motion.h1 
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white"
@@ -177,23 +99,88 @@ export default function HomePage() {
             </p>
           </div>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 hover:border-neutral-700 transition-colors duration-300">
-              <h3 className="text-xl font-semibold text-white mb-2">Экспертиза</h3>
-              <p className="text-gray-400 text-sm">Глубокое понимание технологий ИИ и опыт в различных индустриях.</p>
+            <FeatureCard 
+              index={0}
+              title="Экспертиза" 
+              description="Глубокое понимание технологий ИИ и опыт в различных индустриях."
+            />
+            <FeatureCard 
+              index={1}
+              title="Индивидуальный подход" 
+              description="Решения, разработанные специально под ваши бизнес-цели и задачи."
+            />
+            <FeatureCard 
+              index={2}
+              title="Прозрачность и Поддержка" 
+              description="Открытое сотрудничество и полное сопровождение на всех этапах."
+            />
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Готовые кейсы */}
+      <motion.section
+        className="py-12 md:py-24 bg-gradient-to-b from-black to-gray-900"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={sectionVariants}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">Готовые кейсы</h2>
+            <p className="mt-4 text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto">
+              Реальные примеры внедрения искусственного интеллекта, которые приносят измеримые результаты.
+            </p>
+          </div>
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-xl p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
+              <div className="h-48 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg mb-4 flex items-center justify-center">
+                <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"></path>
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-white">Чат-бот для поддержки клиентов</h3>
+              <p className="mt-2 text-gray-300">Интеллектуальный бот для Telegram, способный отвечать на 95% запросов клиентов без участия оператора.</p>
+              <div className="mt-4 flex justify-between items-center">
+                <span className="text-sm text-gray-400">Сфера: Ритейл</span>
+                <span className="text-sm font-medium text-blue-400 hover:text-blue-300 cursor-pointer">Подробнее</span>
+              </div>
             </div>
-            <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 hover:border-neutral-700 transition-colors duration-300">
-              <h3 className="text-xl font-semibold text-white mb-2">Индивидуальный подход</h3>
-              <p className="text-gray-400 text-sm">Решения, разработанные специально под ваши бизнес-цели и задачи.</p>
+
+            <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-xl p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
+              <div className="h-48 bg-gradient-to-r from-amber-500 to-orange-400 rounded-lg mb-4 flex items-center justify-center">
+                <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-white">Аналитический агент</h3>
+              <p className="mt-2 text-gray-300">AI-агент для анализа бизнес-данных и автоматической генерации еженедельных отчетов с инсайтами.</p>
+              <div className="mt-4 flex justify-between items-center">
+                <span className="text-sm text-gray-400">Сфера: Финансы</span>
+                <span className="text-sm font-medium text-blue-400 hover:text-blue-300 cursor-pointer">Подробнее</span>
+              </div>
             </div>
-            <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 hover:border-neutral-700 transition-colors duration-300">
-              <h3 className="text-xl font-semibold text-white mb-2">Прозрачность и Поддержка</h3>
-              <p className="text-gray-400 text-sm">Открытое сотрудничество и полное сопровождение на всех этапах.</p>
+
+            <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-xl p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
+              <div className="h-48 bg-gradient-to-r from-purple-500 to-indigo-400 rounded-lg mb-4 flex items-center justify-center">
+                <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-white">Система компьютерного зрения</h3>
+              <p className="mt-2 text-gray-300">Решение для автоматического распознавания и классификации дефектов продукции на производственной линии.</p>
+              <div className="mt-4 flex justify-between items-center">
+                <span className="text-sm text-gray-400">Сфера: Производство</span>
+                <span className="text-sm font-medium text-blue-400 hover:text-blue-300 cursor-pointer">Подробнее</span>
+              </div>
             </div>
           </div>
         </div>
       </motion.section>
 
-      {/* Новая CTA Section - только кнопка "Связаться с нами" со стилизацией */}
+      {/* CTA Section */}
       <section className="py-16 md:py-24 bg-black text-center">
         <Link
           href="https://t.me/optimaai_tg"

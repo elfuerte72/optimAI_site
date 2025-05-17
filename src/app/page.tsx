@@ -1,73 +1,115 @@
 'use client';
 
-import Image from "next/image";
-import { useEffect } from 'react';
-import Navbar from '@/components/layout/Navbar';
-import dynamic from 'next/dynamic';
-// import { setupLazyLoading } from '@/utils/lazyLoad'; // Removed as it seems unused
 import Link from 'next/link';
+import Image from 'next/image';
+import Navbar from '@/components/layout/Navbar';
+import ServicesSection from '@/components/services-section';
+import { motion } from 'framer-motion';
 
-// Lazy load ChatBot component
-const ChatBot = dynamic(() => import('@/components/ChatBot'), {
-  loading: () => <div className="w-full h-40 bg-gray-900 animate-pulse rounded-lg"></div>,
-  ssr: false,
-});
+// Простые варианты анимации для блоков
+const sectionVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+};
 
-// Lazy load ReviewsAndNewsSection component - TODO: Decide if this component should be used on the homepage or remove this import.
-// const ReviewsAndNewsSection = dynamic(() => import('@/components/reviews/ReviewsAndNewsSection'), {
-//   loading: () => <div className="w-full h-40 bg-gray-900 animate-pulse rounded-lg mt-12"></div>,
-//   ssr: false,
-// });
-
-export default function Home() {
-  useEffect(() => {
-    // document.title = "OptimaAI — Сила в простоте"; // Redundant: title is set in root layout metadata
-    
-    // Set up lazy loading for below-the-fold elements
-    // setupLazyLoading(); // Removed as its features (data-src, data-bg, animate-on-scroll) are not used
-  }, []);
-
+export default function HomePage() {
   return (
-    <div className="bg-black">
+    <div className="flex flex-col min-h-screen bg-black text-white">
       <Navbar />
 
-      <main className="flex flex-col items-center justify-center px-4 py-12">
-        {/* Секция с логотипом - высокий приоритет */}
-        <section className="max-w-3xl mx-auto text-center mb-12">
-          <div className="flex justify-center mb-8">
-            <Image 
-              src="/images/logo-updated.png" 
-              alt="OptimaAI Logo" 
-              width={300} 
-              height={100} 
-              className="w-auto h-auto select-none pointer-events-none"
-              draggable="false"
+      {/* Hero Section */}
+      <motion.section
+        className="relative flex flex-col items-center justify-center text-center px-4 sm:px-6 lg:px-8 py-20 md:py-28 lg:py-32 overflow-hidden bg-black"
+        initial="hidden"
+        animate="visible"
+        variants={sectionVariants}
+      >
+        <div className="relative z-10 flex flex-col items-center">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="mb-8 relative"
+          >
+            <Image
+              src="/images/logo-updated.png"
+              alt="OptimaAI Logo"
+              width={240}
+              height={80}
               priority
+              className="pointer-events-none"
             />
+          </motion.div>
+          <motion.h1 
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            Ваш проводник в мир исскуственного интелекта
+          </motion.h1>
+        </div>
+      </motion.section>
+
+      {/* Services Section - заменено на импортированный компонент */}
+      <ServicesSection />
+
+      {/* Воссозданная ссылка "Узнать больше о наших услугах" со стилизацией */}
+      <div className="py-12 bg-black text-center">
+        <Link
+          href="/services"
+          className="text-white hover:opacity-70 font-medium group transition-opacity duration-300 text-lg inline-flex items-center"
+        >
+          Узнать больше о наших услугах
+          <span className="inline-block transition-transform group-hover:translate-x-1 ml-2 text-white">&rarr;</span>
+        </Link>
+      </div>
+
+      {/* Why OptimaAI Section - остается без изменений фона, т.к. уже bg-black */}
+      <motion.section 
+        className="py-16 md:py-24 bg-black"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={sectionVariants}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">Почему OptimaAI?</h2>
+            <p className="mt-4 text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto">
+              Мы не просто следуем трендам – мы создаем будущее, где искусственный интеллект работает на вас.
+            </p>
           </div>
-        </section>
-        
-        {/* Секция с заголовком */}
-        <section className="max-w-3xl mx-auto text-center mb-12">
-          <h1
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 font-sans tracking-[-0.02em]"
-          >
-            Ваш проводник в мир искусственного интеллекта
-          </h1>
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+              <h3 className="text-xl font-semibold text-white mb-2">Экспертиза</h3>
+              <p className="text-gray-400 text-sm">Глубокое понимание технологий ИИ и опыт в различных индустриях.</p>
+            </div>
+            <div className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+              <h3 className="text-xl font-semibold text-white mb-2">Индивидуальный подход</h3>
+              <p className="text-gray-400 text-sm">Решения, разработанные специально под ваши бизнес-цели и задачи.</p>
+            </div>
+            <div className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+              <h3 className="text-xl font-semibold text-white mb-2">Прозрачность и Поддержка</h3>
+              <p className="text-gray-400 text-sm">Открытое сотрудничество и полное сопровождение на всех этапах.</p>
+            </div>
+          </div>
+        </div>
+      </motion.section>
 
-          {/* Empty paragraph removed 
-          <p
-            className="text-lg text-gray-300 max-w-2xl mx-auto"
-            style={{ fontFamily: 'var(--font-sans)', fontWeight: 300, lineHeight: 1.6 }}
-          >
-          </p> */}
-        </section>
+      {/* Новая CTA Section - только кнопка "Связаться с нами" со стилизацией */}
+      <section className="py-16 md:py-24 bg-black text-center">
+        <Link
+          href="https://t.me/optimaai_tg"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white hover:opacity-70 font-medium transition-opacity duration-300 text-xl px-6 py-3 border border-white rounded-md hover:bg-white hover:text-black"
+        >
+          Связаться с нами
+        </Link>
+      </section>
 
-        {/* Секция с чат-ботом - низкий приоритет, загружаем лениво */}
-        <section className="max-w-4xl mx-auto w-full">
-          <ChatBot />
-        </section>
-      </main>
+      {/* Footer будет добавлен автоматически из RootLayout */}
     </div>
   );
-}
+} 

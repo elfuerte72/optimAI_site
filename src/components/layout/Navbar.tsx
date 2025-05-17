@@ -80,7 +80,7 @@ const Navbar = () => {
   return (
     <>
       <button 
-        className="menu-button p-2 rounded-md focus:outline-none relative w-8 h-8 fixed top-6 left-6 z-50"
+        className="menu-button p-2 rounded-md focus:outline-none w-8 h-8 fixed top-6 left-6 z-50"
         onClick={toggleMenu}
         aria-expanded={isMenuOpen}
         aria-controls="mobile-menu"

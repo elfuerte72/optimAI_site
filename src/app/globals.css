@@ -1,3 +1,15 @@
+@font-face {
+  font-family: 'Press Start 2P';
+  src: url('/fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-press-start-hero {
+  font-family: 'Press Start 2P', cursive; /* cursive как запасной вариант */
+}
+
 @import "tailwindcss";
 @import "tw-animate-css";
 

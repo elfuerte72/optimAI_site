@@ -16,8 +16,8 @@ const sectionVariants: Variants = {
 };
 
 // Варианты для анимации "печатающегося" текста
-const heroText = "Ваш проводник в мир исскуственного интелекта";
-const heroTextWords = heroText.split(" ");
+const heroLine1Words = "Ваш проводник в мир".split(" ");
+const heroLine2Words = "искусственного интеллекта".split(" ");
 
 const wordVariants: Variants = {
   hidden: { opacity: 0, y: 10 },
@@ -51,20 +51,36 @@ export default function HomePage() {
           <LogoAnimation />
           
           <motion.h1 
-            className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white"
+            className="text-2xl sm:text-3xl md:text-4xl font-normal tracking-tight text-white font-press-start-hero text-center"
           >
-            {heroTextWords.map((word, i) => (
-              <motion.span
-                key={`${word}-${i}`}
-                className="inline-block mr-2 md:mr-3"
-                variants={wordVariants}
-                initial="hidden"
-                animate="visible"
-                custom={i}
-              >
-                {word}
-              </motion.span>
-            ))}
+            <div>
+              {heroLine1Words.map((word, i) => (
+                <motion.span
+                  key={`l1-${word}-${i}`}
+                  className="inline-block mr-3 md:mr-4"
+                  variants={wordVariants}
+                  initial="hidden"
+                  animate="visible"
+                  custom={i}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </div>
+            <div>
+              {heroLine2Words.map((word, i) => (
+                <motion.span
+                  key={`l2-${word}-${i}`}
+                  className="inline-block mr-3 md:mr-4"
+                  variants={wordVariants}
+                  initial="hidden"
+                  animate="visible"
+                  custom={heroLine1Words.length + i}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </div>
           </motion.h1>
         </div>
       </motion.section>

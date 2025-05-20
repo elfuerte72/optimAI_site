@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChatBubbleOvalLeftEllipsisIcon, XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid'; // Иконки
+import { XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid'; // Иконки
 
 interface Message {
   id: number;
@@ -84,7 +84,11 @@ export default function ChatWidget() {
         className="fixed bottom-6 right-6 bg-zinc-800 text-white p-4 rounded-full shadow-xl hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-opacity-50 transition-colors z-50"
         aria-label={isOpen ? 'Закрыть чат' : 'Открыть чат'}
       >
-        {isOpen ? <XMarkIcon className="h-7 w-7" /> : <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7" />}
+        {isOpen ? <XMarkIcon className="h-7 w-7" /> : (
+          <motion.div whileHover={{ scale: 1.15, rotate: 10 }} className="flex items-center justify-center"> {/* Added hover animation and centering */}
+            <img src="/images/robot-svgrepo-com.svg" alt="Открыть чат" className="h-7 w-7 object-contain" /> {/* New icon */}
+          </motion.div>
+        )}
       </motion.button>
 
       {/* Chat Window */}

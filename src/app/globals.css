@@ -249,3 +249,12 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom class for testimonial cards */
+.testimonial-card-custom-border {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #404040; /* Equivalent to Tailwind's neutral-700 */
+  border-radius: var(--radius-md); /* Make sure --radius-md is defined or replace with Tailwind e.g. rounded-lg */
+  background-color: transparent; /* Or bg-black if a solid black background is preferred */
+}

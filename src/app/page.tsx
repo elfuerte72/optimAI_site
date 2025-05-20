@@ -8,6 +8,7 @@ import ChatSection from '@/components/ChatSection'; // Added import for ChatSect
 import LogoAnimation from '@/components/logo-animation';
 import FeatureCard from '@/components/feature-card';
 import { motion, Variants } from 'framer-motion';
+import TestimonialsDataWrapper from '@/components/TestimonialsDataWrapper';
 import { useState, useEffect } from 'react';
 
 // Простые варианты анимации для блоков
@@ -43,7 +44,7 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <motion.section
-        className="relative flex flex-col items-center justify-center text-center px-4 sm:px-6 lg:px-8 py-20 md:py-28 lg:py-32 overflow-hidden bg-black"
+        className="relative flex flex-col items-center justify-center text-center px-4 sm:px-6 lg:px-8 py-16 md:py-20 lg:py-24 overflow-hidden bg-black"
         initial="hidden"
         animate="visible"
         variants={sectionVariants}
@@ -94,7 +95,7 @@ export default function HomePage() {
       {/* 'Готовые кейсы' section removed as per request */}
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24 bg-black text-center">
+      <section className="py-12 md:py-16 bg-black text-center">
         <Link
           href="https://t.me/optimaai_tg"
           target="_blank"
@@ -104,6 +105,21 @@ export default function HomePage() {
           Связаться с нами
         </Link>
       </section>
+
+      {/* Testimonials Section */}
+      <motion.section
+        className="py-12 md:py-16 bg-black text-center px-4 sm:px-6 lg:px-8"
+        initial="hidden"
+        animate="visible"
+        variants={sectionVariants} // Assuming sectionVariants is defined in your page.tsx for animations
+      >
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-white text-3xl md:text-4xl font-semibold mb-10 md:mb-12">
+            Отзывы наших участников программ
+          </h2>
+          <TestimonialsDataWrapper />
+        </div>
+      </motion.section>
 
       {/* Footer будет добавлен автоматически из RootLayout */}
     </div>

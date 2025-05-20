@@ -75,46 +75,39 @@ export default function ChatSection() {
   };
 
   const suggestionButtons = [
-    'Чем занимается компания?',
-    'Как связаться с менеджером?',
-    'Подробней об услугах компании',
+    'Чем занимается ваша компания OptimAI?',
+    'Какие услуги предоставляет OptimAI?',
+    'Расскажите подробнее о внедрении ИИ в бизнес-процессы.',
   ];
 
   return (
     <motion.section
-      className="w-full py-16 md:py-24 bg-black text-white flex flex-col items-center justify-center"
+      className="w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-10 bg-black" // <<< OTSTUPY IZMENENY ZDES'
+      variants={sectionVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }} // Adjusted viewport amount
-      variants={sectionVariants}
+      viewport={{ once: true, amount: 0.2 }}
     >
       <motion.div
-        className="w-full max-w-2xl flex flex-col bg-black rounded-lg shadow-xl overflow-hidden"
+        className={`max-w-3xl mx-auto bg-neutral-900 rounded-xl shadow-2xl flex flex-col transition-all duration-500 ease-in-out overflow-hidden ${isChatOpen ? 'border border-neutral-700' : 'border border-transparent'}`}
         variants={chatContainerVariants}
         initial="collapsed"
         animate={isChatOpen ? 'expanded' : 'collapsed'}
+        layout // Enable layout animations for smooth height transition
       >
-        {/* Content visible in both collapsed and expanded states */} 
-        <div className="p-6">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-center text-white mb-6">
-            Спроси помощника
-          </h2>
-
-          {/* Input Form */} 
-          <form
-            onSubmit={handleFormSubmit}
-            className="flex items-center bg-neutral-900 rounded-lg p-1 shadow-md mb-4"
-          >
+        {/* Input Area - always visible */} 
+        <div className={`p-4 sm:p-6 ${isChatOpen && messages.length > 0 ? 'border-b border-neutral-700' : ''} bg-neutral-900`}>
+          <form onSubmit={handleFormSubmit} className="flex items-center space-x-2 sm:space-x-3">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Задайте мне интересующий вас вопрос..."
-              className="flex-grow p-3 bg-transparent text-white focus:outline-none placeholder-slate-400"
+              placeholder={isChatOpen ? "Спросите что-нибудь..." : "Начните диалог или выберите подсказку..."}
+              className="flex-grow px-3 py-2 sm:px-4 sm:py-3 bg-neutral-800 border border-neutral-700 text-neutral-200 placeholder-neutral-500 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors text-sm sm:text-base"
             />
             <button
               type="submit"
-              className="p-2 sm:p-3 bg-transparent hover:bg-slate-700 rounded-md transition-colors duration-200 focus:outline-none disabled:opacity-50"
+              className="p-2 sm:p-3 bg-neutral-800 hover:bg-neutral-700 rounded-lg transition-colors disabled:cursor-not-allowed disabled:opacity-50"
               disabled={!inputValue.trim() && messages.length === 0} // Allow opening with empty input if chat is new
             >
               <PaperAirplaneIcon className="w-5 h-5 sm:w-6 sm:h-6 text-sky-500" />
@@ -123,7 +116,7 @@ export default function ChatSection() {
 
           {/* Suggestion Buttons - only show if chat is not open or no messages yet */} 
           {(!isChatOpen || messages.length === 0) && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
               {suggestionButtons.map((suggestion, index) => (
                 <button
                   key={suggestion}

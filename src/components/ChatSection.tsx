@@ -2,7 +2,8 @@
 
 import { useState, FormEvent } from 'react';
 import { Send, Loader2 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
+import './ChatSection.css';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -102,11 +103,11 @@ export default function ChatSection() {
         {/* Форма отправки */}
         <div className="p-4 sm:p-6 bg-black">
           <form onSubmit={handleFormSubmit} className="flex w-full items-center space-x-2">
-            <Input
+            <input
               type="text"
               value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => {
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
+              onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();
                   if (inputValue.trim()) {
@@ -116,7 +117,17 @@ export default function ChatSection() {
                 }
               }}
               placeholder={isChatOpen ? "Спросите что-нибудь..." : "Начните диалог"}
-              className="flex-grow placeholder-neutral-500 text-white bg-neutral-800 border-neutral-800 focus-visible:ring-white focus-visible:border-white rounded-lg focus:border-white"
+              style={{ outline: 'none', boxShadow: 'none' }}
+              className={cn(
+                "chat-input",
+                "flex-grow h-9 w-full px-3 py-1 text-base",
+                "bg-neutral-800 text-white border-neutral-800 rounded-lg", 
+                "placeholder-neutral-500",
+                "outline-none focus:outline-none focus-visible:outline-none",
+                "border border-neutral-800 focus:border-neutral-800 hover:border-neutral-800",
+                "shadow-none focus:shadow-none",
+                "ring-0 focus:ring-0 focus-visible:ring-0 ring-offset-0 focus:ring-offset-0 focus-visible:ring-offset-0"
+              )}
             />
             <Button
               type="submit"

@@ -1,0 +1,17 @@
+/* Стили для удаления обводки поля ввода */
+.chat-input {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #262626 !important; /* neutral-800 */
+}
+
+.chat-input:focus,
+.chat-input:focus-visible,
+.chat-input:focus-within,
+.chat-input:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #262626 !important; /* neutral-800 */
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}

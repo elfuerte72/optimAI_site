@@ -1,3 +1,7 @@
+@import "tailwindcss";
+
+/* Это импортирует все основные стили Tailwind CSS v4 */
+
 @font-face {
   font-family: 'Press Start 2P';
   src: url('/fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
@@ -10,9 +14,6 @@
   font-family: 'Press Start 2P', cursive; /* cursive как запасной вариант */
 }
 
-@import "tailwindcss";
-@import "tw-animate-css";
-
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -20,8 +21,6 @@
   --gradient-cyan: #00FFFF;
   --gradient-violet: #8A2BE2;
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -51,6 +50,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
 }
 
 /* Глобальные переменные для темы */

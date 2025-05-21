@@ -2,7 +2,9 @@
 
 import { useState, FormEvent } from 'react';
 import { motion } from 'framer-motion';
-import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import { Send } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 interface Message {
   id: string;
@@ -114,43 +116,46 @@ export default function ChatSection() {
 
         {/* Input and Suggestions Area - NOW BELOW MESSAGES */}
         <div className="p-4 sm:p-6 bg-neutral-850 rounded-b-lg shadow-xl">
-          <form onSubmit={handleFormSubmit} className="flex items-center space-x-2 sm:space-x-3">
-            <input
+          <form onSubmit={handleFormSubmit} className="flex w-full items-center space-x-2">
+            <Input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();
-                  handleFormSubmit(e);
+                  processAndSendMessage(inputValue);
+                  setInputValue('');
                 }
               }}
               placeholder={isChatOpen ? "Спросите что-нибудь..." : "Начните диалог или выберите подсказку..."}
-              className="flex-grow bg-neutral-800 border border-neutral-700 rounded-l-lg p-3 text-sm sm:text-base placeholder-neutral-500 text-neutral-200 focus:outline-none transition-all"
-              rows={1} 
+              className="flex-grow placeholder-neutral-500 text-neutral-200 bg-neutral-800 border-neutral-700 focus-visible:ring-sky-500"
             />
-            <button
+            <Button
               type="submit"
-              className="p-3 rounded-r-lg bg-sky-600 hover:bg-sky-500 transition-colors disabled:bg-neutral-700 disabled:text-neutral-500 disabled:opacity-50"
+              variant="outline"
+              size="icon"
               disabled={!inputValue.trim() && messages.length === 0}
+              className="border-neutral-700 hover:bg-neutral-900 text-sky-500 hover:text-sky-400 focus-visible:ring-sky-500 shrink-0"
             >
-              <PaperAirplaneIcon className="w-5 h-5 sm:w-6 sm:h-6 text-sky-500" />
-            </button>
+              <Send className="h-5 w-5" />
+            </Button>
           </form>
 
           {/* Suggestion Buttons - only show if chat is not open or no messages yet */}
           {(!isChatOpen || messages.length === 0) && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
+            <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
               {suggestionButtons.map((suggestion, index) => (
-                <button
+                <Button
                   key={suggestion}
+                  variant="outline"
                   onClick={() => handleSuggestionClick(suggestion)}
-                  className={`px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-300 transition-colors text-xs sm:text-sm ${
+                  className={`w-full justify-start text-left h-auto py-2.5 text-xs sm:text-sm border-neutral-700 hover:bg-neutral-800 text-neutral-300 whitespace-normal ${
                     index === 2 ? 'sm:col-span-2' : ''
                   }`}
                 >
                   {suggestion}
-                </button>
+                </Button>
               ))}
             </div>
           )}

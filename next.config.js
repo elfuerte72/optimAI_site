@@ -14,7 +14,7 @@ const nextConfig = {
     ],
   },
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true,
     // optimizePackageImports: ['framer-motion', '@headlessui/react'], // Лучше временно отключить
   },
   async headers() {

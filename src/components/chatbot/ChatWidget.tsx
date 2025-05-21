@@ -24,20 +24,6 @@ export default function ChatWidget() {
   };
 
   useEffect(scrollToBottom, [messages]);
-  
-  useEffect(() => {
-    // Приветственное сообщение от бота при первом открытии (если чат пуст)
-    if (isOpen && messages.length === 0) {
-      setTimeout(() => {
-        setMessages(prev => [...prev, { 
-          id: Date.now(), 
-          text: 'Здравствуйте! Чем могу помочь?', 
-          sender: 'bot',
-          timestamp: new Date() 
-        }]);
-      }, 500);
-    }
-  }, [isOpen]);
 
 
   const handleSendMessage = () => {
@@ -143,7 +129,7 @@ export default function ChatWidget() {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                   placeholder="Напишите сообщение..."
-                  className="flex-grow bg-zinc-900 text-white border border-zinc-700 rounded-lg p-2.5 focus:ring-1 focus:ring-zinc-500 focus:border-zinc-500 outline-none transition-colors text-sm placeholder-zinc-500"
+                  className="flex-grow bg-zinc-900 text-white border border-zinc-700 rounded-lg p-2.5 outline-none transition-colors text-sm placeholder-zinc-500"
                 />
                 <button
                   onClick={handleSendMessage}

@@ -68,73 +68,66 @@ export default function ChatSection() {
   // Удалены кнопки-подсказки
 
   return (
-    <section className="max-w-2xl mx-auto w-full px-4 sm:px-6 mb-12 sm:mb-16">
-      <Card className="border border-neutral-800 bg-black shadow-2xl overflow-hidden rounded-xl">
-        <div 
-          className="flex flex-col overflow-hidden chat-container"
-          style={{ minHeight: '200px', height: isChatOpen ? '70vh' : 'auto' }}
-        >
-          {isChatOpen && (
-            <ScrollArea className="flex-grow h-full p-1 border-b border-neutral-800">
-              <div className="p-4 sm:p-6 space-y-5">
-                {messages.map((message) => (
+    <section className="w-full max-w-4xl mx-auto">
+      <Card className="bg-black border-neutral-800 overflow-hidden">
+        {isChatOpen && (
+          <ScrollArea className="flex-grow h-96 p-4 sm:p-6 border-b border-neutral-800">
+            <div className="space-y-4">
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
                   <div
-                    key={message.id}
-                    className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className={`px-4 py-3 rounded-2xl ${message.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-neutral-800 text-neutral-200'}`}
                   >
-                    <div
-                      className={`max-w-[80%] sm:max-w-md lg:max-w-xl px-4 py-3 rounded-2xl ${message.sender === 'user' ? 'bg-neutral-700 text-white' : 'bg-neutral-800 text-white'}`}
-                    >
-                      {message.text}
-                    </div>
+                    {message.text}
                   </div>
-                ))}
-                
-                {/* Typing indicator */}
-                {isTyping && (
-                  <div className="flex justify-start">
-                    <div className="px-4 py-3 rounded-2xl bg-neutral-800 text-neutral-200 flex items-center space-x-2">
-                      <Loader2 className="h-4 w-4 text-neutral-400 animate-spin" />
-                      <span className="text-sm text-neutral-400">Печатает...</span>
-                    </div>
+                </div>
+              ))}
+              
+              {/* Typing indicator */}
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="px-4 py-3 rounded-2xl bg-neutral-800 text-neutral-200 flex items-center space-x-2">
+                    <Loader2 className="h-4 w-4 text-neutral-400 animate-spin" />
+                    <span className="text-sm text-neutral-400">Печатает...</span>
                   </div>
-                )}
-              </div>
-            </ScrollArea>
-          )}
+                </div>
+              )}
+            </div>
+          </ScrollArea>
+        )}
 
-          {/* Отдельная карточка для формы отправки */}
-          <div className="p-4 sm:p-6 bg-black border-b border-neutral-800">
-            <form onSubmit={handleFormSubmit} className="flex w-full items-center space-x-2">
-              <Input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    if (inputValue.trim()) {
-                      processAndSendMessage(inputValue);
-                      setInputValue('');
-                    }
+        {/* Форма отправки */}
+        <div className="p-4 sm:p-6 bg-black">
+          <form onSubmit={handleFormSubmit} className="flex w-full items-center space-x-2">
+            <Input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  if (inputValue.trim()) {
+                    processAndSendMessage(inputValue);
+                    setInputValue('');
                   }
-                }}
-                placeholder={isChatOpen ? "Спросите что-нибудь..." : "Начните диалог или выберите подсказку..."}
-                className="flex-grow placeholder-neutral-500 text-white bg-neutral-800 border-neutral-800 focus-visible:ring-white focus-visible:border-white rounded-lg focus:border-white"
-              />
-              <Button
-                type="submit"
-                variant="outline"
-                size="icon"
-                disabled={!inputValue.trim()}
-                className="border-neutral-800 bg-neutral-800 hover:bg-neutral-700 text-white hover:text-white focus-visible:ring-white shrink-0 rounded-lg"
-              >
-                <Send className="h-5 w-5" />
-              </Button>
-            </form>
-          </div>
-          
-          {/* Кнопки-подсказки удалены */}
+                }
+              }}
+              placeholder={isChatOpen ? "Спросите что-нибудь..." : "Начните диалог"}
+              className="flex-grow placeholder-neutral-500 text-white bg-neutral-800 border-neutral-800 focus-visible:ring-white focus-visible:border-white rounded-lg focus:border-white"
+            />
+            <Button
+              type="submit"
+              variant="outline"
+              size="icon"
+              disabled={!inputValue.trim()}
+              className="border-neutral-800 bg-neutral-800 hover:bg-neutral-700 text-white hover:text-white focus-visible:ring-white shrink-0 rounded-lg"
+            >
+              <Send className="h-5 w-5" />
+            </Button>
+          </form>
         </div>
       </Card>
     </section>

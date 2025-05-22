@@ -105,20 +105,11 @@ const packages: CoursePackage[] = [
 export default function Services() {
   return (
     <main className={`${fontSans.className} bg-black text-white min-h-screen`}>
-      <div className="container mx-auto px-4 py-16 md:py-24">
-        <FadeInSection>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
-            Академия Optima AI
-          </h1>
-          <p className="text-xl md:text-2xl mb-16 text-gray-300 max-w-3xl">
-            Обучение, которое даёт реальные навыки и конкурентное преимущество в мире нейросетей
-          </p>
-        </FadeInSection>
-
+      <div className="container mx-auto px-4 py-16 md:py-24 text-center">
         <FadeInSection delay={0.1}>
           <section className="mb-20">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">Направления обучения</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto">
               <div className="p-6 border border-gray-800 rounded-xl hover:border-gray-700 transition-colors">
                 <h3 className="text-2xl font-bold mb-3">Промтинг</h3>
                 <p className="text-gray-400">Основы создания эффективных запросов к нейросетям для получения точных и полезных ответов.</p>
@@ -138,7 +129,7 @@ export default function Services() {
         <FadeInSection delay={0.2}>
           <section className="mb-20">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">Что вы получаете</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mx-auto">
               <div className="flex gap-4">
                 <div className="text-4xl font-bold text-sky-400">01</div>
                 <div>
@@ -174,7 +165,7 @@ export default function Services() {
         <FadeInSection delay={0.3}>
           <section className="mb-20">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">К чему приводит прокачанный навык</h2>
-            <div className="p-8 border border-gray-800 rounded-xl">
+            <div className="p-8 border border-gray-800 rounded-xl mx-auto max-w-4xl">
               <ul className="space-y-4 text-lg">
                 <li className="flex items-start gap-2">
                   <span className="text-sky-400">✓</span>
@@ -207,7 +198,7 @@ export default function Services() {
 
         <FadeInSection delay={0.4}>
           <section className="mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">Актуальный прайс (май 2025)</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">Актуальный прайс</h2>
             
             <Accordion 
               buttonText="Курсы" 
@@ -215,7 +206,7 @@ export default function Services() {
               contentClassName="mt-4 p-0 space-y-6"
               initiallyOpen={true} // Открыт по умолчанию
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-auto">
                 {courses.map((course, index) => (
                   <Card key={index} className="bg-zinc-900 border-gray-800 text-white">
                     <CardHeader>
@@ -252,10 +243,10 @@ export default function Services() {
             <div className="mt-12">
               <Accordion 
                 buttonText="Пакеты обучения" 
-                buttonClassName="text-lg font-semibold text-white hover:text-sky-300 transition-colors duration-300 py-4 px-6 rounded-lg border border-gray-800 hover:border-gray-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 focus:ring-offset-2 focus:ring-offset-black flex items-center justify-center group"
+                buttonClassName="text-lg font-semibold text-white hover:text-sky-300 transition-colors duration-300 py-4 px-6 rounded-lg border border-gray-800 hover:border-gray-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 focus:ring-offset-2 focus:ring-offset-black flex items-center justify-center group mx-auto"
                 contentClassName="mt-4 p-0 space-y-6"
               >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto">
                   {packages.map((pkg, index) => (
                     <Card key={index} className="bg-zinc-900 border-gray-800 text-white">
                       <CardHeader>
@@ -294,11 +285,11 @@ export default function Services() {
         <FadeInSection delay={0.5}>
           <section className="mb-20">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">Формат обучения</h2>
-            <div className="p-8 border border-gray-800 rounded-xl">
+            <div className="p-8 border border-gray-800 rounded-xl mx-auto max-w-4xl">
               <p className="text-xl text-gray-300 mb-6">
                 Онлайн/офлайн в г. Тюмень. Офлайн групповое обучение обсуждается индивидуально.
               </p>
-              <div className="bg-zinc-900 p-6 rounded-lg">
+              <div className="bg-zinc-900 p-6 rounded-lg text-center">
                 <p className="text-xl font-bold mb-4">Сделай вклад в свое будущее:</p>
                 <Link 
                   href="https://t.me/optimaai_tg" 

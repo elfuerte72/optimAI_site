@@ -6,6 +6,7 @@ import Accordion from '@/components/Accordion';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { FadeInSection } from '@/components/ui/fade-in-section';
 import UiverseCard from '@/components/ui/UiverseCard';
+import CustomStyledButton from '@/components/ui/CustomStyledButton';
 import Navbar from '@/components/layout/Navbar';
 
 export const metadata: Metadata = {
@@ -286,35 +287,16 @@ export default function Services() {
         </FadeInSection>
 
         <FadeInSection delay={0.5}>
-          <section className="mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">Формат обучения</h2>
-            <div className="p-8 border border-gray-800 rounded-xl mx-auto max-w-4xl">
-              <p className="text-xl text-gray-300 mb-6">
-                Онлайн/офлайн в г. Тюмень. Офлайн групповое обучение обсуждается индивидуально.
-              </p>
-              <div className="bg-zinc-900 p-6 rounded-lg text-center">
-                <p className="text-xl font-bold mb-4">Сделай вклад в свое будущее:</p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link 
-                    href="https://t.me/optimaai_tg" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-block py-3 px-8 bg-sky-600 hover:bg-sky-500 text-white font-medium rounded-lg text-center transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-black"
-                    aria-label="Оставить заявку на обучение"
-                  >
-                    Оставить заявку
-                  </Link>
-                  <Link 
-                    href="/about" 
-                    className="inline-block py-3 px-8 bg-transparent border border-sky-600 hover:border-sky-500 text-sky-400 hover:text-sky-300 font-medium rounded-lg text-center transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-black"
-                    aria-label="Узнать больше о нас"
-                  >
-                    Узнать больше
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </section>
+          <div className="mb-20 text-center">
+            <CustomStyledButton 
+              href="https://t.me/optimaai_tg" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="Оставить заявку на обучение"
+            >
+              Оставить заявку
+            </CustomStyledButton>
+          </div>
         </FadeInSection>
       </div>
     </main>

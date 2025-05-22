@@ -5,6 +5,7 @@ import { fontSans } from '@/lib/fonts';
 import Accordion from '@/components/Accordion';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { FadeInSection } from '@/components/ui/fade-in-section';
+import UiverseCard from '@/components/ui/UiverseCard';
 import Navbar from '@/components/layout/Navbar';
 
 export const metadata: Metadata = {
@@ -112,18 +113,18 @@ export default function Services() {
           <section className="mb-20">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">Направления обучения</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto">
-              <div className="p-6 border border-gray-800 rounded-xl hover:border-gray-700 transition-colors">
-                <h3 className="text-2xl font-bold mb-3">Промтинг</h3>
-                <p className="text-gray-400">Основы создания эффективных запросов к нейросетям для получения точных и полезных ответов.</p>
-              </div>
-              <div className="p-6 border border-gray-800 rounded-xl hover:border-gray-700 transition-colors">
-                <h3 className="text-2xl font-bold mb-3">Мета-промтинг</h3>
-                <p className="text-gray-400">Продвинутые техники создания промтов, которые генерируют промты (Chain-of-Thought).</p>
-              </div>
-              <div className="p-6 border border-gray-800 rounded-xl hover:border-gray-700 transition-colors">
-                <h3 className="text-2xl font-bold mb-3">Арт-промтинг</h3>
-                <p className="text-gray-400">Создание визуального контента с помощью нейросетей для различных задач дизайна и иллюстрации.</p>
-              </div>
+              <UiverseCard
+                title="Промтинг"
+                description="Основы создания эффективных запросов к нейросетям для получения точных и полезных ответов."
+              />
+              <UiverseCard
+                title="Мета-промтинг"
+                description="Продвинутые техники создания промтов, которые генерируют промты (Chain-of-Thought)."
+              />
+              <UiverseCard
+                title="Арт-промтинг"
+                description="Создание визуального контента с помощью нейросетей для различных задач дизайна и иллюстрации."
+              />
             </div>
           </section>
         </FadeInSection>

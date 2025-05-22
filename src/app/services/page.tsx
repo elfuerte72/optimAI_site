@@ -170,23 +170,23 @@ export default function Services() {
             <div className="p-8 border border-gray-800 rounded-xl mx-auto max-w-4xl">
               <ul className="space-y-4 text-lg">
                 <li className="flex items-start gap-2">
-                  <span className="text-sky-400">✓</span>
+                  <span className="text-white">✓</span>
                   <span>Быстрее закрываете сделки и проекты</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-sky-400">✓</span>
+                  <span className="text-white">✓</span>
                   <span>+10–30% прирост дохода (монетизация навыка, консалтинг)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-sky-400">✓</span>
+                  <span className="text-white">✓</span>
                   <span>Больше качественного контента</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-sky-400">✓</span>
+                  <span className="text-white">✓</span>
                   <span>Анализируете ценообразование и вложения капитала</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-sky-400">✓</span>
+                  <span className="text-white">✓</span>
                   <span>–5–15% расходов через оптимизацию</span>
                 </li>
               </ul>

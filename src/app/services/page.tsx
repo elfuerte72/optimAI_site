@@ -133,28 +133,28 @@ export default function Services() {
             <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">Что вы получаете</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mx-auto">
               <div className="flex gap-4">
-                <div className="text-4xl font-bold text-sky-400">01</div>
+                <div className="w-12 h-12 flex-shrink-0"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M14 3H6C4.89543 3 4 3.89543 4 5V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V9L14 3Z"></path><path d="M14 3V9H20"></path><path d="M8 13H12"></path><path d="M8 17H10"></path><path d="M13 17L14.5 18.5L17 16"></path></svg></div>
                 <div>
                   <h3 className="text-xl font-bold mb-2">Формулы правильного запроса</h3>
                   <p className="text-gray-400">Понимание и схемы, которые заставляют нейросети выдавать максимально точные ответы.</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="text-4xl font-bold text-sky-400">02</div>
+                <div className="w-12 h-12 flex-shrink-0"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg></div>
                 <div>
                   <h3 className="text-xl font-bold mb-2">Понимание мета-промтинга</h3>
                   <p className="text-gray-400">Умение строить цепочки Chain-of-Thought, многошаговые схемы, превращающие один промт в законченный проект.</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="text-4xl font-bold text-sky-400">03</div>
+                <div className="w-12 h-12 flex-shrink-0"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></div>
                 <div>
                   <h3 className="text-xl font-bold mb-2">Визуальный продакшен</h3>
                   <p className="text-gray-400">Генерация иллюстраций, рекламы, бренд-гайдов за минуты, а не недели.</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="text-4xl font-bold text-sky-400">04</div>
+                <div className="w-12 h-12 flex-shrink-0"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M7 8L3 12L7 16"></path><path d="M17 8L21 12L17 16"></path><path d="M14 4L10 20"></path></svg></div>
                 <div>
                   <h3 className="text-xl font-bold mb-2">Интеграция</h3>
                   <p className="text-gray-400">Базовые навыки API, создание собственных ботов.</p>

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { fontSans } from '@/lib/fonts';
+import { fontSans, notoSansJP } from '@/lib/fonts';
 import Accordion from '@/components/Accordion';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { FadeInSection } from '@/components/ui/fade-in-section';
@@ -145,7 +145,7 @@ export default function Services() {
 
         <FadeInSection delay={0.2}>
           <section className="mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">Что вы получаете</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">Что вы получаете?</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mx-auto">
               <div className="flex gap-4">
                 <div className="w-12 h-12 flex-shrink-0"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M14 3H6C4.89543 3 4 3.89543 4 5V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V9L14 3Z"></path><path d="M14 3V9H20"></path><path d="M8 13H12"></path><path d="M8 17H10"></path><path d="M13 17L14.5 18.5L17 16"></path></svg></div>
@@ -181,8 +181,8 @@ export default function Services() {
 
         <FadeInSection delay={0.3}>
           <section className="mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">К чему приводит прокачанный навык</h2>
-            <div className="p-8 border border-gray-800 rounded-xl mx-auto max-w-7xl">
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">К чему приводит прокачанный навык?</h2>
+            <div className={`p-8 border border-gray-800 rounded-xl mx-auto max-w-7xl ${notoSansJP.className}`}>
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-700">
                   <thead className="bg-black">

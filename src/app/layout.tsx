@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono'; // Optional: if mono is also used from Geist
 import ChatWidget from '@/components/chatbot/ChatWidget';
+import StyledComponentsRegistry from '@/lib/StyledComponentsRegistry';
 
 // Динамический импорт Footer для оптимизации загрузки
 const Footer = dynamic(() => import('@/components/layout/Footer'), {
@@ -89,7 +90,7 @@ export default function RootLayout({
         className="antialiased bg-black min-h-screen flex flex-col font-sans"
       >
         <main className="flex-grow">
-          {children}
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
         </main>
         <Footer />
         <ChatWidget />

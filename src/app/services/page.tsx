@@ -108,16 +108,16 @@ const packages: CoursePackage[] = [
 
 export default function Services() {
   const packageDataForCard = [
-    { name: 'AI-Full Stack' },
-    { name: 'Corporate All-Inclusive' },
-    { name: 'Групповое обучение' },
-  ];
-
-  const packageItemsData = [
     { name: 'AI-Full Stack', description: '(3 продвинутых курса), 12 занятий (6 нед): 99 000 ₽' },
     { name: 'Corporate All-Inclusive', description: 'до 25 чел., кастом: от 490 000 ₽ (обсуждаются)' },
     { name: 'Групповое обучение', description: 'от 6 человек: индивидуально' },
   ];
+
+  // const packageItemsData = [ // This is now incorporated into packageDataForCard and the card itself
+  //   { name: 'AI-Full Stack', description: '(3 продвинутых курса), 12 занятий (6 нед): 99 000 ₽' },
+  //   { name: 'Corporate All-Inclusive', description: 'до 25 чел., кастом: от 490 000 ₽ (обсуждаются)' },
+  //   { name: 'Групповое обучение', description: 'от 6 человек: индивидуально' },
+  // ];
 
   return (
     <main className={`${fontSans.className} bg-black text-white min-h-screen`}>
@@ -129,15 +129,15 @@ export default function Services() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto">
               <UiverseCard
                 title="Промтинг"
-                description="Основы создания эффективных запросов к нейросетям для получения точных и полезных ответов."
+                description="Искусство задавать вопросы."
               />
               <UiverseCard
                 title="Мета-промтинг"
-                description="Продвинутые техники создания промтов, которые генерируют промты (Chain-of-Thought)."
+                description="Промптинг для создания промптов."
               />
               <UiverseCard
                 title="Арт-промтинг"
-                description="Создание визуального контента с помощью нейросетей для различных задач дизайна и иллюстрации."
+                description="Создание визуального контента."
               />
             </div>
           </section>
@@ -165,7 +165,7 @@ export default function Services() {
                 <div className="w-12 h-12 flex-shrink-0"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></div>
                 <div>
                   <h3 className="text-xl font-bold mb-2">Визуальный продакшен</h3>
-                  <p className="text-gray-400">Генерация иллюстраций, рекламы, бренд-гайдов за минуты, а не недели.</p>
+                  <p className="text-gray-400">Генерация изображений, видео, рекламы и бренд-гайдов за минуты, а не недели.</p>
                 </div>
               </div>
               <div className="flex gap-4">
@@ -182,29 +182,45 @@ export default function Services() {
         <FadeInSection delay={0.3}>
           <section className="mb-20">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">К чему приводит прокачанный навык</h2>
-            <div className="p-8 border border-gray-800 rounded-xl mx-auto max-w-4xl">
-              <ul className="space-y-4 text-lg">
-                <li className="flex items-start gap-2">
-                  <span className="text-white">✓</span>
-                  <span>Быстрее закрываете сделки и проекты</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-white">✓</span>
-                  <span>+10–30% прирост дохода (монетизация навыка, консалтинг)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-white">✓</span>
-                  <span>Больше качественного контента</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-white">✓</span>
-                  <span>Анализируете ценообразование и вложения капитала</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-white">✓</span>
-                  <span>–5–15% расходов через оптимизацию</span>
-                </li>
-              </ul>
+            <div className="p-8 border border-gray-800 rounded-xl mx-auto max-w-7xl">
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-700">
+                  <thead className="bg-black">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Область</th>
+                      <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Ключевые показатели</th>
+                      <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Что конкретно меняется</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-black divide-y divide-gray-700">
+                    <tr>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><strong>Жизнь</strong></td>
+                      <td className="px-6 py-4 text-sm text-gray-300"> –<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">30–60%</strong> времени на поиск/обработку информации <br/>+<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">40–70%</strong> скорость решения бытовых задач <br/>+2–3 ч свободного времени в сутки </td>
+                      <td className="px-6 py-4 text-sm text-gray-300">Быстрее находишь ответы, планируешь, рассчитываешь бюджеты, упрощаешь и автоматизируешь рутину (письма, смс, списки и т.д.)</td>
+                    </tr>
+                    <tr>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><strong>Карьера/бизнес</strong></td>
+                      <td className="px-6 py-4 text-sm text-gray-300"> +<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">20–50%</strong> продуктивность (контент, отчёты, презентации) <br/>+<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">15–30%</strong> качество решений за счёт анализа AI <br/>–<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">50–80%</strong> затрат на рутину (переводы, сверки, ресёрч) </td>
+                      <td className="px-6 py-4 text-sm text-gray-300">Создаешь и анализируешь материалы за минуты, выжимаешь инсайты из данных, прокачиваешь личный бренд. Повышаешь скорость обучения. Ценность на рынке растёт.</td>
+                    </tr>
+                    <tr>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><strong>Спорт/здоровье</strong></td>
+                      <td className="px-6 py-4 text-sm text-gray-300"> –<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">20–40%</strong> время составления программы тренировок/диеты <br/>+<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">10–25%</strong> эффективность тренировок (данные → корректировки) </td>
+                      <td className="px-6 py-4 text-sm text-gray-300">Правильное составление персонального плана тренировок, питания, витаминов. Консультирование по вопросам здоровья.</td>
+                    </tr>
+                    <tr>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><strong>Развитие мышления</strong></td>
+                      <td className="px-6 py-4 text-sm text-gray-300"> +<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">30–50%</strong> скорость генерации идей <br/>+<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">25–40%</strong> гибкость мышления <br/>Снижение «когнитивного шума» </td>
+                      <td className="px-6 py-4 text-sm text-gray-300">Постоянная тренировка формулировок заставляет мыслить структурно: чётко ставишь цель → разбиваешь на параметры → получаешь релевантный результат.</td>
+                    </tr>
+                    <tr>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><strong>Финансы</strong></td>
+                      <td className="px-6 py-4 text-sm text-gray-300"> +<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">10–30%</strong> прирост дохода (монетизация навыка, консалтинг) <br/>–<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">5–15%</strong> расходов через оптимизацию </td>
+                      <td className="px-6 py-4 text-sm text-gray-300">Быстрее закрываешь сделки / проекты. Больше качественного контента. Анализируешь ценообразование / вложения капитала.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               <div className="mt-6 pt-6 border-t border-gray-800">
                 <p className="font-bold text-xl">Итог: прокачка промптинга = конкурентное преимущество.</p>
                 <p className="text-gray-400 mt-2">Умеете задавать правильные вопросы → получаете точные ответы → принимаете лучшие решения быстрее других.</p>
@@ -219,14 +235,15 @@ export default function Services() {
 
               <div className="flex flex-col items-center">
                 <PackagesCard packages={packageDataForCard} />
-                <div className="mt-10 text-left max-w-2xl w-full">
+                {/* The div below is no longer needed as descriptions are inside the card on hover */}
+                {/* <div className="mt-10 text-left max-w-2xl w-full">
                   {packageItemsData.map((pkg, index) => (
                     <div key={index} className="mb-6 p-6 bg-gray-800 rounded-lg shadow-xl hover:shadow-cyan-500/30 transition-shadow duration-300">
                       <h3 className="text-xl font-semibold text-white">{pkg.name}</h3>
                       <p className="text-white mt-2 leading-relaxed">{pkg.description}</p>
                     </div>
                   ))}
-                </div>
+                </div> */}
               </div>
             </div>
           </section>

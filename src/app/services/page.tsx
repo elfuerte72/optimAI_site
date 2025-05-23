@@ -7,6 +7,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { FadeInSection } from '@/components/ui/fade-in-section';
 import UiverseCard from '@/components/ui/UiverseCard';
 import CustomStyledButton from '@/components/ui/CustomStyledButton';
+import PriceButton from '@/components/ui/PriceButton';
 import Navbar from '@/components/layout/Navbar';
 import PackagesCard from '@/components/ui/PackagesCard';
 
@@ -41,6 +42,11 @@ interface CoursePackage {
   description: string;
   price: string;
   imagePath: string;
+}
+
+interface PackageDataItem {
+  name: string;
+  description: string;
 }
 
 // Данные о курсах из academy.md
@@ -107,17 +113,7 @@ const packages: CoursePackage[] = [
 
 
 export default function Services() {
-  const packageDataForCard = [
-    { name: 'AI-Full Stack', description: '(3 продвинутых курса), 12 занятий (6 нед): 99 000 ₽' },
-    { name: 'Corporate All-Inclusive', description: 'до 25 чел., кастом: от 490 000 ₽ (обсуждаются)' },
-    { name: 'Групповое обучение', description: 'от 6 человек: индивидуально' },
-  ];
-
-  // const packageItemsData = [ // This is now incorporated into packageDataForCard and the card itself
-  //   { name: 'AI-Full Stack', description: '(3 продвинутых курса), 12 занятий (6 нед): 99 000 ₽' },
-  //   { name: 'Corporate All-Inclusive', description: 'до 25 чел., кастом: от 490 000 ₽ (обсуждаются)' },
-  //   { name: 'Групповое обучение', description: 'от 6 человек: индивидуально' },
-  // ];
+  const packageDataForCard: PackageDataItem[] = [];
 
   return (
     <main className={`${fontSans.className} bg-black text-white min-h-screen`}>
@@ -237,24 +233,10 @@ export default function Services() {
           </section>
         </FadeInSection>
 
-        <FadeInSection delay={0.4}>
-          <section id="packages" className="py-12 md:py-20 bg-black text-white">
-            <div className="container mx-auto px-4">
-
-              <div className="flex flex-col items-center">
-                <PackagesCard packages={packageDataForCard} />
-                {/* The div below is no longer needed as descriptions are inside the card on hover */}
-                {/* <div className="mt-10 text-left max-w-2xl w-full">
-                  {packageItemsData.map((pkg, index) => (
-                    <div key={index} className="mb-6 p-6 bg-gray-800 rounded-lg shadow-xl hover:shadow-cyan-500/30 transition-shadow duration-300">
-                      <h3 className="text-xl font-semibold text-white">{pkg.name}</h3>
-                      <p className="text-white mt-2 leading-relaxed">{pkg.description}</p>
-                    </div>
-                  ))}
-                </div> */}
-              </div>
-            </div>
-          </section>
+        <FadeInSection delay={0.4}> {/* Секция для кнопки Прайс */}
+          <div className="mb-10 text-center"> {/* Отступ снизу можно настроить */}
+            <PriceButton href="/Для стр, академия.pdf" download />
+          </div>
         </FadeInSection>
 
         <FadeInSection delay={0.5}>

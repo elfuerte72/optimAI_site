@@ -194,29 +194,29 @@ export default function Services() {
                   </thead>
                   <tbody className="bg-black divide-y divide-gray-700">
                     <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><strong>Жизнь</strong></td>
-                      <td className="px-6 py-4 text-sm text-gray-300"> –<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">30–60%</strong> времени на поиск/обработку информации <br/>+<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">40–70%</strong> скорость решения бытовых задач <br/>+2–3 ч свободного времени в сутки </td>
-                      <td className="px-6 py-4 text-sm text-gray-300">Быстрее находишь ответы, планируешь, рассчитываешь бюджеты, упрощаешь и автоматизируешь рутину (письма, смс, списки и т.д.)</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white text-center"><strong>Жизнь</strong></td>
+                      <td className="px-6 py-4 text-sm text-gray-300 text-center"><div class="mb-2">–&nbsp;<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">30–60%</strong>&nbsp;времени на поиск/обработку информации</div><div class="mb-2">+&nbsp;<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">40–70%</strong>&nbsp;скорость решения бытовых задач</div><div>+&nbsp;<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">2–3</strong>&nbsp;ч свободного времени в сутки</div></td>
+                      <td className="px-6 py-4 text-sm text-gray-300 text-center">Быстрее находишь ответы, планируешь, рассчитываешь бюджеты, упрощаешь и автоматизируешь рутину (письма, смс, списки и т.д.)</td>
                     </tr>
                     <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><strong>Карьера/бизнес</strong></td>
-                      <td className="px-6 py-4 text-sm text-gray-300"> +<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">20–50%</strong> продуктивность (контент, отчёты, презентации) <br/>+<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">15–30%</strong> качество решений за счёт анализа AI <br/>–<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">50–80%</strong> затрат на рутину (переводы, сверки, ресёрч) </td>
-                      <td className="px-6 py-4 text-sm text-gray-300">Создаешь и анализируешь материалы за минуты, выжимаешь инсайты из данных, прокачиваешь личный бренд. Повышаешь скорость обучения. Ценность на рынке растёт.</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white text-center"><strong>Карьера/бизнес</strong></td>
+                      <td className="px-6 py-4 text-sm text-gray-300 text-center"><div class="mb-2">+&nbsp;<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">20–50%</strong>&nbsp;продуктивность (контент, отчёты, презентации)</div><div class="mb-2">+&nbsp;<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">15–30%</strong>&nbsp;качество решений за счёт анализа AI</div><div>–&nbsp;<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">50–80%</strong>&nbsp;затрат на рутину (переводы, сверки, ресёрч)</div></td>
+                      <td className="px-6 py-4 text-sm text-gray-300 text-center">Создаешь и анализируешь материалы за минуты, выжимаешь инсайты из данных, прокачиваешь личный бренд. Повышаешь скорость обучения. Ценность на рынке растёт.</td>
                     </tr>
                     <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><strong>Спорт/здоровье</strong></td>
-                      <td className="px-6 py-4 text-sm text-gray-300"> –<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">20–40%</strong> время составления программы тренировок/диеты <br/>+<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">10–25%</strong> эффективность тренировок (данные → корректировки) </td>
-                      <td className="px-6 py-4 text-sm text-gray-300">Правильное составление персонального плана тренировок, питания, витаминов. Консультирование по вопросам здоровья.</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white text-center"><strong>Спорт/здоровье</strong></td>
+                      <td className="px-6 py-4 text-sm text-gray-300 text-center"><div class="mb-2">–&nbsp;<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">20–40%</strong>&nbsp;время составления программы тренировок/диеты</div><div>+&nbsp;<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">10–25%</strong>&nbsp;эффективность тренировок (данные → корректировки)</div></td>
+                      <td className="px-6 py-4 text-sm text-gray-300 text-center">Правильное составление персонального плана тренировок, питания, витаминов. Консультирование по вопросам здоровья.</td>
                     </tr>
                     <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><strong>Развитие мышления</strong></td>
-                      <td className="px-6 py-4 text-sm text-gray-300"> +<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">30–50%</strong> скорость генерации идей <br/>+<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">25–40%</strong> гибкость мышления <br/>Снижение «когнитивного шума» </td>
-                      <td className="px-6 py-4 text-sm text-gray-300">Постоянная тренировка формулировок заставляет мыслить структурно: чётко ставишь цель → разбиваешь на параметры → получаешь релевантный результат.</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white text-center"><strong>Развитие мышления</strong></td>
+                      <td className="px-6 py-4 text-sm text-gray-300 text-center"><div class="mb-2">+&nbsp;<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">30–50%</strong>&nbsp;скорость генерации идей</div><div class="mb-2">+&nbsp;<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">25–40%</strong>&nbsp;гибкость мышления</div><div>Снижение «когнитивного шума»</div></td>
+                      <td className="px-6 py-4 text-sm text-gray-300 text-center">Постоянная тренировка формулировок заставляет мыслить структурно: чётко ставишь цель → разбиваешь на параметры → получаешь релевантный результат.</td>
                     </tr>
                     <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><strong>Финансы</strong></td>
-                      <td className="px-6 py-4 text-sm text-gray-300"> +<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">10–30%</strong> прирост дохода (монетизация навыка, консалтинг) <br/>–<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">5–15%</strong> расходов через оптимизацию </td>
-                      <td className="px-6 py-4 text-sm text-gray-300">Быстрее закрываешь сделки / проекты. Больше качественного контента. Анализируешь ценообразование / вложения капитала.</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white text-center"><strong>Финансы</strong></td>
+                      <td className="px-6 py-4 text-sm text-gray-300 text-center"><div class="mb-2">+&nbsp;<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">10–30%</strong>&nbsp;прирост дохода (монетизация навыка, консалтинг)</div><div>–&nbsp;<strong className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">5–15%</strong>&nbsp;расходов через оптимизацию</div></td>
+                      <td className="px-6 py-4 text-sm text-gray-300 text-center">Быстрее закрываешь сделки / проекты. Больше качественного контента. Анализируешь ценообразование / вложения капитала.</td>
                     </tr>
                   </tbody>
                 </table>

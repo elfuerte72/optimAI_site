@@ -56,15 +56,15 @@ const StyledWrapper = styled.div`
 
   .card-title {
     color: #fff; 
-    font-size: 1.2rem; /* Увеличено с 1.1rem */
+    font-size: 1.4rem; /* Увеличено с 1.2rem */
     font-weight: bold;
-    margin-bottom: 0.5rem; /* Увеличено с 0.4rem */
+    margin-bottom: 0.6rem; /* Увеличено с 0.5rem */
   }
 
   .card-description {
     color: rgb(255 255 255 / 75%);
-    line-height: 1.3rem; /* Увеличено с 1.2rem */
-    font-size: 0.85rem; /* Увеличено с 0.75rem */
+    line-height: 1.4rem; /* Увеличено с 1.3rem */
+    font-size: 1rem; /* Увеличено с 0.85rem */
   }
 
   /* Адаптивность из примера */
@@ -76,10 +76,10 @@ const StyledWrapper = styled.div`
       padding: 0.7rem; /* Было 1.25rem */
     }
     .card-title {
-      font-size: 1.1rem; /* Увеличено с 1.0rem */
+      font-size: 1.25rem; /* Увеличено с 1.1rem */
     }
     .card-description {
-      font-size: 0.8rem; /* Увеличено с 0.7rem */
+      font-size: 0.9rem; /* Увеличено с 0.8rem */
     }
   }
 
@@ -89,10 +89,10 @@ const StyledWrapper = styled.div`
       min-height: 100px; /* Было 150px */
     }
     .card-title {
-      font-size: 1.0rem; /* Увеличено с 0.9rem */
+      font-size: 1.1rem; /* Увеличено с 1.0rem */
     }
     .card-description {
-      font-size: 0.75rem; /* Установлено для 600px */
+      font-size: 0.85rem; /* Увеличено с 0.75rem */
     }
   }
 `;

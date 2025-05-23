@@ -121,7 +121,7 @@ export default function Services() {
       <div className="container mx-auto px-4 py-16 md:py-24 text-center">
         <FadeInSection delay={0.1}>
           <section className="mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">Направления обучения</h2>
+            <h2 className={`text-xl md:text-2xl font-bold mb-8 tracking-tight font-press-start-hero bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent`}>Курсы цифровой грамотности</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto">
               <UiverseCard
                 title="Промтинг"

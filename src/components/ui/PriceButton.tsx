@@ -12,7 +12,7 @@ const PriceButton: React.FC<PriceButtonProps> = ({ href, download }) => {
   return (
     <StyledWrapper>
       <a href={href} download={download} className="btn" target="_blank" rel="noopener noreferrer">
-        <strong>Прайс</strong>
+        <strong>ПРАЙС</strong>
         <div id="container-stars">
           <div id="stars" />
         </div>
@@ -71,8 +71,9 @@ const StyledWrapper = styled.div`
   strong {
     z-index: 2;
     font-family: "Avalors Personal Use"; /* Make sure this font is available */
-    font-size: 12px;
-    letter-spacing: 5px;
+    font-size: 16px; /* Увеличиваем размер шрифта */
+    font-weight: bold; /* Делаем шрифт жирнее */
+    letter-spacing: 3px; /* Можно немного уменьшить межбуквенное расстояние, если текст стал слишком широким */
     color: #ffffff;
     text-shadow: 0 0 4px white;
   }

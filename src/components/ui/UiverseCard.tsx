@@ -46,25 +46,25 @@ const StyledWrapper = styled.div`
     );
     background-position: 50% 50%;
     background-size: 1.1rem 1.1rem;
-    padding: 2rem; /* Немного уменьшил внутренний отступ */
+    padding: 0.8rem; /* Было 1.5rem (исходно 2rem) */
     border-radius: 1.25rem;
     overflow: hidden;
-    min-height: 220px; /* Минимальная высота для консистентности, можно настроить */
+    min-height: 120px; /* Было 180px (исходно 220px) */
     text-align: center;
     box-sizing: border-box;
   }
 
   .card-title {
     color: #fff; 
-    font-size: 1.4rem; /* Немного уменьшил для лучшего соответствия */
+    font-size: 1.2rem; /* Увеличено с 1.1rem */
     font-weight: bold;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem; /* Увеличено с 0.4rem */
   }
 
   .card-description {
     color: rgb(255 255 255 / 75%);
-    line-height: 1.4rem;
-    font-size: 0.9rem;
+    line-height: 1.3rem; /* Увеличено с 1.2rem */
+    font-size: 0.85rem; /* Увеличено с 0.75rem */
   }
 
   /* Адаптивность из примера */
@@ -72,24 +72,27 @@ const StyledWrapper = styled.div`
     padding: 0.75rem;
     border-radius: 1rem;
     .card-content-inner {
-      min-height: 200px;
-      padding: 1.5rem;
+      min-height: 110px; /* Было 160px */
+      padding: 0.7rem; /* Было 1.25rem */
     }
     .card-title {
-      font-size: 1.3rem;
+      font-size: 1.1rem; /* Увеличено с 1.0rem */
     }
     .card-description {
-      font-size: 0.85rem;
+      font-size: 0.8rem; /* Увеличено с 0.7rem */
     }
   }
 
   @media(max-width: 600px) {
     .card-content-inner {
-      padding: 1.25rem;
-      min-height: 180px;
+      padding: 0.6rem; /* Было 1rem */
+      min-height: 100px; /* Было 150px */
     }
     .card-title {
-      font-size: 1.2rem;
+      font-size: 1.0rem; /* Увеличено с 0.9rem */
+    }
+    .card-description {
+      font-size: 0.75rem; /* Установлено для 600px */
     }
   }
 `;

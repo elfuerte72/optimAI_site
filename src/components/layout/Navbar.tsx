@@ -58,7 +58,6 @@ const Navbar = () => {
     { path: '/', name: 'Главная' },
     { path: '/services', name: 'Услуги' },
     { path: '/about', name: 'О нас' },
-    { path: '/partners', name: 'Наши партнеры' },
     { path: '/events', name: 'Мероприятия' }
 
   ];

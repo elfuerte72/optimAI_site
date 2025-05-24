@@ -39,7 +39,7 @@ const AnimatedLogo: React.FC = () => {
   }, []);
 
   return (
-    <svg ref={logoContainerRef} width="260" height="60" viewBox="0 0 260 60" className="cursor-pointer drop-shadow-lg">
+    <svg ref={logoContainerRef} width="300" height="70" viewBox="0 0 300 70" className="cursor-pointer drop-shadow-lg">
       <defs><linearGradient id="aiGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop id="aiGradientStop1" offset="0%" style={{ stopColor: '#007CF0', stopOpacity: 1 }} /><stop id="aiGradientStop2" offset="100%" style={{ stopColor: '#9B59B6', stopOpacity: 1 }} /></linearGradient></defs>
       <text ref={optimaTextRef} x="0" y="45" fontFamily="'Inter', sans-serif" fontSize="48" fontWeight="bold" fill="#E0E0E0">{'Optima'.split('').map((char, i) => <tspan key={i}>{char}</tspan>)}</text>
       <text ref={aiTextRef} x="175" y="45" fontFamily="'Inter', sans-serif" fontSize="48" fontWeight="bold" fill="url(#aiGradient)">{'AI'.split('').map((char, i) => <tspan key={i}>{char}</tspan>)}</text>
@@ -75,6 +75,7 @@ const AboutPage: React.FC = () => {
     // Общая функция для анимации карточек (Миссия, Команда)
     const animateSectionCard = (card: HTMLElement | null, index: number) => {
       if (!card) return; // Проверка на null
+      const shouldAnimateScale = !card.classList.contains('no-scale-animation'); // Проверяем наличие класса
       
       const cardScrubTimeline = gsap.timeline({ 
         scrollTrigger: { 
@@ -96,7 +97,7 @@ const AboutPage: React.FC = () => {
         { 
           opacity: 0, 
           y: yOffsetEnter, 
-          scale: 0.9, 
+          scale: shouldAnimateScale ? 0.9 : 1, 
           rotationZ: rotationEnter, 
           filter: 'blur(3px)' 
         }, 
@@ -115,7 +116,7 @@ const AboutPage: React.FC = () => {
         { 
           opacity: 0, 
           y: yOffsetExit, 
-          scale: 0.9, 
+          scale: shouldAnimateScale ? 0.9 : 1, 
           rotationZ: rotationExit, 
           filter: 'blur(3px)', 
           ease: 'power2.inOut', 
@@ -262,7 +263,7 @@ const AboutPage: React.FC = () => {
 
   const content = {
     hero: { 
-      title: 'Optima AI - Ближе к будущему', 
+      title: 'Ближе к будущему', 
       p1: 'Мы — энтузиасты в сфере искусственного интеллекта.', 
       p2: 'Обучаем современным техникам промтинга, создаём AI‑решения, помогаем бизнесу и государственным структурам делать технологии доступнее людям.' 
     },
@@ -344,9 +345,11 @@ const AboutPage: React.FC = () => {
           <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto">{content.hero.p2}</p>
         </div>
 
-        <SectionCard ref={addToSectionCardRefs} icon={content.mission.icon} title={content.mission.title}>
-          <p className="text-lg sm:text-xl text-neutral-300">{content.mission.text}</p>
-        </SectionCard>
+        <div ref={addToSectionCardRefs} className="mission-section-custom flex flex-row items-center justify-center py-10 my-10 text-neutral-100 opacity-0">
+          <h3 className="text-2xl sm:text-3xl font-semibold mr-4">{content.mission.title}</h3>
+          <div className="w-24 sm:w-32 md:w-48 border-t border-white/75 mx-4"></div>
+          <p className="text-lg sm:text-xl text-neutral-300 ml-4">Объединять людей и технологии.</p>
+        </div>
 
         {/* Новая секция "Наши Принципы" и карточки ценностей */}
         <div className="space-y-10">

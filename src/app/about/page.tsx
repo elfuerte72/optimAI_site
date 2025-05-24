@@ -1,141 +1,249 @@
 'use client';
-import React from 'react';
+
+import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { notoSansJP } from '@/lib/fonts'; // Assuming '@/lib/fonts' is the correct path alias for src/lib/fonts
-import Navbar from '@/components/layout/Navbar';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from '@studio-freight/lenis';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const AboutPage: React.FC = () => {
-  const initialAnimationState = "opacity-0";
-  const fadeInAnimationClass = "animate-fadeIn"; // For header and first section
-  const slideInLeftAnimationClass = "animate-slideInLeft"; // For subsequent sections
+  const pageRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const heroContentRef = useRef<HTMLDivElement>(null);
+  const sectionCardRefs = useRef<Array<HTMLElement | null>>([]);
+
+  const addToCardRefs = (el: HTMLElement | null) => {
+    if (el && !sectionCardRefs.current.includes(el)) {
+      sectionCardRefs.current.push(el);
+    }
+  };
+
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Easing function
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+    // Initial page load animations
+    if (logoRef.current) {
+      tl.fromTo(
+        logoRef.current,
+        { opacity: 0, y: -50 },
+        { opacity: 1, y: 0, duration: 1, delay: 0.2 }
+      );
+    }
+    if (heroContentRef.current) {
+      const heroTitle = heroContentRef.current.querySelector('h1');
+      const heroParagraphs = heroContentRef.current.querySelectorAll('p');
+      if (heroTitle) {
+        tl.fromTo(
+          heroTitle,
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.8 },
+          '-=0.6'
+        );
+      }
+      if (heroParagraphs.length > 0) {
+        tl.fromTo(
+          heroParagraphs,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.7, stagger: 0.2 },
+          '-=0.5'
+        );
+      }
+    }
+
+    // Scroll-triggered animations for section cards
+    sectionCardRefs.current.forEach((card) => {
+      if (card) {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 60, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+
+        const cardTitle = card.querySelector('h2');
+        const cardContent = card.querySelectorAll('p, ul > li');
+
+        if (cardTitle) {
+          gsap.fromTo(
+            cardTitle,
+            { opacity: 0, x: -30 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.7,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 80%',
+                toggleActions: 'play none none none',
+              },
+            }
+          );
+        }
+        if (cardContent.length > 0) {
+          gsap.fromTo(
+            cardContent,
+            { opacity: 0, y: 20 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              stagger: 0.15,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 75%',
+                toggleActions: 'play none none none',
+              },
+            }
+          );
+        }
+      }
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      lenis.destroy();
+      tl.kill();
+    };
+  }, []);
+
+  const content = {
+    hero: {
+      title: 'Optima AI - Ближе к будущему',
+      p1: 'Мы — энтузиасты в сфере искусственного интеллекта.',
+      p2: 'Обучаем современным техникам промтинга, создаём AI‑решения, помогаем бизнесу и государственным структурам делать технологии доступнее людям.',
+    },
+    mission: {
+      title: 'Наша миссия',
+      text: 'Объединять людей и технологии.',
+    },
+    vision: {
+      title: 'Наше видение',
+      text: 'Занять лидирующую позицию в российском AI‑консалтинге и EdTech, оставаясь гибкими, открытыми и постоянно в движении.',
+    },
+    values: {
+      title: 'Наши ценности',
+      items: [
+        'Гибкость — подстраиваемся под задачу клиента.',
+        'Открытость — делимся знаниями и кодом.',
+        'Движение — всегда держим руку на пульсе технологий.',
+      ],
+    },
+    team: {
+      title: 'Команда основателей',
+      members: [
+        'Григорий Таловиков — CEO.',
+        'Сергей Щербина — директор промт-инжиниринга и PR.',
+        'Максим Пенкин — Технический директор',
+      ],
+    },
+  };
+
+  const Card: React.FC<{ children: React.ReactNode; className?: string, ref?: React.Ref<HTMLElement> }> = React.forwardRef(({ children, className }, ref) => (
+    <section 
+      ref={ref} 
+      className={`bg-neutral-900 p-6 sm:p-8 rounded-xl shadow-lg border border-neutral-700/70 hover:border-sky-500/70 hover:shadow-sky-500/10 transition-all duration-300 ease-in-out transform hover:scale-[1.02] ${className || ''}`}>
+      {children}
+    </section>
+  ));
+  Card.displayName = 'Card';
 
   return (
-    <div className="flex flex-col min-h-screen bg-black text-white">
-      <Navbar />
-      <main className={`${notoSansJP.className} flex-grow px-4 sm:px-6 lg:px-8 pt-16`}>
-        <style jsx global>{`
-          @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          .animate-fadeIn {
-            animation: fadeIn 0.8s ease-out forwards;
-          }
-          @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
-          }
-          .animate-slideInLeft {
-            animation: slideInLeft 0.8s ease-out forwards;
-          }
-          .subheading-gradient {
-            /* Tailwind equivalent: bg-gradient-to-r from-cyan-400 to-purple-600 */
-            background-image: linear-gradient(to right, #22d3ee, #a855f7); 
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-          }
-        `}</style>
-        
-        <div className="container mx-auto">
-        {/* Header: {Logo} - Ближе к будущему */}
-        <header 
-          className={`flex flex-col items-center mb-16 ${initialAnimationState} ${fadeInAnimationClass} max-w-3xl mx-auto`} 
-          style={{ animationDelay: '0.1s' }}
-        >
-          <div className="text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
-            Optima<span className="subheading-gradient">AI</span>
-          </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight subheading-gradient">
-            Ближе к будущему
+    <div ref={pageRef} className="min-h-screen bg-black text-white flex flex-col items-center pt-20 sm:pt-28 pb-20 sm:pb-28 selection:bg-sky-600 selection:text-white">
+      <main className="w-full max-w-3xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
+        <div ref={logoRef} className="flex justify-center mb-10 sm:mb-14">
+          <Image
+            src="/images/logo-updated.png" // Updated logo path
+            alt="OptimAI Logo"
+            width={220} // Adjusted size
+            height={55} // Adjusted size
+            priority
+          />
+        </div>
+
+        <div ref={heroContentRef} className="text-center space-y-6 sm:space-y-8">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
+            {content.hero.title}
           </h1>
-        </header>
-
-        {/* Мы — энтузиасты... Section: Left-aligned text, centered block, fadeIn animation */}
-        <section 
-          className={`mb-12 ${initialAnimationState} ${fadeInAnimationClass} max-w-3xl mx-auto`} 
-          style={{ animationDelay: '0.3s' }}
-        >
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-left text-white">
-            Мы — энтузиасты в сфере искусственного интеллекта.
-          </h2>
-          <p className="text-base md:text-lg text-neutral-300 text-left leading-relaxed">
-            Обучаем современным техникам промтинга, создаём AI‑решения, помогаем бизнесу и государственным структурам делать технологии доступнее людям.
+          <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto">
+            {content.hero.p1}
           </p>
-        </section>
-
-        {/* Наша миссия & Наше видение: Left-aligned text, slideInLeft animation */}
-        <div className={`space-y-10 mb-12 max-w-3xl mx-auto`}>
-          <section 
-            className={`${initialAnimationState} ${slideInLeftAnimationClass} text-left`} 
-            style={{ animationDelay: '0.5s' }}
-          >
-            <h3 className="text-xl md:text-2xl font-semibold mb-4 text-white">Наша миссия</h3>
-            <p className="text-sm md:text-base text-neutral-300 leading-relaxed">
-              Объединять людей и технологии.
-            </p>
-          </section>
-
-          <section 
-            className={`${initialAnimationState} ${slideInLeftAnimationClass} text-left`} 
-            style={{ animationDelay: '0.7s' }} 
-          >
-            <h3 className="text-xl md:text-2xl font-semibold mb-4 text-white">Наше видение</h3>
-            <p className="text-sm md:text-base text-neutral-300 leading-relaxed">
-              Занять лидирующую позицию в российском AI‑консалтинге и EdTech, оставаясь гибкими, открытыми и постоянно в движении.
-            </p>
-          </section>
+          <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto">
+            {content.hero.p2}
+          </p>
         </div>
 
-        {/* Наши ценности: Left-aligned text, slideInLeft animation */}
-        <section 
-          className={`mb-12 ${initialAnimationState} ${slideInLeftAnimationClass} max-w-3xl mx-auto`} 
-          style={{ animationDelay: '0.9s' }}
-        >
-          <h3 className="text-2xl md:text-3xl font-bold mb-6 text-left text-white">Наши ценности</h3>
-          <div className="space-y-6 border border-white p-6 rounded-md">
-            {[
-              { title: "Гибкость", description: "подстраиваемся под задачу клиента." },
-              { title: "Открытость", description: "делимся знаниями и кодом." },
-              { title: "Движение", description: "всегда держим руку на пульсе технологий." },
-            ].map((value, index) => (
-              <div 
-                key={value.title} 
-                className={`${initialAnimationState} ${slideInLeftAnimationClass} text-left`} 
-                style={{ animationDelay: `${1.1 + index * 0.2}s` }} 
-              >
-                <h4 className="text-xl font-semibold mb-2 text-white">{value.title}</h4>
-                <p className="text-sm md:text-base text-neutral-300 leading-relaxed">{value.description}</p>
-              </div>
+        <Card ref={addToCardRefs}>
+          <h2 className="text-3xl sm:text-4xl font-semibold text-sky-400 mb-4 sm:mb-6">
+            {content.mission.title}
+          </h2>
+          <p className="text-lg sm:text-xl text-neutral-300">
+            {content.mission.text}
+          </p>
+        </Card>
+
+        <Card ref={addToCardRefs}>
+          <h2 className="text-3xl sm:text-4xl font-semibold text-sky-400 mb-4 sm:mb-6">
+            {content.vision.title}
+          </h2>
+          <p className="text-lg sm:text-xl text-neutral-300">
+            {content.vision.text}
+          </p>
+        </Card>
+
+        <Card ref={addToCardRefs}>
+          <h2 className="text-3xl sm:text-4xl font-semibold text-sky-400 mb-4 sm:mb-6">
+            {content.values.title}
+          </h2>
+          <ul className="list-none space-y-3 text-lg sm:text-xl text-neutral-300">
+            {content.values.items.map((item, index) => (
+              <li key={index} className="flex items-start">
+                <span className="text-sky-400 mr-3 mt-1">◆</span> {/* Diamond bullet point */}
+                {item}
+              </li>
             ))}
-          </div>
-        </section>
+          </ul>
+        </Card>
 
-        {/* Команда основателей: Left-aligned text, slideInLeft animation */}
-        <section 
-          className={`${initialAnimationState} ${slideInLeftAnimationClass} max-w-3xl mx-auto`} 
-          style={{ animationDelay: '1.5s' }}
-        >
-          <h3 className="text-2xl md:text-3xl font-bold mb-6 text-left text-white">Команда основателей</h3>
-          <div className="text-left">
-            <ul className="space-y-3 text-base md:text-lg text-neutral-300">
-              {[
-                "Григорий Таловиков — CEO.",
-                "Сергей Щербина — директор промт-инжиниринга и PR.",
-                "Максим Пенкин — Технический директор"
-              ].map((founder, index) => (
-                <li 
-                  key={index} 
-                  className={`py-2 ${initialAnimationState} ${slideInLeftAnimationClass}`} 
-                  style={{ animationDelay: `${1.7 + index * 0.2}s` }} 
-                >
-                  {founder}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-        </div>
+        <Card ref={addToCardRefs}>
+          <h2 className="text-3xl sm:text-4xl font-semibold text-sky-400 mb-4 sm:mb-6">
+            {content.team.title}
+          </h2>
+          <ul className="list-none space-y-3 text-lg sm:text-xl text-neutral-300">
+            {content.team.members.map((member, index) => (
+              <li key={index} className="flex items-start">
+                <span className="text-sky-400 mr-3 mt-1">●</span> {/* Circle bullet point */}
+                {member}
+              </li>
+            ))}
+          </ul>
+        </Card>
       </main>
     </div>
   );

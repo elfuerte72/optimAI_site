@@ -3,8 +3,10 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import Lenis from '@studio-freight/lenis';
 import { Eye, Gem, Target, Users, GitFork, BookOpen, TrendingUp } from 'lucide-react';
+import NewPrinciplesSection from '@/components/about/NewPrinciplesSection';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -345,30 +347,13 @@ const AboutPage: React.FC = () => {
           <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto">{content.hero.p2}</p>
         </div>
 
-        <div ref={addToSectionCardRefs} className="mission-section-custom flex flex-row items-center justify-center py-10 my-10 text-neutral-100 opacity-0">
+        <div ref={addToSectionCardRefs} className="mission-section-custom flex flex-row items-center justify-center py-16 my-16 text-neutral-100 opacity-0">
           <h3 className="text-2xl sm:text-3xl font-semibold mr-4">{content.mission.title}</h3>
           <div className="w-24 sm:w-32 md:w-48 border-t border-white/75 mx-4"></div>
           <p className="text-lg sm:text-xl text-neutral-300 ml-4">Объединять людей и технологии.</p>
         </div>
 
-        {/* Новая секция "Наши Принципы" и карточки ценностей */}
-        <div className="space-y-10">
-          <h2 ref={principlesTitleRef} className="text-4xl sm:text-5xl font-bold tracking-tight text-center text-neutral-100">
-            {content.principlesTitle}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            {content.values.map((value, index) => (
-              <ValueCard 
-                key={value.id} 
-                ref={addToValueCardRefs} 
-                title={value.title} 
-                text={value.text} 
-                icon={value.icon} 
-                className={value.id === 'flexibility' ? 'hover:border-emerald-400' : value.id === 'openness' ? 'hover:border-amber-400' : 'hover:border-rose-400'}
-              />
-            ))}
-          </div>
-        </div>
+        <NewPrinciplesSection />
 
         <SectionCard ref={addToSectionCardRefs} icon={content.team.icon} title={content.team.title}>
           <ul className="list-none space-y-3 text-lg sm:text-xl text-neutral-300">

@@ -21,27 +21,43 @@ const ValueCard: React.FC<ValueCardProps> = ({ icon, title, description, classNa
   useGSAP(() => {
     if (!cardRef.current) return;
 
-    // Улучшенная анимация появления карточки
-    gsap.fromTo(
-      cardRef.current,
-      { opacity: 0, y: 70, scale: 0.9, rotationX: -10 },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        rotationX: 0,
-        duration: 1,
-        ease: 'back.out(1.7)',
-        scrollTrigger: {
-          trigger: cardRef.current,
-          start: 'top bottom-=100px',
-          toggleActions: 'play none none reset',
-          once: false,
-        },
+    // Новая улучшенная анимация появления карточки
+    const cardElements = cardRef.current.querySelectorAll('*');
+    
+    // Сначала скрываем все элементы
+    gsap.set(cardElements, { opacity: 0 });
+    
+    // Основная анимация карточки
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: cardRef.current,
+        start: 'top bottom-=150px',
+        toggleActions: 'play none none reset',
+        once: false,
       }
+    });
+    
+    tl.fromTo(cardRef.current,
+      { opacity: 0, y: 50, scale: 0.92, rotationX: -5 },
+      { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 0.8, ease: 'power2.out' }
+    )
+    .fromTo(cardRef.current.querySelector('.icon-container'),
+      { opacity: 0, scale: 0.5, rotate: -10 },
+      { opacity: 1, scale: 1, rotate: 0, duration: 0.6, ease: 'back.out(1.5)' },
+      "-=0.4"
+    )
+    .fromTo(cardRef.current.querySelector('h3'),
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.5, ease: 'power1.out' },
+      "-=0.3"
+    )
+    .fromTo(cardRef.current.querySelector('p'),
+      { opacity: 0, y: 15 },
+      { opacity: 1, y: 0, duration: 0.5, ease: 'power1.out' },
+      "-=0.3"
     );
 
-    // Улучшенная анимация при наведении
+    // Оптимизированная анимация при наведении
     const tlHover = gsap.timeline({ paused: true });
     tlHover
       .to(cardRef.current, {
@@ -49,29 +65,35 @@ const ValueCard: React.FC<ValueCardProps> = ({ icon, title, description, classNa
         scale: 1.05,
         boxShadow: '0px 25px 50px -12px rgba(0, 180, 255, 0.4)',
         borderColor: 'rgba(0, 180, 255, 0.8)',
-        duration: 0.4,
-        ease: 'power3.out',
+        duration: 0.6,
+        ease: 'power2.inOut',
       })
       .to(cardRef.current?.querySelector('.icon-container'), {
-        scale: 1.2,
+        scale: 1.15,
         rotate: 5,
         backgroundColor: 'rgba(0, 120, 255, 0.3)',
-        duration: 0.4,
-        ease: 'back.out(1.5)',
+        duration: 0.5,
+        ease: 'sine.inOut',
       }, 0)
       .to(cardRef.current?.querySelector('h3'), {
         color: 'rgb(160, 220, 255)',
-        duration: 0.3,
-        ease: 'power2.out',
+        duration: 0.5,
+        ease: 'sine.inOut',
+      }, 0)
+      .to(cardRef.current?.querySelector('p'), {
+        color: 'rgb(220, 240, 255)',
+        duration: 0.5,
+        ease: 'sine.inOut',
       }, 0);
 
+    // Используем reverse(null, false) для плавного возврата без перезаписи параметров
     cardRef.current.addEventListener('mouseenter', () => tlHover.play());
-    cardRef.current.addEventListener('mouseleave', () => tlHover.reverse());
+    cardRef.current.addEventListener('mouseleave', () => tlHover.reverse(null, false));
 
     return () => {
       if (cardRef.current) {
         cardRef.current.removeEventListener('mouseenter', () => tlHover.play());
-        cardRef.current.removeEventListener('mouseleave', () => tlHover.reverse());
+        cardRef.current.removeEventListener('mouseleave', () => tlHover.reverse(null, false));
       }
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
@@ -82,7 +104,7 @@ const ValueCard: React.FC<ValueCardProps> = ({ icon, title, description, classNa
   return (
     <div
       ref={cardRef}
-      className={`bg-neutral-800/30 backdrop-blur-md p-6 sm:p-8 rounded-xl border border-neutral-700/70 transition-all duration-300 ease-out-cubic group ${className || ''} opacity-0 flex flex-col items-center text-center`}
+      className={`bg-neutral-800/30 backdrop-blur-md p-7 sm:p-10 rounded-xl border border-neutral-700/70 transition-all duration-300 ease-out-cubic group ${className || ''} opacity-0 flex flex-col items-center text-center min-h-[240px] justify-center`}
     >
       <div className="flex flex-col items-center mb-5 sm:mb-6">
         <div className="icon-container p-4 bg-neutral-700/50 rounded-full mb-3 transition-transform duration-300 ease-out-cubic">
@@ -90,7 +112,7 @@ const ValueCard: React.FC<ValueCardProps> = ({ icon, title, description, classNa
         </div>
         <h3 className="text-xl sm:text-2xl font-semibold text-neutral-100">{title}</h3>
       </div>
-      <p className="text-neutral-300 text-base sm:text-lg leading-relaxed mx-auto">{description}</p>
+      <p className="text-neutral-300 text-base sm:text-xl leading-relaxed mx-auto w-full">{description}</p>
     </div>
   );
 };
@@ -158,19 +180,32 @@ const NewPrinciplesSection: React.FC = () => {
       }
     );
 
-    // Дополнительная анимация для сетки с карточками
+    // Улучшенная анимация для сетки с карточками
     if (valuesGridRef.current) {
-      gsap.from(valuesGridRef.current, {
-        opacity: 0,
-        y: 50,
-        duration: 0.8,
-        ease: 'power3.out',
+      // Создаем отдельный таймлайн для сетки
+      const gridTl = gsap.timeline({
         scrollTrigger: {
           trigger: valuesGridRef.current,
-          start: 'top bottom-=50px',
-          toggleActions: 'play none none none',
-        },
+          start: 'top bottom-=100px',
+          toggleActions: 'play none none reset',
+        }
       });
+      
+      // Анимируем сетку с эффектом волны
+      gridTl.fromTo(valuesGridRef.current.children,
+        { opacity: 0, y: 80, scale: 0.9, stagger: 0.15 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          scale: 1, 
+          stagger: { 
+            each: 0.2,
+            ease: "power2.inOut"
+          },
+          duration: 0.8, 
+          ease: "power2.out" 
+        }
+      );
     }
   }, { scope: sectionRef });
 
@@ -198,7 +233,7 @@ const NewPrinciplesSection: React.FC = () => {
 
       {/* Ценности */}
       <div className="space-y-8 sm:space-y-10">
-        <h2 ref={valuesTitleRef} className="text-3xl sm:text-4xl font-bold text-center mb-10 sm:mb-12 bg-clip-text text-transparent bg-gradient-to-br from-yellow-400 via-amber-300 to-orange-400 opacity-0">
+        <h2 ref={valuesTitleRef} className="text-3xl sm:text-4xl font-bold text-center mb-10 sm:mb-12 text-white opacity-0">
           {content.values.title}
         </h2>
         <div ref={valuesGridRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">

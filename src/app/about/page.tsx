@@ -7,6 +7,7 @@ import { useGSAP } from '@gsap/react';
 import Lenis from '@studio-freight/lenis';
 import { Eye, Gem, Target, Users, GitFork, BookOpen, TrendingUp } from 'lucide-react';
 import NewPrinciplesSection from '@/components/about/NewPrinciplesSection';
+import { BookCards } from '@/components/about/cards-princ';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -55,219 +56,150 @@ const AboutPage: React.FC = () => {
   const principlesTitleRef = useRef<HTMLHeadingElement>(null);
   const sectionCardRefs = useRef<Array<HTMLElement | null>>([]); // Для Миссии и Команды
   const valueCardRefs = useRef<Array<HTMLDivElement | null>>([]); // Для Гибкость, Открытость, Движение
+  const valuesTextRef = useRef<HTMLParagraphElement>(null);
+  const animatedLineRef = useRef<HTMLDivElement>(null);
 
   const addToSectionCardRefs = (el: HTMLElement | null) => { if (el && !sectionCardRefs.current.includes(el)) sectionCardRefs.current.push(el); };
   const addToValueCardRefs = (el: HTMLDivElement | null) => { if (el && !valueCardRefs.current.includes(el)) valueCardRefs.current.push(el); };
+  
+  // Функция для плавного скролла
+  const easing = (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t));
 
+  // Используем useEffect для инициализации плавного скролла и других эффектов
+  // Общая функция для анимации карточек (Миссия, Команда)
+  const animateSectionCard = (card: HTMLElement | null, index: number) => {
+    if (!card) return; // Проверка на null
+    
+    const cardScrubTimeline = gsap.timeline({ 
+      scrollTrigger: { 
+        trigger: card, 
+        start: "top bottom+=100px", 
+        end: "bottom top-=100px", 
+        scrub: 0.3 
+      } 
+    });
+    
+    const yOffsetEnter = '25vh';
+    const yOffsetExitBase = -25;
+    const yOffsetExit = `${yOffsetExitBase - (index % 2) * 10}vh`;
+    const rotationEnter = (index % 2 === 0 ? 5 : -5);
+    const rotationExit = (index % 2 === 0 ? -5 : 5);
+    
+    cardScrubTimeline.fromTo(
+      card, 
+      { 
+        opacity: 0, 
+        y: yOffsetEnter, 
+        scale: 0.9, 
+        rotationZ: rotationEnter, 
+        filter: 'blur(3px)' 
+      }, 
+      { 
+        opacity: 1, 
+        y: '0vh', 
+        scale: 1, 
+        rotationZ: 0, 
+        filter: 'blur(0px)', 
+        ease: 'power2.inOut', 
+        duration: 0.6 
+      }, 
+      0
+    ).to(
+      card, 
+      { 
+        opacity: 0, 
+        y: yOffsetExit, 
+        scale: 0.9, 
+        rotationZ: rotationExit, 
+        filter: 'blur(3px)', 
+        ease: 'power2.inOut', 
+        duration: 0.4 
+      }, 
+      0.6
+    );
+  };
+
+  // Используем useEffect для инициализации плавного скролла
   useEffect(() => {
-    const lenis = new Lenis({ duration: 1.3, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+    if (!pageRef.current) return;
+    
+    // Инициализация плавного скролла
+    const lenis = new Lenis({ duration: 1.3, easing, smoothWheel: true });
     lenis.on('scroll', ScrollTrigger.update);
     function raf(time: number) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
 
-    const initialTl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.8 } });
-    if (heroContentRef.current) {
-      const heroTitle = heroContentRef.current.querySelector('h1');
-      const heroParagraphs = heroContentRef.current.querySelectorAll('p');
-      // Иконка Zap удалена из Hero
-      if (heroTitle) initialTl.fromTo(heroTitle, {opacity:0, y:40}, {opacity:1, y:0, delay: 0.5}, "-=0.5"); // Небольшая задержка после лого
-      if (heroParagraphs.length > 0) initialTl.fromTo(heroParagraphs, {opacity:0, y:30}, {opacity:1, y:0, stagger:0.15}, "-=0.4");
-    }
+    // Устанавливаем начальные стили для анимации карточек
+    gsap.set(sectionCardRefs.current, { opacity: 0, y: 50, scale: 0.9 });
 
-    // Общая функция для анимации карточек (Миссия, Команда)
-    const animateSectionCard = (card: HTMLElement | null, index: number) => {
-      if (!card) return; // Проверка на null
-      const shouldAnimateScale = !card.classList.contains('no-scale-animation'); // Проверяем наличие класса
-      
-      const cardScrubTimeline = gsap.timeline({ 
-        scrollTrigger: { 
-          trigger: card, 
-          start: "top bottom+=100px", 
-          end: "bottom top-=100px", 
-          scrub: 0.3 
-        } 
-      });
-      
-      const yOffsetEnter = '25vh';
-      const yOffsetExitBase = -25;
-      const yOffsetExit = `${yOffsetExitBase - (index % 2) * 10}vh`;
-      const rotationEnter = (index % 2 === 0 ? 5 : -5);
-      const rotationExit = (index % 2 === 0 ? -5 : 5);
-      
-      cardScrubTimeline.fromTo(
-        card, 
-        { 
-          opacity: 0, 
-          y: yOffsetEnter, 
-          scale: shouldAnimateScale ? 0.9 : 1, 
-          rotationZ: rotationEnter, 
-          filter: 'blur(3px)' 
-        }, 
-        { 
-          opacity: 1, 
-          y: '0vh', 
-          scale: 1, 
-          rotationZ: 0, 
-          filter: 'blur(0px)', 
-          ease: 'power2.inOut', 
-          duration: 0.6 
-        }, 
-        0
-      ).to(
-        card, 
-        { 
-          opacity: 0, 
-          y: yOffsetExit, 
-          scale: shouldAnimateScale ? 0.9 : 1, 
-          rotationZ: rotationExit, 
-          filter: 'blur(3px)', 
-          ease: 'power2.inOut', 
-          duration: 0.4 
-        }, 
-        0.6
-      );
-      
-      const contentTl = gsap.timeline({ 
-        scrollTrigger: { 
-          trigger: card, 
-          start: 'top center+=50px', 
-          end: 'bottom center-=50px', 
-          toggleActions: 'play reverse play reverse' 
-        } 
-      });
-      
-      const cardIcon = card.querySelector('.card-icon');
-      const cardTitle = card.querySelector('h2');
-      const cardContent = card.querySelectorAll('p, ul > li');
-      
-      if (cardIcon) {
-        contentTl.fromTo(
-          cardIcon, 
-          {opacity:0, scale:0.5, rotate:-20}, 
-          {opacity:1, scale:1, rotate:0, duration:0.5, ease:'back.out(1.2)'}, 
-          0.1
-        );
-      }
-      
-      if (cardTitle) {
-        contentTl.fromTo(
-          cardTitle, 
-          {opacity:0, x:-25}, 
-          {opacity:1, x:0, duration:0.5, ease:'power2.out'}, 
-          "-=0.35"
-        );
-      }
-      
-      if (cardContent.length > 0) {
-        contentTl.fromTo(
-          cardContent, 
-          {opacity:0, y:15}, 
-          {opacity:1, y:0, stagger:0.08, duration:0.4, ease:'power2.out'}, 
-          "-=0.3"
-        );
-      }
-    };
-    
     // Применяем анимацию к секционным карточкам
     sectionCardRefs.current.forEach(animateSectionCard);
-
-    // Анимация заголовка "Наши Принципы"
-    if (principlesTitleRef.current) {
-      gsap.fromTo(
-        principlesTitleRef.current, 
-        { opacity: 0, y: 50, scale: 0.9 }, 
-        { 
-          opacity: 1, 
-          y: 0, 
-          scale: 1, 
-          duration: 0.8, 
-          ease: 'expo.out', 
-          scrollTrigger: { 
-            trigger: principlesTitleRef.current, 
-            start: 'top 85%', 
-            toggleActions: 'play none none none' 
-          }
-        }
-      );
-    }
-
-    // Анимация карточек ценностей (Гибкость, Открытость, Движение)
-    valueCardRefs.current.forEach((card, index) => {
-      if (card) {
-        // Появление с небольшим каскадом и другим эффектом
-        gsap.fromTo(
-          card, 
-          { opacity: 0, y: 60, x: (index - 1) * -30, scale: 0.85, rotationY: (index -1) * 15 }, // x и rotationY для расхождения
-          { 
-            opacity: 1, 
-            y: 0, 
-            x: 0, 
-            scale: 1, 
-            rotationY: 0,
-            duration: 0.7 + index * 0.1, // Небольшая задержка для каскада
-            ease: 'power3.out',
-            scrollTrigger: { 
-              trigger: card, // Триггер на саму карточку
-              start: 'top 90%', 
-              toggleActions: 'play none none none' 
-            }
-          }
-        );
-        
-        // Анимация содержимого карточек ценностей
-        const contentTl = gsap.timeline({ 
-          scrollTrigger: { 
-            trigger: card, 
-            start: 'top 80%', 
-            toggleActions: 'play none none none' 
-          } 
-        });
-        
-        const cardIcon = card.querySelector('.value-card-icon');
-        const cardTitle = card.querySelector('h3');
-        const cardContent = card.querySelector('p');
-        
-        if (cardIcon) {
-          contentTl.fromTo(
-            cardIcon, 
-            {opacity:0, scale:0.5, y:-10}, 
-            {opacity:1, scale:1, y:0, duration:0.5, ease:'back.out(1.4)'}, 
-            0.2 + index * 0.1
-          );
-        }
-        
-        if (cardTitle) {
-          contentTl.fromTo(
-            cardTitle, 
-            {opacity:0, y:10}, 
-            {opacity:1, y:0, duration:0.5, ease:'power2.out'}, 
-            "-=0.3"
-          );
-        }
-        
-        if (cardContent) {
-          contentTl.fromTo(
-            cardContent, 
-            {opacity:0, y:10}, 
-            {opacity:1, y:0, duration:0.5, ease:'power2.out'}, 
-            "-=0.3"
-          );
-        }
-      }
-    });
 
     return () => { 
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill()); 
       lenis.destroy(); 
-      initialTl.kill(); 
     };
   }, []);
+  
+  // Отдельный хук useGSAP для анимаций - НЕ ВНУТРИ useEffect
+  useGSAP(() => {
+    if (!pageRef.current) return;
+
+    // Анимация геройной секции
+    if (heroContentRef.current) {
+      const heroTitle = heroContentRef.current.querySelector('h1');
+      const heroParagraphs = heroContentRef.current.querySelectorAll('p');
+      
+      if (heroTitle) {
+        gsap.fromTo(
+          heroTitle, 
+          {opacity: 0, y: 40}, 
+          {opacity: 1, y: 0, duration: 0.8, delay: 0.3, ease: 'power3.out'}
+        );
+      }
+      
+      if (heroParagraphs.length > 0) {
+        gsap.fromTo(
+          heroParagraphs, 
+          {opacity: 0, y: 30}, 
+          {opacity: 1, y: 0, stagger: 0.15, duration: 0.7, delay: 0.5, ease: 'power3.out'}
+        );
+      }
+    }
+
+    // Анимация белой линии
+    if (animatedLineRef.current) {
+      gsap.fromTo(
+        animatedLineRef.current,
+        { width: '0%', opacity: 0 },
+        { width: '100%', opacity: 1, duration: 1.2, ease: 'power3.inOut', delay: 0.5 }
+      );
+    }
+
+    // Анимация текста ценностей
+    if (valuesTextRef.current) {
+      gsap.fromTo(
+        valuesTextRef.current,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: valuesTextRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    }
+  });
 
   const content = {
-    hero: { 
-      title: 'Ближе к будущему', 
-      p1: 'Мы — энтузиасты в сфере искусственного интеллекта.', 
-      p2: 'Обучаем современным техникам промтинга, создаём AI‑решения, помогаем бизнесу и государственным структурам делать технологии доступнее людям.' 
+    hero: {
+      title: "Ближе к будущему",
+      p2: "OptimAI был основан в 2023 году с целью развития AI-решений и продуктов в России. С тех пор мы сфокусировались на упрощении внедрения технологий искусственного интеллекта в бизнес-процессы и повседневную жизнь людей.",
     },
     mission: { 
       title: 'Наша миссия', 
@@ -339,11 +271,11 @@ const AboutPage: React.FC = () => {
   return (
     <div ref={pageRef} className="min-h-screen bg-black text-white flex flex-col items-center pt-16 sm:pt-24 pb-20 sm:pb-28 selection:bg-sky-600 selection:text-white overflow-x-hidden">
       <main className="w-full max-w-3xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
-        <div className="flex justify-center mb-12 sm:mb-16"><AnimatedLogo /></div>
+        <div className="flex justify-center mb-6 sm:mb-10"><AnimatedLogo /></div>
+        <div ref={animatedLineRef} className="h-px bg-white/70 w-full max-w-sm mx-auto mb-6 opacity-0"></div>
         <div ref={heroContentRef} className="text-center space-y-5 sm:space-y-7 relative">
           {/* Иконка Zap удалена */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400">{content.hero.title}</h1>
-          <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto">{content.hero.p1}</p>
           <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto">{content.hero.p2}</p>
         </div>
 
@@ -353,6 +285,10 @@ const AboutPage: React.FC = () => {
           <p className="text-lg sm:text-xl text-neutral-300 ml-4">Объединять людей и технологии.</p>
         </div>
 
+        <p ref={valuesTextRef} className="text-lg sm:text-xl text-center text-neutral-300 max-w-2xl mx-auto mb-10 opacity-0">Наши ценности интегрированы в повседневную работу, формируют наш подход к людям, решениям и развитию.</p>
+        
+        <BookCards />
+        
         <NewPrinciplesSection />
 
         <SectionCard ref={addToSectionCardRefs} icon={content.team.icon} title={content.team.title}>

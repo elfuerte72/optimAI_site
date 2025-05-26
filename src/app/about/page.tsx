@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import FlipCard from '@/components/about/FlipCard';
 import FlipCardStyles from '@/components/about/FlipCardStyles';
+import Navbar from '@/components/layout/Navbar';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -363,16 +364,17 @@ const AboutPage: React.FC = () => {
   ValueCard.displayName = 'ValueCard';
 
   return (
-    <div ref={pageRef} className="min-h-screen bg-black text-white flex flex-col items-center pt-16 sm:pt-24 pb-20 sm:pb-28 selection:bg-sky-600 selection:text-white overflow-x-hidden">
-      <main className="w-full max-w-3xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
+    <div ref={pageRef} className="min-h-screen bg-black text-white flex flex-col selection:bg-sky-600 selection:text-white overflow-x-hidden">
+      <Navbar />
+      <main className="w-full max-w-3xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24 mx-auto pt-16 sm:pt-24 pb-20 sm:pb-28">
         <div className="flex justify-center mb-1 sm:mb-2"><LogoAnimation /></div>
-        <div ref={animatedLineRef} className="h-[0.5px] bg-white/50 w-full max-w-sm mx-auto mb-4 opacity-0"></div>
         <div ref={heroContentRef} className="text-center space-y-5 sm:space-y-7 relative">
           {/* Иконка Zap удалена */}
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400">{content.hero.title}</h1>
-          <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto">Мы — энтузиасты в сфере искусственного интеллекта.</p>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 font-['Noto_Sans_Japanese'] mt-1">{content.hero.title}</h1>
         </div>
 
+        <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto text-center">Мы — энтузиасты в сфере искусственного интеллекта.</p>
+        
         <div ref={addToSectionCardRefs} className="mission-section-custom py-12 my-12 opacity-0 flex justify-center">
           <div className="relative w-full max-w-md bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] rounded-xl border border-[#FFFFFF15] p-5 shadow-2xl backdrop-blur-sm transform hover:scale-105 transition-all duration-300 ease-in-out">
             <div className="h-full flex flex-col text-center">

@@ -383,9 +383,12 @@ const AboutPage: React.FC = () => {
           </div>
         </div>
 
-        <p ref={valuesTextRef} className="text-lg sm:text-xl text-center text-neutral-300 max-w-2xl mx-auto mb-10 opacity-0">Наши ценности интегрированы в повседневную работу, формируют наш подход к людям, решениям и развитию.</p>
-        
         <BookCards />
+        
+        <div className="flex flex-col items-center mt-8">
+          <div className="h-[0.5px] bg-white/50 w-full max-w-sm mx-auto mb-4 opacity-70"></div>
+          <p ref={valuesTextRef} className="text-lg sm:text-xl text-center text-neutral-300 max-w-2xl mx-auto mb-10 opacity-0">Наши ценности интегрированы в повседневную работу, формируют наш подход к людям, решениям и развитию.</p>
+        </div>
 
         <SectionCard ref={addToSectionCardRefs} icon={content.team.icon} title={content.team.title}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">

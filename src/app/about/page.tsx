@@ -363,22 +363,24 @@ const AboutPage: React.FC = () => {
   return (
     <div ref={pageRef} className="min-h-screen bg-black text-white flex flex-col items-center pt-16 sm:pt-24 pb-20 sm:pb-28 selection:bg-sky-600 selection:text-white overflow-x-hidden">
       <main className="w-full max-w-3xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
-        <div className="flex justify-center mb-6 sm:mb-10"><LogoAnimation /></div>
-        <div ref={animatedLineRef} className="h-[0.5px] bg-white/50 w-full max-w-sm mx-auto mb-4 mt-1 opacity-0"></div>
+        <div className="flex justify-center mb-1 sm:mb-2"><LogoAnimation /></div>
+        <div ref={animatedLineRef} className="h-[0.5px] bg-white/50 w-full max-w-sm mx-auto mb-4 opacity-0"></div>
         <div ref={heroContentRef} className="text-center space-y-5 sm:space-y-7 relative">
           {/* Иконка Zap удалена */}
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400">{content.hero.title}</h1>
           <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto">Мы — энтузиасты в сфере искусственного интеллекта.</p>
         </div>
 
-        <div ref={addToSectionCardRefs} className="mission-section-custom py-16 my-16 opacity-0">
-          <div className="relative bg-neutral-850/80 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-neutral-700/70 hover:border-sky-400/50 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-sky-900/20 group">
-            <div className="flex flex-col items-center text-center">
-              <div className="mb-4 p-3 rounded-full bg-neutral-700/50 group-hover:bg-neutral-600/50 transition-colors">
-                <Target className="w-6 h-6 text-sky-400 group-hover:text-sky-300 transition-colors" />
+        <div ref={addToSectionCardRefs} className="mission-section-custom py-12 my-12 opacity-0 flex justify-center">
+          <div className="relative w-full max-w-md bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] rounded-xl border border-[#FFFFFF15] p-5 shadow-2xl backdrop-blur-sm transform hover:scale-105 transition-all duration-300 ease-in-out">
+            <div className="h-full flex flex-col text-center">
+              <div className="flex-1 flex flex-col justify-center">
+                <h3 className="text-xl font-medium mb-2 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                  {content.mission.title}
+                </h3>
+                <p className="text-xs text-[#FFFFFF70] mb-4 font-light italic">Наша главная цель</p>
+                <p className="text-sm leading-relaxed text-[#F5F5F5] font-light">Объединять людей и технологии.</p>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-semibold mb-4 text-neutral-100 group-hover:text-sky-300 transition-colors">{content.mission.title}</h3>
-              <p className="text-lg sm:text-xl text-neutral-300 leading-relaxed group-hover:text-neutral-200 transition-colors">Объединять людей и технологии.</p>
             </div>
           </div>
         </div>

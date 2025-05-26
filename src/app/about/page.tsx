@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -8,45 +8,137 @@ import Lenis from '@studio-freight/lenis';
 import { Eye, Gem, Target, Users, GitFork, BookOpen, TrendingUp } from 'lucide-react';
 import NewPrinciplesSection from '@/components/about/NewPrinciplesSection';
 import { BookCards } from '@/components/about/cards-princ';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Компонент AnimatedLogo остается без изменений
-const AnimatedLogo: React.FC = () => {
-  const logoContainerRef = useRef<SVGSVGElement>(null);
-  const optimaTextRef = useRef<SVGTextElement>(null);
-  const aiTextRef = useRef<SVGTextElement>(null);
+// Компонент LogoAnimation с главной страницы
+const LogoAnimation = () => {
+  const [isLogoHovered, setIsLogoHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
+  // Определяем, является ли устройство мобильным при монтировании и при изменении размера окна
   useEffect(() => {
-    if (!logoContainerRef.current || !optimaTextRef.current || !aiTextRef.current) return;
-    const optimaChars = gsap.utils.toArray(optimaTextRef.current.children);
-    const aiChars = gsap.utils.toArray(aiTextRef.current.children);
-    const allChars = [...optimaChars, ...aiChars] as SVGTSpanElement[];
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.fromTo(optimaChars, { opacity: 0, y: 20, scale: 0.8, rotateX: -45 }, { opacity: 1, y: 0, scale: 1, rotateX: 0, stagger: 0.07, duration: 0.6, delay: 0.3 })
-      .fromTo(aiChars, { opacity: 0, y: 20, scale: 0.8, rotateX: -45 }, { opacity: 1, y: 0, scale: 1, rotateX: 0, stagger: 0.1, duration: 0.6 }, "-=0.4");
-    const logoElement = logoContainerRef.current;
-    const onMouseEnter = () => {
-      gsap.to(allChars, { y: (i) => (i % 2 === 0 ? -3 : 3), scale: 1.05, rotateX: (i) => (i % 2 === 0 ? 5 : -5), duration: 0.3, stagger: { each: 0.03, from: 'random' }, ease: 'power2.inOut' });
-      gsap.to(logoElement.querySelector('#aiGradientStop1'), { stopColor: '#FF00FF', duration: 0.4 });
-      gsap.to(logoElement.querySelector('#aiGradientStop2'), { stopColor: '#00FFFF', duration: 0.4 });
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768);
     };
-    const onMouseLeave = () => {
-      gsap.to(allChars, { y: 0, scale: 1, rotateX: 0, duration: 0.4, stagger: { each: 0.02, from: 'random' }, ease: 'elastic.out(1, 0.5)' });
-      gsap.to(logoElement.querySelector('#aiGradientStop1'), { stopColor: '#007CF0', duration: 0.4 });
-      gsap.to(logoElement.querySelector('#aiGradientStop2'), { stopColor: '#9B59B6', duration: 0.4 });
-    };
-    logoElement.addEventListener('mouseenter', onMouseEnter);
-    logoElement.addEventListener('mouseleave', onMouseLeave);
-    return () => { logoElement.removeEventListener('mouseenter', onMouseEnter); logoElement.removeEventListener('mouseleave', onMouseLeave); tl.kill(); };
+    
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    
+    return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
+  // На мобильных устройствах активируем анимацию периодически
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    
+    if (isMobile) {
+      interval = setInterval(() => {
+        setIsAnimating(true);
+        setTimeout(() => setIsAnimating(false), 3000); // Анимация длится 3 секунды
+      }, 8000); // Запускать каждые 8 секунд
+    }
+    
+    return () => clearInterval(interval);
+  }, [isMobile]);
+
+  // Объединяем состояния hover для десктопа и автоматической анимации для мобильных
+  const shouldAnimate = isLogoHovered || isAnimating;
+
   return (
-    <svg ref={logoContainerRef} width="300" height="70" viewBox="0 0 300 70" className="cursor-pointer drop-shadow-lg">
-      <defs><linearGradient id="aiGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop id="aiGradientStop1" offset="0%" style={{ stopColor: '#007CF0', stopOpacity: 1 }} /><stop id="aiGradientStop2" offset="100%" style={{ stopColor: '#9B59B6', stopOpacity: 1 }} /></linearGradient></defs>
-      <text ref={optimaTextRef} x="0" y="45" fontFamily="'Inter', sans-serif" fontSize="48" fontWeight="bold" fill="#E0E0E0">{'Optima'.split('').map((char, i) => <tspan key={i}>{char}</tspan>)}</text>
-      <text ref={aiTextRef} x="175" y="45" fontFamily="'Inter', sans-serif" fontSize="48" fontWeight="bold" fill="url(#aiGradient)">{'AI'.split('').map((char, i) => <tspan key={i}>{char}</tspan>)}</text>
-    </svg>
+    <motion.div
+      className="relative mb-8 isolate"
+      onHoverStart={() => !isMobile && setIsLogoHovered(true)}
+      onHoverEnd={() => !isMobile && setIsLogoHovered(false)}
+    >
+      {/* Основной логотип */}
+      <Image
+        src="/images/logo-updated.png"
+        alt="OptimaAI Logo"
+        width={288}
+        height={96}
+        priority
+        className="relative z-10"
+      />
+      
+      {/* Внешнее свечение */}
+      <AnimatePresence>
+        {shouldAnimate && (
+          <motion.div
+            className="absolute inset-0 z-0 rounded-full bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-indigo-500/20 blur-xl"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ 
+              opacity: [0, 0.7, 0.5, 0.7, 0], 
+              scale: [0.8, 1.1, 1.15, 1.1, 0.9], 
+            }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ 
+              duration: 2.5, 
+              ease: "easeInOut",
+              times: [0, 0.25, 0.5, 0.75, 1],
+              repeat: isMobile ? 1 : 0,
+            }}
+          />
+        )}
+      </AnimatePresence>
+      
+      {/* Внутреннее свечение - более интенсивное */}
+      <AnimatePresence>
+        {shouldAnimate && (
+          <motion.div
+            className="absolute inset-0 z-1 bg-gradient-to-r from-blue-600/30 to-indigo-600/30 blur-md"
+            style={{ 
+              mixBlendMode: "screen", 
+              transform: "translateY(2px) scale(0.98)",
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: [0, 0.8, 0.6, 0.8, 0], 
+            }}
+            exit={{ opacity: 0 }}
+            transition={{ 
+              duration: 2,
+              ease: "easeInOut", 
+              times: [0, 0.25, 0.5, 0.75, 1],
+              repeat: isMobile ? 1 : 0,
+              delay: 0.15,
+            }}
+          />
+        )}
+      </AnimatePresence>
+      
+      {/* Тонкие линии технологического свечения */}
+      <AnimatePresence>
+        {shouldAnimate && (
+          <>
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
+              <motion.div
+                key={`line-${angle}`}
+                className="absolute h-[1px] bg-gradient-to-r from-white/30 via-blue-400/50 to-transparent"
+                style={{ 
+                  width: "70px",
+                  top: "50%",
+                  left: "50%",
+                  transformOrigin: "left center",
+                  rotate: `${angle}deg`,
+                }}
+                initial={{ opacity: 0, scaleX: 0 }}
+                animate={{ opacity: 0.8, scaleX: 1 }}
+                exit={{ opacity: 0, scaleX: 0 }}
+                transition={{ 
+                  duration: 1.2,
+                  delay: i * 0.05, 
+                  ease: "easeOut", 
+                }}
+              />
+            ))}
+          </>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
@@ -216,9 +308,9 @@ const AboutPage: React.FC = () => {
     team: { 
       title: 'Команда основателей', 
       members: [
-        'Григорий Таловиков — CEO.',
-        'Сергей Щербина — директор промт-инжиниринга и PR.',
-        'Максим Пенкин — Технический директор'
+        { name: 'Григорий Таловиков', position: 'CEO', image: '/images/2025-05-26 15.13.35.jpg' },
+        { name: 'Сергей Щербина', position: 'директор промт-инжиниринга и PR', image: '/images/2025-05-26 15.13.44.jpg' },
+        { name: 'Максим Пенкин', position: 'Технический директор', image: '/images/2025-05-26 15.13.54.jpg' }
       ], 
       icon: <Users size={32} className="card-icon text-sky-400" /> 
     },
@@ -271,12 +363,12 @@ const AboutPage: React.FC = () => {
   return (
     <div ref={pageRef} className="min-h-screen bg-black text-white flex flex-col items-center pt-16 sm:pt-24 pb-20 sm:pb-28 selection:bg-sky-600 selection:text-white overflow-x-hidden">
       <main className="w-full max-w-3xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
-        <div className="flex justify-center mb-6 sm:mb-10"><AnimatedLogo /></div>
+        <div className="flex justify-center mb-6 sm:mb-10"><LogoAnimation /></div>
         <div ref={animatedLineRef} className="h-px bg-white/70 w-full max-w-sm mx-auto mb-6 opacity-0"></div>
         <div ref={heroContentRef} className="text-center space-y-5 sm:space-y-7 relative">
           {/* Иконка Zap удалена */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400">{content.hero.title}</h1>
-          <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto">{content.hero.p2}</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400">{content.hero.title}</h1>
+          <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto">Мы — энтузиасты в сфере искусственного интеллекта.</p>
         </div>
 
         <div ref={addToSectionCardRefs} className="mission-section-custom flex flex-row items-center justify-center py-16 my-16 text-neutral-100 opacity-0">
@@ -285,18 +377,27 @@ const AboutPage: React.FC = () => {
           <p className="text-lg sm:text-xl text-neutral-300 ml-4">Объединять людей и технологии.</p>
         </div>
 
-        <p ref={valuesTextRef} className="text-lg sm:text-xl text-center text-neutral-300 max-w-2xl mx-auto mb-10 opacity-0">Наши ценности интегрированы в повседневную работу, формируют наш подход к людям, решениям и развитию.</p>
-        
-        <BookCards />
         
         <NewPrinciplesSection />
 
         <SectionCard ref={addToSectionCardRefs} icon={content.team.icon} title={content.team.title}>
-          <ul className="list-none space-y-3 text-lg sm:text-xl text-neutral-300">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
             {content.team.members.map((member, index) => (
-              <li key={index} className="flex items-start"><Users size={16} className="text-sky-500/70 mr-3 mt-1.5 shrink-0" />{member}</li>
+              <div key={index} className="flex flex-col items-center text-center bg-neutral-800/50 p-4 rounded-lg border border-neutral-700/50 hover:border-sky-400/50 transition-all duration-300 hover:shadow-lg">
+                <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border-2 border-sky-400/70">
+                  <Image 
+                    src={member.image} 
+                    alt={member.name} 
+                    width={128} 
+                    height={128} 
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <h3 className="text-xl font-semibold text-sky-400">{member.name}</h3>
+                <p className="text-neutral-300 mt-1">{member.position}</p>
+              </div>
             ))}
-          </ul>
+          </div>
         </SectionCard>
       </main>
     </div>

@@ -9,10 +9,11 @@ import { Eye, Gem, Target, Users, GitFork, BookOpen, TrendingUp } from 'lucide-r
 import NewPrinciplesSection from '@/components/about/NewPrinciplesSection';
 import { BookCards } from '@/components/about/cards-princ';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import FlipCard from '@/components/about/FlipCard';
 import FlipCardStyles from '@/components/about/FlipCardStyles';
 import Navbar from '@/components/layout/Navbar';
+import { pacificoFont, pressStartFont, robotoCondensedFont } from '@/lib/fonts';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -370,10 +371,50 @@ const AboutPage: React.FC = () => {
         <div className="flex justify-center mb-1 sm:mb-2"><LogoAnimation /></div>
         <div ref={heroContentRef} className="text-center space-y-5 sm:space-y-7 relative">
           {/* Иконка Zap удалена */}
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 font-['Noto_Sans_Japanese'] mt-1">{content.hero.title}</h1>
+          <motion.h1 
+            className={`text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight leading-relaxed bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 ${pacificoFont.className} mt-1 py-2`}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.08 } }
+            }}
+          >
+            {content.hero.title.split('').map((char, i) => (
+              <motion.span
+                key={`title-${i}`}
+                variants={{
+                  hidden: { opacity: 0, x: -20 },
+                  visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: "easeOut" } }
+                }}
+              >
+                {char}
+              </motion.span>
+            ))}
+          </motion.h1>
         </div>
 
-        <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto text-center">Мы — энтузиасты в сфере искусственного интеллекта.</p>
+        <motion.p 
+          className={`text-base sm:text-lg text-neutral-300 max-w-2xl mx-auto text-center ${robotoCondensedFont.className}`}
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.03, delayChildren: 1.2 } }
+          }}
+        >
+          {"Мы — энтузиасты в сфере искусственного интеллекта.".split('').map((char, i) => (
+            <motion.span
+              key={`desc-${i}`}
+              variants={{
+                hidden: { opacity: 0, x: -10 },
+                visible: { opacity: 1, x: 0, transition: { duration: 0.2, ease: "easeOut" } }
+              }}
+            >
+              {char}
+            </motion.span>
+          ))}
+        </motion.p>
         
         <div ref={addToSectionCardRefs} className="mission-section-custom py-12 my-12 opacity-0 flex justify-center">
           <div className="relative w-full max-w-md bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] rounded-xl border border-[#FFFFFF15] p-5 shadow-2xl transform hover:scale-105 transition-all duration-300 ease-in-out">

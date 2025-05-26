@@ -1,13 +1,37 @@
 // Используем системный шрифт по умолчанию
 import { GeistSans } from 'geist/font/sans';
-import { Noto_Sans_JP } from 'next/font/google'; // Добавляем импорт Noto Sans JP
+import { Noto_Sans_JP, Pacifico, Press_Start_2P, Roboto_Condensed } from 'next/font/google';
 
 export const fontSans = GeistSans;
 
 // Настраиваем Noto Sans Japanese
 export const notoSansJP = Noto_Sans_JP({
-  subsets: ['cyrillic', 'latin', 'latin-ext'], // Изменено: используем доступные и релевантные подмножества
-  weight: ['400', '700'],        // Указываем нужные начертания (например, regular и bold)
-  display: 'swap',               // Стратегия отображения шрифта
-  variable: '--font-noto-sans-jp' // CSS переменная (опционально, но полезно)
+  subsets: ['cyrillic', 'latin', 'latin-ext'],
+  weight: ['400', '700'],
+  display: 'swap',
+  variable: '--font-noto-sans-jp'
+});
+
+// Настраиваем Pacifico
+export const pacificoFont = Pacifico({
+  subsets: ['latin'],
+  weight: ['400'],
+  display: 'swap',
+  variable: '--font-pacifico'
+});
+
+// Настраиваем Press Start 2P
+export const pressStartFont = Press_Start_2P({
+  subsets: ['latin'],
+  weight: ['400'],
+  display: 'swap',
+  variable: '--font-press-start'
+});
+
+// Настраиваем Roboto Condensed
+export const robotoCondensedFont = Roboto_Condensed({
+  subsets: ['cyrillic', 'latin'],
+  weight: ['400', '700'],
+  display: 'swap',
+  variable: '--font-roboto-condensed'
 });

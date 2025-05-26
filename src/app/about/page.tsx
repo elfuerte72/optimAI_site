@@ -330,7 +330,7 @@ const AboutPage: React.FC = () => {
   const SectionCard = React.forwardRef<HTMLElement, SectionCardProps>(({ children, className, icon, title }, ref) => (
     <section 
       ref={ref} 
-      className={`group bg-neutral-800/70 backdrop-blur-md p-6 sm:p-8 rounded-xl shadow-xl border border-neutral-700/60 hover:border-sky-400/80 hover:shadow-sky-500/15 transition-colors duration-300 ease-in-out hover:scale-[1.02] ${className || ''}`}
+      className={`group bg-neutral-800 p-6 sm:p-8 rounded-xl shadow-xl border border-neutral-700/60 hover:border-sky-400/80 hover:shadow-sky-500/15 transition-colors duration-300 ease-in-out hover:scale-[1.02] ${className || ''}`}
     >
       <div className="flex items-start space-x-4 mb-5">
         {icon && <div className="mt-1 group-hover:scale-110 group-hover:rotate-[7deg] transition-transform duration-300 ease-out">{icon}</div>}
@@ -352,7 +352,7 @@ const AboutPage: React.FC = () => {
   const ValueCard = React.forwardRef<HTMLDivElement, ValueCardProps>(({ title, text, icon, className }, ref) => (
     <div 
       ref={ref} 
-      className={`relative bg-neutral-850/80 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-neutral-700/70 hover:border-current transition-all duration-300 ease-in-out transform hover:scale-105 ${className || ''}`}
+      className={`relative bg-neutral-850 p-6 rounded-lg shadow-lg border border-neutral-700/70 hover:border-current transition-all duration-300 ease-in-out transform hover:scale-105 ${className || ''}`}
     >
       <div className="flex flex-col items-center text-center">
         <div className="mb-3 p-3 rounded-full bg-neutral-700/50 group-hover:bg-neutral-600/50 transition-colors">{icon}</div>
@@ -376,7 +376,7 @@ const AboutPage: React.FC = () => {
         <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto text-center">Мы — энтузиасты в сфере искусственного интеллекта.</p>
         
         <div ref={addToSectionCardRefs} className="mission-section-custom py-12 my-12 opacity-0 flex justify-center">
-          <div className="relative w-full max-w-md bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] rounded-xl border border-[#FFFFFF15] p-5 shadow-2xl backdrop-blur-sm transform hover:scale-105 transition-all duration-300 ease-in-out">
+          <div className="relative w-full max-w-md bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] rounded-xl border border-[#FFFFFF15] p-5 shadow-2xl transform hover:scale-105 transition-all duration-300 ease-in-out">
             <div className="h-full flex flex-col text-center">
               <div className="flex-1 flex flex-col justify-center">
                 <h3 className="text-xl font-medium mb-2 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">

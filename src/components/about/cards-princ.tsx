@@ -105,7 +105,6 @@ export function BookCards() {
     scrollAnimation.from(bookRef.current, {
       scale: 0.95,
       opacity: 0.9,
-      filter: "blur(2px)",
       duration: 0.6,
       ease: "power2.out",
     }, "-=0.4")
@@ -137,7 +136,7 @@ export function BookCards() {
             ref={(el) => {
               pageRefs.current[index] = el
             }}
-            className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] rounded-xl border border-[#FFFFFF25] p-5 shadow-2xl backdrop-blur-sm"
+            className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] rounded-xl border border-[#FFFFFF25] p-5 shadow-2xl"
             style={{
               transformStyle: "preserve-3d",
               backfaceVisibility: "hidden",
@@ -167,7 +166,7 @@ export function BookCards() {
       <div className="flex items-center gap-4 mt-6">
         <button
           onClick={prevPage}
-          className="w-9 h-9 rounded-full bg-[#FFFFFF08] border border-[#FFFFFF15] flex items-center justify-center hover:bg-[#FFFFFF15] hover:scale-110 transition-all duration-300 backdrop-blur-sm"
+          className="w-9 h-9 rounded-full bg-[#FFFFFF15] border border-[#FFFFFF25] flex items-center justify-center hover:bg-[#FFFFFF25] hover:scale-110 transition-all duration-300"
           aria-label="Previous page"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -193,7 +192,7 @@ export function BookCards() {
 
         <button
           onClick={nextPage}
-          className="w-9 h-9 rounded-full bg-[#FFFFFF08] border border-[#FFFFFF15] flex items-center justify-center hover:bg-[#FFFFFF15] hover:scale-110 transition-all duration-300 backdrop-blur-sm"
+          className="w-9 h-9 rounded-full bg-[#FFFFFF15] border border-[#FFFFFF25] flex items-center justify-center hover:bg-[#FFFFFF25] hover:scale-110 transition-all duration-300"
           aria-label="Next page"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

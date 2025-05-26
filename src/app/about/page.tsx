@@ -377,8 +377,9 @@ const AboutPage: React.FC = () => {
           <p className="text-lg sm:text-xl text-neutral-300 ml-4">Объединять людей и технологии.</p>
         </div>
 
+        <p ref={valuesTextRef} className="text-lg sm:text-xl text-center text-neutral-300 max-w-2xl mx-auto mb-10 opacity-0">Наши ценности интегрированы в повседневную работу, формируют наш подход к людям, решениям и развитию.</p>
         
-        <NewPrinciplesSection />
+        <BookCards />
 
         <SectionCard ref={addToSectionCardRefs} icon={content.team.icon} title={content.team.title}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">

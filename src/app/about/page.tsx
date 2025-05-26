@@ -10,6 +10,8 @@ import NewPrinciplesSection from '@/components/about/NewPrinciplesSection';
 import { BookCards } from '@/components/about/cards-princ';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import FlipCard from '@/components/about/FlipCard';
+import FlipCardStyles from '@/components/about/FlipCardStyles';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -393,23 +395,19 @@ const AboutPage: React.FC = () => {
         </div>
 
         <SectionCard ref={addToSectionCardRefs} icon={content.team.icon} title={content.team.title}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-            {content.team.members.map((member, index) => (
-              <div key={index} className="flex flex-col items-center text-center bg-neutral-800/50 p-4 rounded-lg border border-neutral-700/50 hover:border-sky-400/50 transition-all duration-300 hover:shadow-lg">
-                <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border-2 border-sky-400/70">
-                  <Image 
-                    src={member.image} 
-                    alt={member.name} 
-                    width={128} 
-                    height={128} 
-                    className="object-cover w-full h-full"
+          <FlipCardStyles>
+            <div className="grid mt-6">
+              {content.team.members.map((member, index) => (
+                <div key={index}>
+                  <FlipCard
+                    name={member.name}
+                    position={member.position}
+                    image={member.image}
                   />
                 </div>
-                <h3 className="text-xl font-semibold text-sky-400">{member.name}</h3>
-                <p className="text-neutral-300 mt-1">{member.position}</p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </FlipCardStyles>
         </SectionCard>
       </main>
     </div>

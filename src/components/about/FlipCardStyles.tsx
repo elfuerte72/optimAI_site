@@ -1,0 +1,207 @@
+'use client';
+
+import React from 'react';
+import styled from 'styled-components';
+
+interface FlipCardStylesProps {
+  children: React.ReactNode;
+}
+
+const FlipCardStyles: React.FC<FlipCardStylesProps> = ({ children }) => {
+  return <StyledWrapper>{children}</StyledWrapper>;
+};
+
+const StyledWrapper = styled.div`
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 2rem;
+    width: 100%;
+  }
+  .card {
+    overflow: visible;
+    width: 190px;
+    height: 254px;
+    margin: 0 auto;
+    perspective: 1000px;
+  }
+
+  .content {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 300ms;
+    box-shadow: 0px 0px 10px 1px #00000080;
+    border-radius: 12px;
+  }
+
+  .front, .back {
+    background-color: #151515;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .back {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .back::before {
+    position: absolute;
+    content: ' ';
+    display: block;
+    width: 160px;
+    height: 160%;
+    background: linear-gradient(90deg, transparent, #38bdf8, #0ea5e9, #0284c7, #0ea5e9, transparent);
+    animation: rotation_481 5000ms infinite linear;
+  }
+
+  .back-content {
+    position: absolute;
+    width: 99%;
+    height: 99%;
+    background-color: #151515;
+    border-radius: 12px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .card:hover .content {
+    transform: rotateY(180deg);
+  }
+
+  @keyframes rotation_481 {
+    0% {
+      transform: rotateZ(0deg);
+    }
+
+    100% {
+      transform: rotateZ(360deg);
+    }
+  }
+
+  .front {
+    transform: rotateY(180deg);
+    color: white;
+  }
+
+  .front .front-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .profile-image {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    border: 2px solid #38bdf8;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 120px;
+    height: 120px;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+  }
+
+  .front-content .badge {
+    background-color: #00000055;
+    padding: 2px 10px;
+    border-radius: 10px;
+    backdrop-filter: blur(2px);
+    width: fit-content;
+    margin-top: 10px;
+    color: #38bdf8;
+    font-weight: 500;
+  }
+  
+  .description {
+    box-shadow: 0px 0px 10px 5px #00000088;
+    width: 100%;
+    padding: 10px;
+    background-color: #00000099;
+    backdrop-filter: blur(5px);
+    border-radius: 5px;
+    margin-top: auto;
+    margin-bottom: 10px;
+
+  }
+
+  .title {
+    font-size: 16px;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    color: #38bdf8;
+  }
+
+  .front .img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: #38bdf880;
+    position: relative;
+    filter: blur(15px);
+    animation: floating 2600ms infinite linear;
+  }
+
+  #bottom {
+    background-color: #0ea5e980;
+    left: 50px;
+    top: 0px;
+    width: 150px;
+    height: 150px;
+    animation-delay: -800ms;
+  }
+
+  #right {
+    background-color: #0284c780;
+    left: 160px;
+    top: -80px;
+    width: 30px;
+    height: 30px;
+    animation-delay: -1800ms;
+  }
+
+  @keyframes floating {
+    0% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(10px);
+    }
+
+    100% {
+      transform: translateY(0px);
+    }
+  }
+`;
+
+export default FlipCardStyles;

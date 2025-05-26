@@ -369,7 +369,7 @@ const AboutPage: React.FC = () => {
         <div ref={animatedLineRef} className="h-[0.5px] bg-white/50 w-full max-w-sm mx-auto mb-4 opacity-0"></div>
         <div ref={heroContentRef} className="text-center space-y-5 sm:space-y-7 relative">
           {/* Иконка Zap удалена */}
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400">{content.hero.title}</h1>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400">{content.hero.title}</h1>
           <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto">Мы — энтузиасты в сфере искусственного интеллекта.</p>
         </div>
 

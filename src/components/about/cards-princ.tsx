@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 const values = [
   {
@@ -30,11 +31,16 @@ const values = [
   },
 ]
 
+// Регистрируем плагин ScrollTrigger
+gsap.registerPlugin(ScrollTrigger)
+
 export function BookCards() {
   const [currentPage, setCurrentPage] = useState(0)
   const bookRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const pageRefs = useRef<(HTMLDivElement | null)[]>([])
 
+  // Эффект для анимации переворачивания страниц
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     if (prefersReducedMotion) return
@@ -65,6 +71,53 @@ export function BookCards() {
       }
     })
   }, [currentPage])
+  
+  // Эффект для анимации скроллинга
+  useEffect(() => {
+    if (!containerRef.current || !bookRef.current) return
+    
+    // Начальное состояние - невидимый и смещенный вниз
+    gsap.set(containerRef.current, {
+      opacity: 0,
+      y: 50,
+    })
+    
+    // Создаем анимацию скроллинга
+    const scrollAnimation = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 80%", // Начинаем анимацию, когда верх элемента достигает 80% высоты экрана
+        end: "bottom 20%",
+        toggleActions: "play none none reverse", // play при входе, reverse при выходе
+        markers: false, // Для отладки можно установить true
+      }
+    })
+    
+    // Анимация появления
+    scrollAnimation.to(containerRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out",
+    })
+    
+    // Анимация книги с небольшой задержкой
+    scrollAnimation.from(bookRef.current, {
+      scale: 0.95,
+      opacity: 0.9,
+      filter: "blur(2px)",
+      duration: 0.6,
+      ease: "power2.out",
+    }, "-=0.4")
+    
+    // Очистка при размонтировании
+    return () => {
+      if (scrollAnimation.scrollTrigger) {
+        scrollAnimation.scrollTrigger.kill()
+      }
+      scrollAnimation.kill()
+    }
+  }, [])
 
   const nextPage = () => {
     setCurrentPage((prev) => (prev + 1) % values.length)
@@ -75,7 +128,7 @@ export function BookCards() {
   }
 
   return (
-    <div className="flex flex-col items-center max-w-2xl mx-auto">
+    <div ref={containerRef} className="flex flex-col items-center max-w-2xl mx-auto">
       {/* Book Container */}
       <div ref={bookRef} className="relative w-full max-w-md h-64 perspective-1000" style={{ perspective: "1200px" }}>
         {values.map((value, index) => (
@@ -84,7 +137,7 @@ export function BookCards() {
             ref={(el) => {
               pageRefs.current[index] = el
             }}
-            className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] rounded-xl border border-[#FFFFFF15] p-5 shadow-2xl backdrop-blur-sm"
+            className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] rounded-xl border border-[#FFFFFF25] p-5 shadow-2xl backdrop-blur-sm"
             style={{
               transformStyle: "preserve-3d",
               backfaceVisibility: "hidden",
@@ -93,16 +146,16 @@ export function BookCards() {
             <div className="h-full flex flex-col text-center">
               <div className="flex-1 flex flex-col justify-center">
                 <h3
-                  className={`text-xl font-medium mb-2 bg-gradient-to-r ${value.color} bg-clip-text text-transparent`}
+                  className={`text-xl font-semibold mb-2 bg-gradient-to-r ${value.color} bg-clip-text text-transparent`}
                 >
                   {value.title}
                 </h3>
-                <p className="text-xs text-[#FFFFFF70] mb-4 font-light italic">{value.subtitle}</p>
-                <p className="text-sm leading-relaxed text-[#F5F5F5] font-light">{value.content}</p>
+                <p className="text-xs text-[#FFFFFF90] mb-4 font-light italic">{value.subtitle}</p>
+                <p className="text-sm leading-relaxed text-[#FFFFFF] font-light">{value.content}</p>
               </div>
 
               {/* Page number */}
-              <div className="text-center text-xs text-[#FFFFFF40] mt-3">
+              <div className="text-center text-xs text-[#FFFFFF70] mt-3">
                 {index + 1} / {values.length}
               </div>
             </div>

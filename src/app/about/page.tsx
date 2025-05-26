@@ -58,8 +58,8 @@ const LogoAnimation = () => {
       <Image
         src="/images/logo-updated.png"
         alt="OptimaAI Logo"
-        width={288}
-        height={96}
+        width={346}
+        height={115}
         priority
         className="relative z-10"
       />
@@ -364,17 +364,23 @@ const AboutPage: React.FC = () => {
     <div ref={pageRef} className="min-h-screen bg-black text-white flex flex-col items-center pt-16 sm:pt-24 pb-20 sm:pb-28 selection:bg-sky-600 selection:text-white overflow-x-hidden">
       <main className="w-full max-w-3xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
         <div className="flex justify-center mb-6 sm:mb-10"><LogoAnimation /></div>
-        <div ref={animatedLineRef} className="h-px bg-white/70 w-full max-w-sm mx-auto mb-6 opacity-0"></div>
+        <div ref={animatedLineRef} className="h-[0.5px] bg-white/50 w-full max-w-sm mx-auto mb-4 mt-1 opacity-0"></div>
         <div ref={heroContentRef} className="text-center space-y-5 sm:space-y-7 relative">
           {/* Иконка Zap удалена */}
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400">{content.hero.title}</h1>
           <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto">Мы — энтузиасты в сфере искусственного интеллекта.</p>
         </div>
 
-        <div ref={addToSectionCardRefs} className="mission-section-custom flex flex-row items-center justify-center py-16 my-16 text-neutral-100 opacity-0">
-          <h3 className="text-2xl sm:text-3xl font-semibold mr-4">{content.mission.title}</h3>
-          <div className="w-24 sm:w-32 md:w-48 border-t border-white/75 mx-4"></div>
-          <p className="text-lg sm:text-xl text-neutral-300 ml-4">Объединять людей и технологии.</p>
+        <div ref={addToSectionCardRefs} className="mission-section-custom py-16 my-16 opacity-0">
+          <div className="relative bg-neutral-850/80 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-neutral-700/70 hover:border-sky-400/50 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-sky-900/20 group">
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-4 p-3 rounded-full bg-neutral-700/50 group-hover:bg-neutral-600/50 transition-colors">
+                <Target className="w-6 h-6 text-sky-400 group-hover:text-sky-300 transition-colors" />
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-semibold mb-4 text-neutral-100 group-hover:text-sky-300 transition-colors">{content.mission.title}</h3>
+              <p className="text-lg sm:text-xl text-neutral-300 leading-relaxed group-hover:text-neutral-200 transition-colors">Объединять людей и технологии.</p>
+            </div>
+          </div>
         </div>
 
         <p ref={valuesTextRef} className="text-lg sm:text-xl text-center text-neutral-300 max-w-2xl mx-auto mb-10 opacity-0">Наши ценности интегрированы в повседневную работу, формируют наш подход к людям, решениям и развитию.</p>

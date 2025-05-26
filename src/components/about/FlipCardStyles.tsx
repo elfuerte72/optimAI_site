@@ -20,8 +20,8 @@ const StyledWrapper = styled.div`
   }
   .card {
     overflow: visible;
-    width: 190px;
-    height: 254px;
+    width: 200px;
+    height: 270px;
     margin: 0 auto;
     perspective: 1000px;
   }
@@ -122,38 +122,46 @@ const StyledWrapper = styled.div`
   }
 
   .profile-image {
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
+    margin: 1.5rem auto 0.75rem;
     border: 2px solid #6366f1;
     border-radius: 50%;
     overflow: hidden;
-    width: 120px;
-    height: 120px;
+    width: 160px;
+    height: 160px;
     box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+  }
+  
+  .name-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 0.5rem;
+    padding: 0 0.5rem;
+  }
+  
+  .founder-name {
+    font-size: 14px;
+    color: #6366f1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .front-content .badge {
     background-color: #00000055;
-    padding: 2px 10px;
+    padding: 3px 12px;
     border-radius: 10px;
     backdrop-filter: blur(2px);
     width: fit-content;
-    margin-top: 10px;
+    margin-top: 15px;
     color: #8b5cf6;
     font-weight: 500;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
   }
   
-  .description {
-    box-shadow: 0px 0px 10px 5px #00000088;
-    width: 100%;
-    padding: 10px;
-    background-color: #00000099;
-    backdrop-filter: blur(5px);
-    border-radius: 5px;
-    margin-top: auto;
-    margin-bottom: 10px;
-
-  }
+  /* Removed description section as it's no longer needed */
 
   .title {
     font-size: 16px;

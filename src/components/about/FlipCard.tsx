@@ -34,17 +34,15 @@ const FlipCard: React.FC<FlipCardProps> = ({ name, position, image }) => {
               <Image 
                 src={image} 
                 alt={name} 
-                width={120} 
-                height={120} 
+                width={160} 
+                height={160} 
                 className="rounded-full object-cover w-full h-full"
               />
             </div>
-            <div className="description">
-              <div className="title">
-                <p className="title">
-                  <strong>{name}</strong>
-                </p>
-              </div>
+            <div className="name-container">
+              <p className="founder-name">
+                <strong>{name}</strong>
+              </p>
             </div>
           </div>
         </div>

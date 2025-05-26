@@ -13,15 +13,15 @@ const FlipCard: React.FC<FlipCardProps> = ({ name, position, image }) => {
   return (
     <div className="card">
       <div className="content">
-        {/* Back side (shows on hover) */}
+        {/* Back side (shows on hover) - Contains position description */}
         <div className="back">
           <div className="back-content">
-            <h3 className="text-xl font-semibold mb-2 text-sky-400">{name}</h3>
-            <p className="text-neutral-300">{position}</p>
+            <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-blue-400 via-purple-500 to-indigo-400 bg-clip-text text-transparent">{name}</h3>
+            <p className="text-neutral-200 text-center">{position}</p>
           </div>
         </div>
         
-        {/* Front side (shows by default) */}
+        {/* Front side (shows by default) - Contains photo */}
         <div className="front">
           <div className="img">
             <div className="circle"></div>

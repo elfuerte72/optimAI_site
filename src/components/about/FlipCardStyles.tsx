@@ -61,7 +61,7 @@ const StyledWrapper = styled.div`
     display: block;
     width: 160px;
     height: 160%;
-    background: linear-gradient(90deg, transparent, #38bdf8, #0ea5e9, #0284c7, #0ea5e9, transparent);
+    background: linear-gradient(90deg, transparent, #3b82f6, #8b5cf6, #6366f1, #3b82f6, transparent);
     animation: rotation_481 5000ms infinite linear;
   }
 
@@ -84,6 +84,16 @@ const StyledWrapper = styled.div`
   .card:hover .content {
     transform: rotateY(180deg);
   }
+  
+  /* Reverse the front and back sides to show photo first */
+  .front {
+    transform: rotateY(0deg);
+    color: white;
+  }
+  
+  .back {
+    transform: rotateY(180deg);
+  }
 
   @keyframes rotation_481 {
     0% {
@@ -95,8 +105,8 @@ const StyledWrapper = styled.div`
     }
   }
 
-  .front {
-    transform: rotateY(180deg);
+  /* Front styling (already moved above) */
+  .front .front-content {
     color: white;
   }
 
@@ -114,12 +124,12 @@ const StyledWrapper = styled.div`
   .profile-image {
     margin-top: 1.5rem;
     margin-bottom: 1rem;
-    border: 2px solid #38bdf8;
+    border: 2px solid #6366f1;
     border-radius: 50%;
     overflow: hidden;
     width: 120px;
     height: 120px;
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
   }
 
   .front-content .badge {
@@ -129,7 +139,7 @@ const StyledWrapper = styled.div`
     backdrop-filter: blur(2px);
     width: fit-content;
     margin-top: 10px;
-    color: #38bdf8;
+    color: #8b5cf6;
     font-weight: 500;
   }
   
@@ -150,7 +160,7 @@ const StyledWrapper = styled.div`
     max-width: 100%;
     display: flex;
     justify-content: center;
-    color: #38bdf8;
+    color: #6366f1;
   }
 
   .front .img {
@@ -165,14 +175,14 @@ const StyledWrapper = styled.div`
     width: 90px;
     height: 90px;
     border-radius: 50%;
-    background-color: #38bdf880;
+    background-color: #3b82f680;
     position: relative;
     filter: blur(15px);
     animation: floating 2600ms infinite linear;
   }
 
   #bottom {
-    background-color: #0ea5e980;
+    background-color: #8b5cf680;
     left: 50px;
     top: 0px;
     width: 150px;
@@ -181,7 +191,7 @@ const StyledWrapper = styled.div`
   }
 
   #right {
-    background-color: #0284c780;
+    background-color: #6366f180;
     left: 160px;
     top: -80px;
     width: 30px;

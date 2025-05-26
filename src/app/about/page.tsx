@@ -333,7 +333,7 @@ const AboutPage: React.FC = () => {
     >
       <div className="flex items-start space-x-4 mb-5">
         {icon && <div className="mt-1 group-hover:scale-110 group-hover:rotate-[7deg] transition-transform duration-300 ease-out">{icon}</div>}
-        {title && <h2 className="text-3xl sm:text-4xl font-semibold text-sky-400">{title}</h2>}
+        {title && <h2 className="text-3xl sm:text-4xl font-semibold bg-gradient-to-r from-blue-400 via-purple-500 to-indigo-400 bg-clip-text text-transparent">{title}</h2>}
       </div>
       {children}
     </section>
@@ -394,7 +394,12 @@ const AboutPage: React.FC = () => {
           <p ref={valuesTextRef} className="text-lg sm:text-xl text-center text-neutral-300 max-w-2xl mx-auto mb-10 opacity-0">Наши ценности интегрированы в повседневную работу, формируют наш подход к людям, решениям и развитию.</p>
         </div>
 
-        <SectionCard ref={addToSectionCardRefs} icon={content.team.icon} title={content.team.title}>
+        <SectionCard 
+          ref={addToSectionCardRefs} 
+          icon={content.team.icon} 
+          title={content.team.title}
+          className="hover:border-indigo-400/80 hover:shadow-indigo-500/15"
+        >
           <FlipCardStyles>
             <div className="grid mt-6">
               {content.team.members.map((member, index) => (

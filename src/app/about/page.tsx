@@ -17,7 +17,7 @@ import { pacificoFont, pressStartFont, robotoCondensedFont } from '@/lib/fonts';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Компонент LogoAnimation с главной страницы
+// Текстовый логотип вместо изображения
 const LogoAnimation = () => {
   const [isLogoHovered, setIsLogoHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -54,19 +54,15 @@ const LogoAnimation = () => {
 
   return (
     <motion.div
-      className="relative mb-8 isolate"
+      className="relative mb-0 isolate text-center"
       onHoverStart={() => !isMobile && setIsLogoHovered(true)}
       onHoverEnd={() => !isMobile && setIsLogoHovered(false)}
     >
-      {/* Основной логотип */}
-      <Image
-        src="/images/logo-updated.png"
-        alt="OptimaAI Logo"
-        width={346}
-        height={115}
-        priority
-        className="relative z-10"
-      />
+      {/* Текстовый логотип */}
+      <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
+        <span className="text-white">Optima</span>
+        <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">AI</span>
+      </h1>
       
       {/* Внешнее свечение */}
       <AnimatePresence>
@@ -369,11 +365,11 @@ const AboutPage: React.FC = () => {
     <div ref={pageRef} className="min-h-screen bg-black text-white flex flex-col selection:bg-sky-600 selection:text-white overflow-x-hidden">
       <Navbar />
       <main className="w-full max-w-3xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24 mx-auto pt-16 sm:pt-24 pb-20 sm:pb-28">
-        <div className="flex justify-center mb-1 sm:mb-2"><LogoAnimation /></div>
-        <div ref={heroContentRef} className="text-center space-y-5 sm:space-y-7 relative">
-          {/* Иконка Zap удалена */}
-          <motion.h1 
-            className={`text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight leading-relaxed bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 ${pacificoFont.className} mt-1 py-2`}
+        <div ref={heroContentRef} className="text-center space-y-2 sm:space-y-4 relative">
+          <div className="flex justify-center"><LogoAnimation /></div>
+          {/* Слоган под логотипом с более тонким шрифтом */}
+          <motion.h2 
+            className={`text-xl sm:text-2xl lg:text-3xl font-light tracking-tight leading-relaxed bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 ${pacificoFont.className} mt-0 py-1`}
             initial="hidden"
             animate="visible"
             variants={{
@@ -392,7 +388,7 @@ const AboutPage: React.FC = () => {
                 {char}
               </motion.span>
             ))}
-          </motion.h1>
+          </motion.h2>
         </div>
 
         <motion.p 

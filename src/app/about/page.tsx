@@ -14,6 +14,7 @@ import FlipCard from '@/components/about/FlipCard';
 import FlipCardStyles from '@/components/about/FlipCardStyles';
 import Navbar from '@/components/layout/Navbar';
 import { pacificoFont, pressStartFont, robotoCondensedFont } from '@/lib/fonts';
+import AnimatedText from '@/components/about/AnimatedText';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -211,6 +212,47 @@ const AboutPage: React.FC = () => {
       0.6
     );
   };
+  
+  // Специальная функция для анимации секции "Наша миссия"
+  const animateMissionSection = () => {
+    // Находим элементы секции миссии
+    const missionSection = document.querySelector('.mission-section-custom');
+    if (!missionSection) {
+      console.error('Не найдена секция миссии');
+      return;
+    }
+    
+    // Карточка миссии - текст анимируется автоматически через AnimatedText
+    const missionCard = missionSection.querySelector('.mission-card');
+    
+    if (!missionCard) {
+      console.error('Не найдена карточка миссии');
+      return;
+    }
+    
+    // Сбрасываем начальные стили для секции миссии
+    gsap.set(missionSection, { opacity: 1 }); // Делаем секцию видимой
+    gsap.set(missionCard, { opacity: 0, y: 40, scale: 0.95 });
+    
+    // Создаем таймлайн для анимации карточки миссии
+    // Текст анимируется автоматически через компонент AnimatedText
+    const missionTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: missionSection,
+        start: "top bottom-=100px",
+        end: "bottom top+=100px",
+        toggleActions: "play none none reverse",
+        markers: false
+      }
+    });
+    
+    // Анимируем карточку миссии с задержкой, чтобы текст появился первым
+    missionTimeline.to(
+      missionCard,
+      { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power2.out" },
+      1.2 // Задержка в 1.2 секунды, чтобы текст успел появиться
+    );
+  };
 
   // Используем useEffect для инициализации плавного скролла
   useEffect(() => {
@@ -225,8 +267,23 @@ const AboutPage: React.FC = () => {
     // Устанавливаем начальные стили для анимации карточек
     gsap.set(sectionCardRefs.current, { opacity: 0, y: 50, scale: 0.9 });
 
-    // Применяем анимацию к секционным карточкам
+    // Устанавливаем начальные стили для секции миссии
+    const missionSection = document.querySelector('.mission-section-custom');
+    if (missionSection) {
+      // Убираем секцию миссии из общей анимации
+      sectionCardRefs.current = sectionCardRefs.current.filter(card => 
+        card !== missionSection && 
+        !card?.classList.contains('mission-text-container')
+      );
+    }
+    
+    // Применяем анимацию к остальным секционным карточкам
     sectionCardRefs.current.forEach(animateSectionCard);
+      
+    // Запускаем специальную анимацию для секции "Наша миссия"
+    setTimeout(() => {
+      animateMissionSection();
+    }, 100); // Небольшая задержка для гарантии, что DOM полностью загружен
 
     return () => { 
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill()); 
@@ -395,18 +452,19 @@ const AboutPage: React.FC = () => {
         
         <div ref={addToSectionCardRefs} className="mission-section-custom py-12 my-12 opacity-0 flex flex-col items-center">
           {/* Текст с эффектом печатания, который появляется вместе с секцией */}
-          <div ref={(el) => {
-            // Добавляем референс для GSAP анимации
-            if (el && !sectionCardRefs.current.includes(el)) sectionCardRefs.current.push(el);
-          }} className="mission-text-container mb-6 overflow-hidden opacity-0">
-            <p className={`text-base sm:text-lg text-neutral-300 max-w-2xl mx-auto text-center ${robotoCondensedFont.className} typing-text`}>
-              {"Мы — энтузиасты в сфере искусственного интеллекта.".split('').map((char, i) => (
-                <span key={`mission-desc-${i}`} className="typing-char">{char}</span>
-              ))}
-            </p>
+          <div className="mission-text-container mb-6 overflow-hidden">
+            <AnimatedText 
+              text="Мы — энтузиасты в сфере искусственного интеллекта" 
+              className={`max-w-2xl mx-auto text-center ${robotoCondensedFont.className}`}
+              fontSize="text-xl sm:text-2xl"
+              fontWeight="font-medium"
+              textColor="text-neutral-200"
+              delay={0.2}
+              staggerDelay={0.04}
+            />
           </div>
           
-          <div className="relative w-full max-w-md bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] rounded-xl border border-[#FFFFFF15] p-5 shadow-2xl transform hover:scale-105 transition-all duration-300 ease-in-out">
+          <div className="mission-card relative w-full max-w-md bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] rounded-xl border border-[#FFFFFF15] p-5 shadow-2xl transform hover:scale-105 transition-all duration-300 ease-in-out">
             <div className="h-full flex flex-col text-center">
               <div className="flex-1 flex flex-col justify-center">
                 <h3 className="text-xl font-medium mb-2 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">

@@ -3,30 +3,30 @@
 import { useState, useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { Noto_Sans_JP } from "next/font/google"
+
+const notoSansJapanese = Noto_Sans_JP({ subsets: ['latin'] })
 
 const values = [
   {
     id: "flexibility",
     title: "Гибкость",
     subtitle: "Умение адаптироваться",
-    content:
-      "Мы подстраиваемся под любую задачу клиента: быстро перестраиваем дорожную карту, меняем угол зрения и технологический стек по ходу проекта, интегрируемся в процессы без лишней бюрократии.",
+    content: "Гибкость — подстраиваемся под задачу клиента.",
     color: "from-blue-400 to-blue-600",
   },
   {
     id: "openness",
     title: "Открытость",
     subtitle: "Делиться знаниями и опытом",
-    content:
-      "Делимся знаниями и кодом: публикуем полезные репозитории на GitHub, проводим открытые вебинары и митапы, честно рассказываем о факапах и находках. Прозрачная коммуникация — основа доверия.",
+    content: "Открытость — делимся знаниями и кодом.",
     color: "from-green-400 to-green-600",
   },
   {
     id: "innovation",
     title: "Инновации",
     subtitle: "Держать руку на пульсе технологических изменений в мире",
-    content:
-      "Всегда держим руку на пульсе технологий: тестируем ранние версии моделей, проводим внутренний R&D-спринт каждую неделю, экспериментируем, чтобы первым приносить клиентам свежие AI-возможности.",
+    content: "Движение — всегда держим руку на пульсе технологий.",
     color: "from-purple-400 to-purple-600",
   },
 ]
@@ -150,7 +150,7 @@ export function BookCards() {
                   {value.title}
                 </h3>
                 <p className="text-xs text-[#FFFFFF90] mb-4 font-light italic">{value.subtitle}</p>
-                <p className="text-sm leading-relaxed text-[#FFFFFF] font-light">{value.content}</p>
+                <p className={`text-sm leading-relaxed text-[#FFFFFF] font-light ${notoSansJapanese.className}`}>{value.content}</p>
               </div>
 
               {/* Page number */}

@@ -391,29 +391,21 @@ const AboutPage: React.FC = () => {
           </motion.h2>
         </div>
 
-        <motion.p 
-          className={`text-base sm:text-lg text-neutral-300 max-w-2xl mx-auto text-center ${robotoCondensedFont.className}`}
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: { opacity: 0 },
-            visible: { opacity: 1, transition: { staggerChildren: 0.03, delayChildren: 1.2 } }
-          }}
-        >
-          {"Мы — энтузиасты в сфере искусственного интеллекта.".split('').map((char, i) => (
-            <motion.span
-              key={`desc-${i}`}
-              variants={{
-                hidden: { opacity: 0, x: -10 },
-                visible: { opacity: 1, x: 0, transition: { duration: 0.2, ease: "easeOut" } }
-              }}
-            >
-              {char}
-            </motion.span>
-          ))}
-        </motion.p>
+        {/* Текст перемещен в секцию "Наша миссия" */}
         
-        <div ref={addToSectionCardRefs} className="mission-section-custom py-12 my-12 opacity-0 flex justify-center">
+        <div ref={addToSectionCardRefs} className="mission-section-custom py-12 my-12 opacity-0 flex flex-col items-center">
+          {/* Текст с эффектом печатания, который появляется вместе с секцией */}
+          <div ref={(el) => {
+            // Добавляем референс для GSAP анимации
+            if (el && !sectionCardRefs.current.includes(el)) sectionCardRefs.current.push(el);
+          }} className="mission-text-container mb-6 overflow-hidden opacity-0">
+            <p className={`text-base sm:text-lg text-neutral-300 max-w-2xl mx-auto text-center ${robotoCondensedFont.className} typing-text`}>
+              {"Мы — энтузиасты в сфере искусственного интеллекта.".split('').map((char, i) => (
+                <span key={`mission-desc-${i}`} className="typing-char">{char}</span>
+              ))}
+            </p>
+          </div>
+          
           <div className="relative w-full max-w-md bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] rounded-xl border border-[#FFFFFF15] p-5 shadow-2xl transform hover:scale-105 transition-all duration-300 ease-in-out">
             <div className="h-full flex flex-col text-center">
               <div className="flex-1 flex flex-col justify-center">

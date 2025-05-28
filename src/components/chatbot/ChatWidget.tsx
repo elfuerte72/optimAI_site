@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid'; // Иконки
+import { XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid';
+import { sendMessage, Message as ApiMessage, checkApiHealth } from '@/lib/api/chat-api';
 
 interface Message {
   id: number;
@@ -11,10 +12,17 @@ interface Message {
   timestamp: Date;
 }
 
-export default function ChatWidget() {
+interface ChatWidgetProps {
+  initialMessage?: string;
+  apiAvailable?: boolean;
+}
+
+export default function ChatWidget({ initialMessage, apiAvailable: propApiAvailable }: ChatWidgetProps = {}) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiAvailable, setApiAvailable] = useState<boolean | null>(propApiAvailable ?? null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const toggleChat = () => setIsOpen(!isOpen);
@@ -24,9 +32,30 @@ export default function ChatWidget() {
   };
 
   useEffect(scrollToBottom, [messages]);
+  
+  // Проверка доступности API при монтировании компонента
+  useEffect(() => {
+    if (apiAvailable === null) {
+      checkApiHealth()
+        .then(available => {
+          setApiAvailable(available);
+          
+          // Если API доступен и есть начальное сообщение, добавляем его как сообщение от бота
+          if (available && initialMessage) {
+            setMessages([{
+              id: Date.now(),
+              text: initialMessage,
+              sender: 'bot',
+              timestamp: new Date()
+            }]);
+          }
+        })
+        .catch(() => setApiAvailable(false));
+    }
+  }, [apiAvailable, initialMessage]);
 
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (inputValue.trim() === '') return;
 
     const userMessage: Message = {
@@ -37,16 +66,59 @@ export default function ChatWidget() {
     };
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
+    setIsLoading(true);
 
-    // Мок-ответ от бота
-    setTimeout(() => {
+    try {
+      // Если API недоступен, используем локальный ответ
+      if (!apiAvailable) {
+        setTimeout(() => {
+          setMessages(prev => [...prev, { 
+            id: Date.now() + 1, 
+            text: 'Извините, сервер бота в данный момент недоступен. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.', 
+            sender: 'bot',
+            timestamp: new Date()
+          }]);
+          setIsLoading(false);
+        }, 1000);
+        return;
+      }
+
+      // Формируем историю сообщений для API
+      const apiMessages: ApiMessage[] = messages
+        .filter(msg => msg.sender === 'user' || msg.sender === 'bot')
+        .map(msg => ({
+          role: msg.sender === 'user' ? 'user' : 'assistant',
+          content: msg.text
+        }));
+      
+      // Добавляем текущее сообщение пользователя
+      apiMessages.push({
+        role: 'user',
+        content: userMessage.text
+      });
+
+      // Отправляем запрос к API
+      const response = await sendMessage(apiMessages);
+      
+      // Добавляем ответ бота в чат
       setMessages(prev => [...prev, { 
         id: Date.now() + 1, 
-        text: 'Спасибо за ваше сообщение! Мы скоро свяжемся с вами.', 
+        text: response.message.content, 
         sender: 'bot',
         timestamp: new Date()
       }]);
-    }, 1200);
+    } catch (error) {
+      console.error('Error getting bot response:', error);
+      // Добавляем сообщение об ошибке
+      setMessages(prev => [...prev, { 
+        id: Date.now() + 1, 
+        text: 'Произошла ошибка при получении ответа. Пожалуйста, попробуйте еще раз позже.', 
+        sender: 'bot',
+        timestamp: new Date()
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
   
   const widgetVariants = {
@@ -134,9 +206,16 @@ export default function ChatWidget() {
                 <button
                   onClick={handleSendMessage}
                   className="p-2.5 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                  disabled={!inputValue.trim()}
+                  disabled={!inputValue.trim() || isLoading}
                 >
-                  <PaperAirplaneIcon className="h-5 w-5" />
+                  {isLoading ? (
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  ) : (
+                    <PaperAirplaneIcon className="h-5 w-5" />
+                  )}
                 </button>
               </div>
             </div>

@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect, useRef } from 'react';
 import { Send, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import './ChatSection.css';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { sendMessage, Message as ApiMessage, checkApiHealth } from '@/lib/api/chat-api';
 
 interface Message {
   id: string;
@@ -21,14 +22,43 @@ export default function ChatSection() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [apiAvailable, setApiAvailable] = useState<boolean | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  // Автоматическая прокрутка к последнему сообщению
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+  
+  useEffect(scrollToBottom, [messages]);
+  
+  // Проверка доступности API при монтировании компонента
+  useEffect(() => {
+    if (apiAvailable === null) {
+      checkApiHealth()
+        .then(available => {
+          setApiAvailable(available);
+          
+          // Если API доступен, добавляем приветственное сообщение
+          if (available) {
+            setMessages([{
+              id: `bot-${Date.now()}`,
+              text: 'Привет! Я виртуальный помощник OptimaAI. Чем я могу вам помочь сегодня?',
+              sender: 'bot'
+            }]);
+          }
+        })
+        .catch(() => setApiAvailable(false));
+    }
+  }, [apiAvailable]);
   
   // Удаляем автоскроллинг как запросил пользователь
 
-  const processAndSendMessage = (text: string) => {
+  const processAndSendMessage = async (text: string) => {
     if (text.trim() === '') return;
 
     if (!isChatOpen) {
-      setIsChatOpen(true); // Trigger expansion
+      setIsChatOpen(true); // Открываем чат, если он был закрыт
     }
 
     const userMessage: Message = {
@@ -37,23 +67,67 @@ export default function ChatSection() {
       sender: 'user',
     };
     
-    // Add user message immediately
+    // Добавляем сообщение пользователя
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     
-    // Show typing indicator
+    // Показываем индикатор набора текста
     setIsTyping(true);
     
-    // Simulate bot response after a delay
-    setTimeout(() => {
+    try {
+      // Если API недоступен, используем локальный ответ
+      if (!apiAvailable) {
+        setTimeout(() => {
+          const botResponse: Message = {
+            id: `bot-${Date.now()}`,
+            text: 'Извините, сервер бота в данный момент недоступен. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.',
+            sender: 'bot',
+          };
+          
+          setIsTyping(false);
+          setMessages((prevMessages) => [...prevMessages, botResponse]);
+        }, 1000);
+        return;
+      }
+
+      // Формируем историю сообщений для API
+      const apiMessages: ApiMessage[] = messages
+        .filter(msg => msg.sender === 'user' || msg.sender === 'bot')
+        .map(msg => ({
+          role: msg.sender === 'user' ? 'user' : 'assistant',
+          content: msg.text
+        }));
+      
+      // Добавляем текущее сообщение пользователя
+      apiMessages.push({
+        role: 'user',
+        content: text
+      });
+
+      // Отправляем запрос к API
+      const response = await sendMessage(apiMessages);
+      
+      // Добавляем ответ бота в чат
       const botResponse: Message = {
         id: `bot-${Date.now()}`,
-        text: `Вы сказали: "${text}". Я пока простое демо, но скоро стану умнее!`,
+        text: response.message.content,
         sender: 'bot',
       };
       
-      setIsTyping(false);
       setMessages((prevMessages) => [...prevMessages, botResponse]);
-    }, 1500); // Typing delay simulation
+    } catch (error) {
+      console.error('Error getting bot response:', error);
+      // Добавляем сообщение об ошибке
+      const errorMessage: Message = {
+        id: `bot-${Date.now()}`,
+        text: 'Произошла ошибка при получении ответа. Пожалуйста, попробуйте еще раз позже.',
+        sender: 'bot',
+      };
+      
+      setMessages((prevMessages) => [...prevMessages, errorMessage]);
+    } finally {
+      setIsTyping(false);
+      setTimeout(scrollToBottom, 100); // Прокручиваем к последнему сообщению
+    }
   };
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -73,29 +147,31 @@ export default function ChatSection() {
       <Card className="bg-black border-neutral-800 overflow-hidden">
         {isChatOpen && (
           <ScrollArea className="flex-grow h-96 p-4 sm:p-6 border-b border-neutral-800">
-            <div className="space-y-4">
-              {messages.map((message) => (
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {messages.map((msg) => (
                 <div
-                  key={message.id}
-                  className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                  key={msg.id}
+                  className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`px-4 py-3 rounded-2xl ${message.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-neutral-800 text-neutral-200'}`}
+                    className={`rounded-lg px-4 py-2 max-w-[80%] ${msg.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-neutral-800 text-white'}`}
                   >
-                    {message.text}
+                    {msg.text}
                   </div>
                 </div>
               ))}
-              
-              {/* Typing indicator */}
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="px-4 py-3 rounded-2xl bg-neutral-800 text-neutral-200 flex items-center space-x-2">
-                    <Loader2 className="h-4 w-4 text-neutral-400 animate-spin" />
-                    <span className="text-sm text-neutral-400">Печатает...</span>
+                  <div className="rounded-lg px-4 py-2 bg-neutral-800 text-white">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                    </div>
                   </div>
                 </div>
               )}
+              <div ref={messagesEndRef} />
             </div>
           </ScrollArea>
         )}

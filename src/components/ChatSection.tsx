@@ -23,14 +23,7 @@ export default function ChatSection() {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [apiAvailable, setApiAvailable] = useState<boolean | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  
-  // Автоматическая прокрутка к последнему сообщению
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-  
-  useEffect(scrollToBottom, [messages]);
+  // Удалена функция автоскроллинга по запросу пользователя
   
   // Проверка доступности API при монтировании компонента
   useEffect(() => {
@@ -126,7 +119,7 @@ export default function ChatSection() {
       setMessages((prevMessages) => [...prevMessages, errorMessage]);
     } finally {
       setIsTyping(false);
-      setTimeout(scrollToBottom, 100); // Прокручиваем к последнему сообщению
+      // Автоскроллинг удален
     }
   };
 
@@ -171,7 +164,7 @@ export default function ChatSection() {
                   </div>
                 </div>
               )}
-              <div ref={messagesEndRef} />
+              {/* Ссылка на последний элемент удалена */}
             </div>
           </ScrollArea>
         )}

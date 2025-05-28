@@ -127,7 +127,7 @@ export function BookCards() {
   }
 
   return (
-    <div ref={containerRef} className="flex flex-col items-center max-w-2xl mx-auto">
+    <div ref={containerRef} className="flex flex-col items-center max-w-2xl mx-auto mt-0">
       {/* Book Container */}
       <div ref={bookRef} className="relative w-full max-w-md h-64 perspective-1000" style={{ perspective: "1200px" }}>
         {values.map((value, index) => (
@@ -149,8 +149,8 @@ export function BookCards() {
                 >
                   {value.title}
                 </h3>
-                <p className="text-xs text-[#FFFFFF90] mb-4 font-light italic">{value.subtitle}</p>
-                <p className={`text-sm leading-relaxed text-[#FFFFFF] font-light ${notoSansJapanese.className}`}>{value.content}</p>
+                <p className="text-xs text-white mb-4 font-light italic">{value.subtitle}</p>
+                <p className={`text-sm leading-relaxed text-white font-light ${notoSansJapanese.className}`}>{value.content}</p>
               </div>
 
               {/* Page number */}

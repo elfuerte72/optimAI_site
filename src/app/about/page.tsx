@@ -477,9 +477,9 @@ const AboutPage: React.FC = () => {
           </div>
         </div>
 
-        <div ref={valuesTitleRef} className="values-title-container">
+        <div ref={valuesTitleRef} className="values-title-container mb-0">
           <motion.h2 
-            className={`text-2xl sm:text-3xl font-bold tracking-tight leading-relaxed bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 ${pacificoFont.className} py-2 text-center mb-6`}
+            className={`text-2xl sm:text-3xl font-bold tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 ${pacificoFont.className} text-center mb-0`}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.6, margin: "-100px 0px" }}
@@ -504,7 +504,7 @@ const AboutPage: React.FC = () => {
 
         <BookCards />
         
-        <div className="flex flex-col items-center mt-8">
+        <div className="flex flex-col items-center mt-2">
           <div className="h-[0.5px] bg-white/50 w-full max-w-sm mx-auto mb-4 opacity-70"></div>
           <p ref={valuesTextRef} className="text-lg sm:text-xl text-center text-neutral-300 max-w-2xl mx-auto mb-10 opacity-0">Наши ценности интегрированы в повседневную работу, формируют наш подход к людям, решениям и развитию.</p>
         </div>

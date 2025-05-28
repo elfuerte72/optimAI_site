@@ -149,12 +149,12 @@ export function BookCards() {
                 >
                   {value.title}
                 </h3>
-                <p className="text-xs text-white mb-4 font-light italic">{value.subtitle}</p>
-                <p className={`text-sm leading-relaxed text-white font-light ${notoSansJapanese.className}`}>{value.content}</p>
+                <p className="text-xs text-white mb-4 italic">{value.subtitle}</p>
+                <p className={`text-sm leading-relaxed text-white ${notoSansJapanese.className}`}>{value.content}</p>
               </div>
 
               {/* Page number */}
-              <div className="text-center text-xs text-[#FFFFFF70] mt-3">
+              <div className="text-center text-xs text-white mt-3">
                 {index + 1} / {values.length}
               </div>
             </div>

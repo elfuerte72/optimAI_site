@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Navbar from '@/components/layout/Navbar';
 import ServicesSection from '@/components/services-section';
 import ChatSection from '@/components/ChatSection'; // Import ChatSection
+import NewsSection from '@/components/NewsSection'; // Import NewsSection
 import LogoAnimation from '@/components/logo-animation';
 import FeatureCard from '@/components/feature-card';
 import { motion, Variants } from 'framer-motion';
@@ -100,6 +101,9 @@ export default function HomePage() {
       
       {/* Кнопки быстрых вопросов */}
       <QuickQuestionButtons />
+
+      {/* News Section */}
+      <NewsSection />
 
       {/* Services Section and 'Узнать больше' link removed as per request */}
 

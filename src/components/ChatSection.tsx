@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { sendMessage, Message as ApiMessage, checkApiHealth } from '@/lib/api/chat-api';
+import eventBus from '@/lib/eventBus';
 
 // Create a context to expose the processAndSendMessage function
 export const ChatContext = createContext<{
@@ -40,32 +41,20 @@ export default function ChatSection() {
       checkApiHealth()
         .then(available => {
           setApiAvailable(available);
-          
-          // Если API доступен, добавляем приветственное сообщение
-          if (available) {
-            setMessages([{
-              id: `bot-${Date.now()}`,
-              text: 'Привет! Я виртуальный помощник OptimaAI. Чем я могу вам помочь сегодня?',
-              sender: 'bot'
-            }]);
-          }
+          // Приветственное сообщение удалено по запросу пользователя
         })
         .catch(() => setApiAvailable(false));
     }
   }, [apiAvailable]);
   
-  // Add scroll to bottom effect when messages change
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages]);
+  // Автоскроллинг удален по запросу пользователя
 
   const processAndSendMessage = async (text: string) => {
     if (text.trim() === '') return;
 
+    // Автоматически открываем чат при отправке сообщения
     if (!isChatOpen) {
-      setIsChatOpen(true); // Открываем чат, если он был закрыт
+      setIsChatOpen(true);
     }
 
     const userMessage: Message = {
@@ -90,12 +79,12 @@ export default function ChatSection() {
             sender: 'bot',
           };
           
-          setIsTyping(false);
           setMessages((prevMessages) => [...prevMessages, botResponse]);
+          setIsTyping(false);
         }, 1000);
         return;
       }
-
+      
       // Формируем историю сообщений для API
       const apiMessages: ApiMessage[] = messages
         .filter(msg => msg.sender === 'user' || msg.sender === 'bot')
@@ -113,27 +102,38 @@ export default function ChatSection() {
       // Отправляем запрос к API
       const response = await sendMessage(apiMessages);
       
-      // Добавляем ответ бота в чат
-      const botResponse: Message = {
-        id: `bot-${Date.now()}`,
-        text: response.message.content,
-        sender: 'bot',
-      };
-      
-      setMessages((prevMessages) => [...prevMessages, botResponse]);
+      if (response && response.message) {
+        // Добавляем ответ от бота
+        const botMessage: Message = {
+          id: `bot-${Date.now()}`,
+          text: response.message.content,
+          sender: 'bot',
+        };
+        
+        setMessages((prevMessages) => [...prevMessages, botMessage]);
+      } else {
+        // В случае проблем с API
+        const errorMessage: Message = {
+          id: `bot-${Date.now()}`,
+          text: 'Извините, возникла ошибка при обработке запроса. Пожалуйста, попробуйте еще раз позже.',
+          sender: 'bot',
+        };
+        
+        setMessages((prevMessages) => [...prevMessages, errorMessage]);
+      }
     } catch (error) {
-      console.error('Error getting bot response:', error);
-      // Добавляем сообщение об ошибке
+      console.error('Error sending message:', error);
+      
       const errorMessage: Message = {
         id: `bot-${Date.now()}`,
-        text: 'Произошла ошибка при получении ответа. Пожалуйста, попробуйте еще раз позже.',
+        text: 'Извините, возникла ошибка при отправке сообщения. Пожалуйста, проверьте ваше соединение и попробуйте снова.',
         sender: 'bot',
       };
       
       setMessages((prevMessages) => [...prevMessages, errorMessage]);
     } finally {
       setIsTyping(false);
-      // Автоскроллинг удален
+      // Автоскроллинг после получения ответа удален по запросу пользователя
     }
   };
 
@@ -142,6 +142,22 @@ export default function ChatSection() {
     processAndSendMessage(inputValue);
     setInputValue('');
   };
+  
+  // Подписываемся на события отправки сообщений из кнопок
+  useEffect(() => {
+    const handleQuickQuestion = (question: string) => {
+      console.log('Получено сообщение от кнопки:', question);
+      processAndSendMessage(question);
+    };
+    
+    // Подписываемся на события от Event Bus
+    eventBus.on('send_message', handleQuickQuestion);
+    
+    // Отписываемся при уничтожении компонента
+    return () => {
+      eventBus.off('send_message', handleQuickQuestion);
+    };
+  }, [processAndSendMessage]);
 
   // Функция обработки клика по кнопкам удалена
 

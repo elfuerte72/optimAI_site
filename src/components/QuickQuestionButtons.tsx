@@ -1,32 +1,46 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import StyledButton from './StyledButton';
-import { useChatContext } from './ChatSection';
+import eventBus from '@/lib/eventBus';
 
 export default function QuickQuestionButtons() {
-  // Use the chat context hook at the component level
-  const chatContext = useChatContext();
+  const [clickedButton, setClickedButton] = useState<string | null>(null);
   
-  // Handle clicking a question button
+  // Обработчик нажатия на кнопку с вопросом
   const handleQuestionClick = (question: string) => {
-    chatContext.processAndSendMessage(question);
+    console.log('Нажата кнопка:', question);
+    
+    // Визуальная индикация нажатия кнопки
+    setClickedButton(question);
+    
+    // Отправляем событие через Event Bus
+    eventBus.emit('send_message', question);
+    
+    // Сбросить состояние кнопки через короткое время
+    setTimeout(() => setClickedButton(null), 500);
   };
   
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-wrap justify-center gap-2 mb-8">
       <StyledButton 
         onClick={() => handleQuestionClick("Чем занимается компания?")}
+        className={clickedButton === "Чем занимается компания?" ? "opacity-70" : ""}
+        data-testid="company-info-button"
       >
         Чем занимается компания?
       </StyledButton>
       <StyledButton 
         onClick={() => handleQuestionClick("Подробнее об услугах компании")}
+        className={clickedButton === "Подробнее об услугах компании" ? "opacity-70" : ""}
+        data-testid="services-info-button"
       >
         Подробнее об услугах компании
       </StyledButton>
       <StyledButton 
         onClick={() => handleQuestionClick("Как связаться с менеджером?")}
+        className={clickedButton === "Как связаться с менеджером?" ? "opacity-70" : ""}
+        data-testid="contact-manager-button"
       >
         Как связаться с менеджером?
       </StyledButton>

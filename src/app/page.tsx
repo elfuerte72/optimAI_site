@@ -92,7 +92,7 @@ export default function HomePage() {
       {/* Chat Section */}
       <ChatSection />
       
-      {/* Create a Client Component for the buttons */}
+      {/* Кнопки быстрых вопросов */}
       <QuickQuestionButtons />
 
       {/* Services Section and 'Узнать больше' link removed as per request */}

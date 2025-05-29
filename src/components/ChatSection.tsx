@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent, useEffect, useRef } from 'react';
+import { useState, FormEvent, useEffect, useRef, createContext, useContext } from 'react';
 import { Send, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import './ChatSection.css';
@@ -8,6 +8,13 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { sendMessage, Message as ApiMessage, checkApiHealth } from '@/lib/api/chat-api';
+
+// Create a context to expose the processAndSendMessage function
+export const ChatContext = createContext<{
+  processAndSendMessage: (text: string) => Promise<void>;
+}>({ 
+  processAndSendMessage: async () => {} 
+});
 
 interface Message {
   id: string;
@@ -18,6 +25,8 @@ interface Message {
 // Удалены варианты анимаций, так как они вызывали ошибку
 
 export default function ChatSection() {
+  // Scroll reference for auto-scrolling when new messages come in
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -45,7 +54,12 @@ export default function ChatSection() {
     }
   }, [apiAvailable]);
   
-  // Удаляем автоскроллинг как запросил пользователь
+  // Add scroll to bottom effect when messages change
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
   const processAndSendMessage = async (text: string) => {
     if (text.trim() === '') return;
@@ -136,80 +150,85 @@ export default function ChatSection() {
   // Удалены кнопки-подсказки
 
   return (
-    <section className="w-full max-w-4xl mx-auto">
-      <Card className="bg-black border-neutral-800 overflow-hidden">
-        {isChatOpen && (
-          <ScrollArea className="flex-grow h-96 p-4 sm:p-6 border-b border-neutral-800">
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
+    <ChatContext.Provider value={{ processAndSendMessage }}>
+      <section className="w-full max-w-4xl mx-auto">
+        <Card className="bg-black border-neutral-800 overflow-hidden">
+          {isChatOpen && (
+            <ScrollArea className="flex-grow h-96 p-4 sm:p-6 border-b border-neutral-800">
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                {messages.map((msg) => (
                   <div
-                    className={`rounded-lg px-4 py-2 max-w-[80%] ${msg.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-neutral-800 text-white'}`}
+                    key={msg.id}
+                    className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    {msg.text}
-                  </div>
-                </div>
-              ))}
-              {isTyping && (
-                <div className="flex justify-start">
-                  <div className="rounded-lg px-4 py-2 bg-neutral-800 text-white">
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                    <div
+                      className={`rounded-lg px-4 py-2 max-w-[80%] ${msg.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-neutral-800 text-white'}`}
+                    >
+                      {msg.text}
                     </div>
                   </div>
-                </div>
-              )}
-              {/* Ссылка на последний элемент удалена */}
-            </div>
-          </ScrollArea>
-        )}
+                ))}
+                {isTyping && (
+                  <div className="flex justify-start">
+                    <div className="rounded-lg px-4 py-2 bg-neutral-800 text-white">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+            </ScrollArea>
+          )}
 
-        {/* Форма отправки */}
-        <div className="p-4 sm:p-6 bg-black">
-          <form onSubmit={handleFormSubmit} className="flex w-full items-center space-x-2">
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
-              onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  if (inputValue.trim()) {
-                    processAndSendMessage(inputValue);
-                    setInputValue('');
+          {/* Форма отправки */}
+          <div className="p-4 sm:p-6 bg-black">
+            <form onSubmit={handleFormSubmit} className="flex w-full items-center space-x-2">
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
+                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    if (inputValue.trim()) {
+                      processAndSendMessage(inputValue);
+                      setInputValue('');
+                    }
                   }
-                }
-              }}
-              placeholder={isChatOpen ? "Спросите что-нибудь..." : "Начните диалог"}
-              style={{ outline: 'none', boxShadow: 'none' }}
-              className={cn(
-                "chat-input",
-                "flex-grow h-9 w-full px-3 py-1 text-base",
-                "bg-neutral-800 text-white border-neutral-800 rounded-lg", 
-                "placeholder-neutral-500",
-                "outline-none focus:outline-none focus-visible:outline-none",
-                "border border-neutral-800 focus:border-neutral-800 hover:border-neutral-800",
-                "shadow-none focus:shadow-none",
-                "ring-0 focus:ring-0 focus-visible:ring-0 ring-offset-0 focus:ring-offset-0 focus-visible:ring-offset-0"
-              )}
-            />
-            <Button
-              type="submit"
-              variant="outline"
-              size="icon"
-              disabled={!inputValue.trim()}
-              className="border-none bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:text-white focus-visible:ring-white shrink-0 rounded-lg transition-all duration-300 ease-in-out"
-            >
-              <Send className="h-5 w-5" />
-            </Button>
-          </form>
-        </div>
-      </Card>
-    </section>
+                }}
+                placeholder={isChatOpen ? "Спросите что-нибудь..." : "Начните диалог"}
+                style={{ outline: 'none', boxShadow: 'none' }}
+                className={cn(
+                  "chat-input",
+                  "flex-grow h-9 w-full px-3 py-1 text-base",
+                  "bg-neutral-800 text-white border-neutral-800 rounded-lg", 
+                  "placeholder-neutral-500",
+                  "outline-none focus:outline-none focus-visible:outline-none",
+                  "border border-neutral-800 focus:border-neutral-800 hover:border-neutral-800",
+                  "shadow-none focus:shadow-none",
+                  "ring-0 focus:ring-0 focus-visible:ring-0 ring-offset-0 focus:ring-offset-0 focus-visible:ring-offset-0"
+                )}
+              />
+              <Button
+                type="submit"
+                variant="outline"
+                size="icon"
+                disabled={!inputValue.trim()}
+                className="border-none bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:text-white focus-visible:ring-white shrink-0 rounded-lg transition-all duration-300 ease-in-out"
+              >
+                <Send className="h-5 w-5" />
+              </Button>
+            </form>
+          </div>
+        </Card>
+      </section>
+    </ChatContext.Provider>
   );
 }
+
+// Hook to use the chat context
+export const useChatContext = () => useContext(ChatContext);

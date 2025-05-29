@@ -4,12 +4,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '@/components/layout/Navbar';
 import ServicesSection from '@/components/services-section';
-import ChatSection from '@/components/ChatSection'; // Added import for ChatSection
+import ChatSection from '@/components/ChatSection'; // Import ChatSection
 import LogoAnimation from '@/components/logo-animation';
 import FeatureCard from '@/components/feature-card';
 import { motion, Variants } from 'framer-motion';
 import TestimonialsDataWrapper from '@/components/TestimonialsDataWrapper';
 import { useState, useEffect } from 'react';
+import QuickQuestionButtons from '@/components/QuickQuestionButtons';
+import '@/components/StyledButton.css'; // Import the CSS for styled buttons
 
 // Простые варианты анимации для блоков
 const sectionVariants: Variants = {
@@ -89,22 +91,13 @@ export default function HomePage() {
 
       {/* Chat Section */}
       <ChatSection />
+      
+      {/* Create a Client Component for the buttons */}
+      <QuickQuestionButtons />
 
       {/* Services Section and 'Узнать больше' link removed as per request */}
 
       {/* 'Готовые кейсы' section removed as per request */}
-
-      {/* CTA Section */}
-      <section className="py-12 md:py-16 bg-black text-center">
-        <Link
-          href="https://t.me/optimaai_tg"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-gray-400 hover:text-white font-medium transition-colors duration-300 text-xl px-6 py-3"
-        >
-          Связаться с нами
-        </Link>
-      </section>
 
       {/* Testimonials Section */}
       <motion.section
@@ -120,6 +113,18 @@ export default function HomePage() {
           <TestimonialsDataWrapper />
         </div>
       </motion.section>
+
+      {/* CTA Section - Moved to bottom of page before footer */}
+      <section className="py-12 md:py-16 bg-black text-center">
+        <Link
+          href="https://t.me/optimaai_tg"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-400 hover:text-white font-medium transition-colors duration-300 text-xl px-6 py-3"
+        >
+          Связаться с нами
+        </Link>
+      </section>
 
       {/* Footer будет добавлен автоматически из RootLayout */}
     </div>

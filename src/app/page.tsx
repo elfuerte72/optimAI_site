@@ -8,6 +8,7 @@ import ChatSection from '@/components/ChatSection'; // Import ChatSection
 import LogoAnimation from '@/components/logo-animation';
 import FeatureCard from '@/components/feature-card';
 import { motion, Variants } from 'framer-motion';
+import { pacificoFont } from '@/lib/fonts';
 import TestimonialSliderWrapper from '@/components/TestimonialSliderWrapper';
 import { useState, useEffect } from 'react';
 import QuickQuestionButtons from '@/components/QuickQuestionButtons';
@@ -107,9 +108,27 @@ export default function HomePage() {
         variants={sectionVariants}
       >
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-white text-3xl md:text-4xl font-semibold mb-10 md:mb-12">
-            Отзывы наших участников программ
-          </h2>
+          <motion.h2 
+            className={`text-2xl sm:text-3xl font-bold tracking-tight leading-relaxed bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 ${pacificoFont.className} mb-4 md:mb-6 py-2`}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.08 } }
+            }}
+          >
+            {"Отзывы наших участников программ".split('').map((char, i) => (
+              <motion.span
+                key={`testimonial-title-${i}`}
+                variants={{
+                  hidden: { opacity: 0, x: -20 },
+                  visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: "easeOut" } }
+                }}
+              >
+                {char}
+              </motion.span>
+            ))}
+          </motion.h2>
           <TestimonialSliderWrapper />
         </div>
       </motion.section>

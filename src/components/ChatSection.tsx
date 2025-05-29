@@ -169,7 +169,7 @@ export default function ChatSection() {
   return (
     <ChatContext.Provider value={{ processAndSendMessage }}>
       <section className="w-full max-w-4xl mx-auto">
-        <Card className="bg-black border-neutral-800 overflow-hidden">
+        <Card className="mt-4 mb-8 mx-auto bg-black border-0 overflow-hidden rounded-xl shadow-lg max-w-md">
           {isChatOpen && (
             <ScrollArea className="flex-grow h-96 p-4 sm:p-6 border-b border-neutral-800">
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -202,7 +202,7 @@ export default function ChatSection() {
           )}
 
           {/* Форма отправки */}
-          <div className="p-4 sm:p-6 bg-black">
+          <div className="p-4 sm:p-6 bg-black border-0">
             <form 
               onSubmit={(e: FormEvent) => {
                 e.preventDefault();
@@ -211,7 +211,7 @@ export default function ChatSection() {
                   setInputValue('');
                 }
               }}
-              className="flex w-full items-center space-x-2"
+              className="flex w-full items-center space-x-2 border-0"
             >
               <div className="flex-grow mr-2">
                 <StyledInput 

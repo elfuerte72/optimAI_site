@@ -139,7 +139,7 @@ export default function HomePage() {
             }}
             className={`text-2xl sm:text-3xl font-bold tracking-tight leading-relaxed bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 ${pacificoFont.className} mb-4 md:mb-6 py-2`}
           >
-            Отзывы наших участников программ
+            Отзывы наших клиентов
           </h2>
           <TestimonialSliderWrapper />
         </div>

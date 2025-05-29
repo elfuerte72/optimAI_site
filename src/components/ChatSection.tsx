@@ -203,7 +203,7 @@ export default function ChatSection() {
               variant="outline"
               size="icon"
               disabled={!inputValue.trim()}
-              className="border-neutral-800 bg-neutral-800 hover:bg-neutral-700 text-white hover:text-white focus-visible:ring-white shrink-0 rounded-lg"
+              className="border-none bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:text-white focus-visible:ring-white shrink-0 rounded-lg transition-all duration-300 ease-in-out"
             >
               <Send className="h-5 w-5" />
             </Button>

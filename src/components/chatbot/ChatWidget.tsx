@@ -205,7 +205,7 @@ export default function ChatWidget({ initialMessage, apiAvailable: propApiAvaila
                 />
                 <button
                   onClick={handleSendMessage}
-                  className="p-2.5 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="p-2.5 border-none bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-lg transition-all duration-300 ease-in-out disabled:opacity-40 disabled:cursor-not-allowed"
                   disabled={!inputValue.trim() || isLoading}
                 >
                   {isLoading ? (

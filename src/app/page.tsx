@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Navbar from '@/components/layout/Navbar';
 import ServicesSection from '@/components/services-section';
 import ChatSection from '@/components/ChatSection'; // Import ChatSection
-import NewsSection from '@/components/NewsSection'; // Import NewsSection
+import NewsSection from '@/components/news/NewsSection'; // Import NewsSection
 import LogoAnimation from '@/components/logo-animation';
 import FeatureCard from '@/components/feature-card';
 import { motion, Variants } from 'framer-motion';

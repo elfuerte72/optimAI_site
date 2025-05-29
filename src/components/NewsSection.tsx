@@ -150,7 +150,7 @@ io, созданный в 2024 году как часть дизайн-студ�
           }}
           className={`text-2xl sm:text-3xl font-bold tracking-tight leading-relaxed bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 ${pacificoFont.className} mb-4 md:mb-6 py-2`}
         >
-          Новости ИИ
+          Новости
         </h2>
 
         <div className="relative max-w-3xl mx-auto">

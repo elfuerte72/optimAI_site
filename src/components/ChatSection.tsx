@@ -2,6 +2,7 @@
 
 import { useState, FormEvent, useEffect, useRef, createContext, useContext } from 'react';
 import { Send, Loader2 } from 'lucide-react';
+import StyledInput from '@/components/StyledInput';
 import { cn } from '@/lib/utils';
 import './ChatSection.css';
 import { Button } from '@/components/ui/button';
@@ -202,33 +203,32 @@ export default function ChatSection() {
 
           {/* Форма отправки */}
           <div className="p-4 sm:p-6 bg-black">
-            <form onSubmit={handleFormSubmit} className="flex w-full items-center space-x-2">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
-                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    if (inputValue.trim()) {
-                      processAndSendMessage(inputValue);
-                      setInputValue('');
+            <form 
+              onSubmit={(e: FormEvent) => {
+                e.preventDefault();
+                if (inputValue.trim()) {
+                  processAndSendMessage(inputValue);
+                  setInputValue('');
+                }
+              }}
+              className="flex w-full items-center space-x-2"
+            >
+              <div className="flex-grow mr-2">
+                <StyledInput 
+                  value={inputValue}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
+                  onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      if (inputValue.trim()) {
+                        processAndSendMessage(inputValue);
+                        setInputValue('');
+                      }
                     }
-                  }
-                }}
-                placeholder={isChatOpen ? "Спросите что-нибудь..." : "Начните диалог"}
-                style={{ outline: 'none', boxShadow: 'none' }}
-                className={cn(
-                  "chat-input",
-                  "flex-grow h-9 w-full px-3 py-1 text-base",
-                  "bg-neutral-800 text-white border-neutral-800 rounded-lg", 
-                  "placeholder-neutral-500",
-                  "outline-none focus:outline-none focus-visible:outline-none",
-                  "border border-neutral-800 focus:border-neutral-800 hover:border-neutral-800",
-                  "shadow-none focus:shadow-none",
-                  "ring-0 focus:ring-0 focus-visible:ring-0 ring-offset-0 focus:ring-offset-0 focus-visible:ring-offset-0"
-                )}
-              />
+                  }}
+                  label="Сообщение"
+                />
+              </div>
               <Button
                 type="submit"
                 variant="outline"

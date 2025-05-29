@@ -8,7 +8,7 @@ import ChatSection from '@/components/ChatSection'; // Import ChatSection
 import LogoAnimation from '@/components/logo-animation';
 import FeatureCard from '@/components/feature-card';
 import { motion, Variants } from 'framer-motion';
-import TestimonialsDataWrapper from '@/components/TestimonialsDataWrapper';
+import TestimonialSliderWrapper from '@/components/TestimonialSliderWrapper';
 import { useState, useEffect } from 'react';
 import QuickQuestionButtons from '@/components/QuickQuestionButtons';
 import '@/components/StyledButton.css'; // Import the CSS for styled buttons
@@ -104,13 +104,13 @@ export default function HomePage() {
         className="py-12 md:py-16 bg-black text-center px-4 sm:px-6 lg:px-8"
         initial="hidden"
         animate="visible"
-        variants={sectionVariants} // Assuming sectionVariants is defined in your page.tsx for animations
+        variants={sectionVariants}
       >
         <div className="max-w-6xl mx-auto">
           <h2 className="text-white text-3xl md:text-4xl font-semibold mb-10 md:mb-12">
             Отзывы наших участников программ
           </h2>
-          <TestimonialsDataWrapper />
+          <TestimonialSliderWrapper />
         </div>
       </motion.section>
 

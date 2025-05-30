@@ -24,14 +24,14 @@ class EventBusImpl implements EventBus {
     if (!this.events[event]) {
       return;
     }
-    this.events[event] = this.events[event].filter(cb => cb !== callback);
+    this.events[event] = this.events[event].filter((cb) => cb !== callback);
   }
 
   emit(event: string, ...args: any[]): void {
     if (!this.events[event]) {
       return;
     }
-    this.events[event].forEach(callback => {
+    this.events[event].forEach((callback) => {
       callback(...args);
     });
   }

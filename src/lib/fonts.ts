@@ -9,7 +9,7 @@ export const notoSansJP = Noto_Sans_JP({
   subsets: ['cyrillic', 'latin', 'latin-ext'],
   weight: ['400', '700'],
   display: 'swap',
-  variable: '--font-noto-sans-jp'
+  variable: '--font-noto-sans-jp',
 });
 
 // Настраиваем Pacifico
@@ -17,7 +17,7 @@ export const pacificoFont = Pacifico({
   subsets: ['latin'],
   weight: ['400'],
   display: 'swap',
-  variable: '--font-pacifico'
+  variable: '--font-pacifico',
 });
 
 // Настраиваем Press Start 2P
@@ -25,7 +25,7 @@ export const pressStartFont = Press_Start_2P({
   subsets: ['latin'],
   weight: ['400'],
   display: 'swap',
-  variable: '--font-press-start'
+  variable: '--font-press-start',
 });
 
 // Настраиваем Roboto Condensed
@@ -33,5 +33,5 @@ export const robotoCondensedFont = Roboto_Condensed({
   subsets: ['cyrillic', 'latin'],
   weight: ['400', '700'],
   display: 'swap',
-  variable: '--font-roboto-condensed'
+  variable: '--font-roboto-condensed',
 });

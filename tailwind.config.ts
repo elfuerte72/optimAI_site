@@ -17,7 +17,8 @@ const config = {
       },
     },
     extend: {
-      colors: { // Здесь вы можете расширять или переопределять цвета, но shadcn/ui в основном использует CSS переменные
+      colors: {
+        // Здесь вы можете расширять или переопределять цвета, но shadcn/ui в основном использует CSS переменные
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

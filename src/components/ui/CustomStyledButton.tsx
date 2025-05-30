@@ -19,11 +19,7 @@ const StyledLink = styled.a`
   border: 0;
   border-radius: 7px;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-  background: radial-gradient(
-    ellipse at bottom,
-    rgba(71, 81, 92, 1) 0%,
-    rgba(11, 21, 30, 1) 45%
-  );
+  background: radial-gradient(ellipse at bottom, rgba(71, 81, 92, 1) 0%, rgba(11, 21, 30, 1) 45%);
   color: rgba(255, 255, 255, 0.66);
   text-decoration: none;
   display: inline-block;
@@ -32,7 +28,7 @@ const StyledLink = styled.a`
   transition: all 1s cubic-bezier(0.15, 0.83, 0.66, 1);
 
   &::before {
-    content: "";
+    content: '';
     width: 70%;
     height: 1px;
     position: absolute;
@@ -58,7 +54,13 @@ const StyledLink = styled.a`
   }
 `;
 
-const CustomStyledButton: React.FC<CustomStyledButtonProps> = ({ href, children, target, rel, 'aria-label': ariaLabel }) => {
+const CustomStyledButton: React.FC<CustomStyledButtonProps> = ({
+  href,
+  children,
+  target,
+  rel,
+  'aria-label': ariaLabel,
+}) => {
   return (
     <StyledLink href={href} target={target} rel={rel} aria-label={ariaLabel}>
       {children}

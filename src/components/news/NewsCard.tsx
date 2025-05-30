@@ -13,23 +13,23 @@ interface NewsCardProps {
 
 export const NewsCard = ({ news, isExpanded, onToggle }: NewsCardProps) => {
   return (
-    <Card 
-      className="bg-black border border-neutral-800 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:border-neutral-600 cursor-pointer"
+    <Card
+      className="cursor-pointer overflow-hidden rounded-xl border border-neutral-800 bg-black shadow-lg transition-all duration-300 hover:border-neutral-600"
       onClick={onToggle}
     >
       <div className="relative h-64 w-full">
-        <Image 
-          src={news.image} 
-          alt={news.title} 
-          fill 
-          style={{objectFit: 'contain'}} 
+        <Image
+          src={news.image}
+          alt={news.title}
+          fill
+          style={{ objectFit: 'contain' }}
           className="transition-transform duration-500 hover:scale-105"
         />
       </div>
       <div className="p-6">
-        <h3 className="text-xl font-bold mb-2 text-white">{news.title}</h3>
+        <h3 className="mb-2 text-xl font-bold text-white">{news.title}</h3>
         {isExpanded && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}

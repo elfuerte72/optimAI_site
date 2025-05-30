@@ -26,16 +26,12 @@ export default function NewsSection() {
 
   // Переключение слайдов
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === newsItems.length - 1 ? 0 : prevIndex + 1
-    );
+    setCurrentIndex((prevIndex) => (prevIndex === newsItems.length - 1 ? 0 : prevIndex + 1));
     setExpandedNewsId(null);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? newsItems.length - 1 : prevIndex - 1
-    );
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? newsItems.length - 1 : prevIndex - 1));
     setExpandedNewsId(null);
   };
 
@@ -46,62 +42,63 @@ export default function NewsSection() {
 
   return (
     <motion.section
-      className="py-12 md:py-16 bg-black text-center px-4 sm:px-6 lg:px-8"
+      className="bg-black px-4 py-12 text-center sm:px-6 md:py-16 lg:px-8"
       initial="hidden"
       animate="visible"
       variants={sectionVariants}
     >
-      <div className="max-w-6xl mx-auto">
-        <h2 
+      <div className="mx-auto max-w-6xl">
+        <h2
           ref={(el) => {
             if (!el) return;
-            
+
             // Создаем анимацию с триггером при скроллинге
             setTimeout(() => {
-              gsap.fromTo(el, 
+              gsap.fromTo(
+                el,
                 { opacity: 0, y: 30 }, // начальное состояние
-                { 
-                  opacity: 1, 
-                  y: 0, 
+                {
+                  opacity: 1,
+                  y: 0,
                   duration: 0.8,
-                  ease: "power3.out",
+                  ease: 'power3.out',
                   scrollTrigger: {
                     trigger: el,
-                    start: "top 80%",
-                    toggleActions: "play none none reverse",
-                    markers: false
-                  }
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse',
+                    markers: false,
+                  },
                 }
               );
             }, 100);
           }}
-          className={`text-2xl sm:text-3xl font-bold tracking-tight leading-relaxed bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 ${pacificoFont.className} mb-4 md:mb-6 py-2`}
+          className={`bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 bg-clip-text text-2xl leading-relaxed font-bold tracking-tight text-transparent sm:text-3xl ${pacificoFont.className} mb-4 py-2 md:mb-6`}
         >
           Новости ИИ
         </h2>
 
-        <div className="relative max-w-3xl mx-auto">
-          <NewsCard 
-            news={newsItems[currentIndex]} 
+        <div className="relative mx-auto max-w-3xl">
+          <NewsCard
+            news={newsItems[currentIndex]}
             isExpanded={expandedNewsId === newsItems[currentIndex].id}
             onToggle={() => toggleNewsExpand(newsItems[currentIndex].id)}
           />
-          
+
           {/* Навигационные кнопки */}
-          <div className="flex justify-between mt-6">
-            <Button 
-              onClick={prevSlide} 
-              variant="outline" 
+          <div className="mt-6 flex justify-between">
+            <Button
+              onClick={prevSlide}
+              variant="outline"
               size="icon"
-              className="border-neutral-700 hover:bg-neutral-800 text-white hover:text-white"
+              className="border-neutral-700 text-white hover:bg-neutral-800 hover:text-white"
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
-            
+
             {/* Индикаторы */}
-            <div className="flex space-x-2 items-center">
+            <div className="flex items-center space-x-2">
               {newsItems.map((_, index) => (
-                <div 
+                <div
                   key={index}
                   className={`h-2 w-2 rounded-full ${
                     index === currentIndex ? 'bg-blue-500' : 'bg-neutral-700'
@@ -116,12 +113,12 @@ export default function NewsSection() {
                 />
               ))}
             </div>
-            
-            <Button 
-              onClick={nextSlide} 
-              variant="outline" 
+
+            <Button
+              onClick={nextSlide}
+              variant="outline"
               size="icon"
-              className="border-neutral-700 hover:bg-neutral-800 text-white hover:text-white"
+              className="border-neutral-700 text-white hover:bg-neutral-800 hover:text-white"
             >
               <ChevronRight className="h-5 w-5" />
             </Button>

@@ -28,33 +28,33 @@ const sectionVariants: Variants = {
 };
 
 // Компонент новости
-const NewsCard = ({ 
-  news, 
-  isExpanded, 
-  onToggle 
-}: { 
-  news: NewsItem; 
-  isExpanded: boolean; 
+const NewsCard = ({
+  news,
+  isExpanded,
+  onToggle,
+}: {
+  news: NewsItem;
+  isExpanded: boolean;
   onToggle: () => void;
 }) => {
   return (
-    <Card 
-      className="bg-black border border-neutral-800 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:border-neutral-600 cursor-pointer"
+    <Card
+      className="cursor-pointer overflow-hidden rounded-xl border border-neutral-800 bg-black shadow-lg transition-all duration-300 hover:border-neutral-600"
       onClick={onToggle}
     >
       <div className="relative h-64 w-full">
-        <Image 
-          src={news.image} 
-          alt={news.title} 
-          fill 
-          style={{objectFit: 'contain'}} 
+        <Image
+          src={news.image}
+          alt={news.title}
+          fill
+          style={{ objectFit: 'contain' }}
           className="transition-transform duration-500 hover:scale-105"
         />
       </div>
       <div className="p-6">
-        <h3 className="text-xl font-bold mb-2 text-white">{news.title}</h3>
+        <h3 className="mb-2 text-xl font-bold text-white">{news.title}</h3>
         {isExpanded && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -74,7 +74,8 @@ export default function NewsSection() {
   const newsItems: NewsItem[] = [
     {
       id: '1',
-      title: 'OpenAI покупает стартап Джонатана Айва io за $6,5 млрд — новый этап в эволюции «умных» устройств',
+      title:
+        'OpenAI покупает стартап Джонатана Айва io за $6,5 млрд — новый этап в эволюции «умных» устройств',
       image: '/news/portrait.jpg',
       content: `OpenAI объявила о приобретении стартапа io, основанного дизайнером Джонатаном Айвом, за $6,5 млрд. Сделка завершена 21 мая 2025 года и стала крупнейшей в истории компании.
 
@@ -99,16 +100,12 @@ io, созданный в 2024 году как часть дизайн-студ�
 
   // Переключение слайдов
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === newsItems.length - 1 ? 0 : prevIndex + 1
-    );
+    setCurrentIndex((prevIndex) => (prevIndex === newsItems.length - 1 ? 0 : prevIndex + 1));
     setExpandedNewsId(null);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? newsItems.length - 1 : prevIndex - 1
-    );
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? newsItems.length - 1 : prevIndex - 1));
     setExpandedNewsId(null);
   };
 
@@ -119,62 +116,63 @@ io, созданный в 2024 году как часть дизайн-студ�
 
   return (
     <motion.section
-      className="py-12 md:py-16 bg-black text-center px-4 sm:px-6 lg:px-8"
+      className="bg-black px-4 py-12 text-center sm:px-6 md:py-16 lg:px-8"
       initial="hidden"
       animate="visible"
       variants={sectionVariants}
     >
-      <div className="max-w-6xl mx-auto">
-        <h2 
+      <div className="mx-auto max-w-6xl">
+        <h2
           ref={(el) => {
             if (!el) return;
-            
+
             // Создаем анимацию с триггером при скроллинге
             setTimeout(() => {
-              gsap.fromTo(el, 
+              gsap.fromTo(
+                el,
                 { opacity: 0, y: 30 }, // начальное состояние
-                { 
-                  opacity: 1, 
-                  y: 0, 
+                {
+                  opacity: 1,
+                  y: 0,
                   duration: 0.8,
-                  ease: "power3.out",
+                  ease: 'power3.out',
                   scrollTrigger: {
                     trigger: el,
-                    start: "top 80%",
-                    toggleActions: "play none none reverse",
-                    markers: false
-                  }
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse',
+                    markers: false,
+                  },
                 }
               );
             }, 100);
           }}
-          className={`text-2xl sm:text-3xl font-bold tracking-tight leading-relaxed bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 ${pacificoFont.className} mb-4 md:mb-6 py-2`}
+          className={`bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 bg-clip-text text-2xl leading-relaxed font-bold tracking-tight text-transparent sm:text-3xl ${pacificoFont.className} mb-4 py-2 md:mb-6`}
         >
           Новости
         </h2>
 
-        <div className="relative max-w-3xl mx-auto">
-          <NewsCard 
-            news={newsItems[currentIndex]} 
+        <div className="relative mx-auto max-w-3xl">
+          <NewsCard
+            news={newsItems[currentIndex]}
             isExpanded={expandedNewsId === newsItems[currentIndex].id}
             onToggle={() => toggleNewsExpand(newsItems[currentIndex].id)}
           />
-          
+
           {/* Навигационные кнопки */}
-          <div className="flex justify-between mt-6">
-            <Button 
-              onClick={prevSlide} 
-              variant="outline" 
+          <div className="mt-6 flex justify-between">
+            <Button
+              onClick={prevSlide}
+              variant="outline"
               size="icon"
-              className="border-neutral-700 hover:bg-neutral-800 text-white hover:text-white"
+              className="border-neutral-700 text-white hover:bg-neutral-800 hover:text-white"
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
-            
+
             {/* Индикаторы */}
-            <div className="flex space-x-2 items-center">
+            <div className="flex items-center space-x-2">
               {newsItems.map((_, index) => (
-                <div 
+                <div
                   key={index}
                   className={`h-2 w-2 rounded-full ${
                     index === currentIndex ? 'bg-blue-500' : 'bg-neutral-700'
@@ -182,12 +180,12 @@ io, созданный в 2024 году как часть дизайн-студ�
                 />
               ))}
             </div>
-            
-            <Button 
-              onClick={nextSlide} 
-              variant="outline" 
+
+            <Button
+              onClick={nextSlide}
+              variant="outline"
               size="icon"
-              className="border-neutral-700 hover:bg-neutral-800 text-white hover:text-white"
+              className="border-neutral-700 text-white hover:bg-neutral-800 hover:text-white"
             >
               <ChevronRight className="h-5 w-5" />
             </Button>

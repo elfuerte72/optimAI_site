@@ -1,63 +1,67 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { BookOpen, Cog, Bot } from "lucide-react"
-import ServiceCard from "./service-card"
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { BookOpen, Cog, Bot } from 'lucide-react';
+import ServiceCard from './service-card';
 
 type ServiceItem = {
-  id: string
-  title: string
-  icon: React.ReactNode
-  details: string[]
-}
+  id: string;
+  title: string;
+  icon: React.ReactNode;
+  details: string[];
+};
 
 const services: ServiceItem[] = [
   {
-    id: "education",
-    title: "Обучение",
-    icon: <BookOpen className="h-8 w-8 text-white transition-all duration-500 group-hover:scale-110" />,
+    id: 'education',
+    title: 'Обучение',
+    icon: (
+      <BookOpen className="h-8 w-8 text-white transition-all duration-500 group-hover:scale-110" />
+    ),
     details: [
-      "Форматы: Prompting / Метапромптинг",
-      "Формат: онлайн/офлайн, индивидуальные и групповые занятия",
-      "Ценность: навык эффективной работы с ИИ, экономия времени, повышение продуктивности",
+      'Форматы: Prompting / Метапромптинг',
+      'Формат: онлайн/офлайн, индивидуальные и групповые занятия',
+      'Ценность: навык эффективной работы с ИИ, экономия времени, повышение продуктивности',
     ],
   },
   {
-    id: "automation",
-    title: "Автоматизация",
+    id: 'automation',
+    title: 'Автоматизация',
     icon: <Cog className="h-8 w-8 text-white transition-all duration-500 group-hover:scale-110" />,
     details: [
-      "Внедрение ИИ в CRM, Notion, таблицы, мессенджеры и др.",
-      "Адаптация под текущую систему клиента",
-      "Постподдержка и обучение",
+      'Внедрение ИИ в CRM, Notion, таблицы, мессенджеры и др.',
+      'Адаптация под текущую систему клиента',
+      'Постподдержка и обучение',
     ],
   },
   {
-    id: "agents",
-    title: "Создание агентов",
+    id: 'agents',
+    title: 'Создание агентов',
     icon: <Bot className="h-8 w-8 text-white transition-all duration-500 group-hover:scale-110" />,
     details: [
-      "ИИ-ассистенты и кастомные LLM",
-      "Развёртывание локально (на ресурсах клиента) или через Яндекс/Сбер/другое",
-      "Полный цикл: разработка, интеграция, обучение, поддержка",
+      'ИИ-ассистенты и кастомные LLM',
+      'Развёртывание локально (на ресурсах клиента) или через Яндекс/Сбер/другое',
+      'Полный цикл: разработка, интеграция, обучение, поддержка',
     ],
   },
-]
+];
 
 export default function ServicesSection() {
-  const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const toggleDetails = (id: string) => {
-    setExpandedId(expandedId === id ? null : id)
-  }
+    setExpandedId(expandedId === id ? null : id);
+  };
 
   return (
-    <section className="bg-black py-20 px-4 md:px-8">
+    <section className="bg-black px-4 py-20 md:px-8">
       <div className="mx-auto max-w-7xl">
-        <h2 className="mb-12 text-center text-4xl font-light tracking-wide text-gray-300">Наши услуги</h2>
+        <h2 className="mb-12 text-center text-4xl font-light tracking-wide text-gray-300">
+          Наши услуги
+        </h2>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => (
@@ -75,5 +79,5 @@ export default function ServicesSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

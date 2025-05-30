@@ -47,33 +47,33 @@ const AllReviewsModal: React.FC<AllReviewsModalProps> = ({ testimonials, isOpen,
       role="dialog"
       aria-modal="true"
       aria-labelledby="all-reviews-modal-title"
-      className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4 backdrop-blur-sm"
+      className="bg-opacity-80 fixed inset-0 z-50 flex items-center justify-center bg-black p-4 backdrop-blur-sm"
       onClick={onClose} // Close on overlay click
     >
       <div
-        className="bg-black p-6 md:p-8 rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto gradient-border-card"
+        className="gradient-border-card max-h-[80vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-black p-6 shadow-xl md:p-8"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal content
       >
-        <div className="flex justify-between items-center mb-6">
-          <h2 id="all-reviews-modal-title" className="text-white text-xl lg:text-2xl font-semibold">
+        <div className="mb-6 flex items-center justify-between">
+          <h2 id="all-reviews-modal-title" className="text-xl font-semibold text-white lg:text-2xl">
             Все отзывы
           </h2>
-          <button 
-            onClick={onClose} 
-            aria-label="Закрыть модальное окно" 
-            className="text-white text-3xl hover:text-gray-300 transition-colors"
+          <button
+            onClick={onClose}
+            aria-label="Закрыть модальное окно"
+            className="text-3xl text-white transition-colors hover:text-gray-300"
           >
             &times;
           </button>
         </div>
         <div className="space-y-4">
           {testimonials.map((testimonial, index) => (
-            <div 
-              key={`${testimonial.name}-${index}-modal`} 
+            <div
+              key={`${testimonial.name}-${index}-modal`}
               // Each card in the modal uses the .gradient-border-card class and has a black background for consistency
-              className="gradient-border-card p-4 text-white bg-black"
+              className="gradient-border-card bg-black p-4 text-white"
             >
-              <p className="font-bold text-lg mb-1">{testimonial.name}</p>
+              <p className="mb-1 text-lg font-bold">{testimonial.name}</p>
               <p className="text-sm leading-relaxed">{testimonial.text}</p>
             </div>
           ))}

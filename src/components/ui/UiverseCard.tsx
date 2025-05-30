@@ -18,13 +18,15 @@ const StyledWrapper = styled.div`
   box-sizing: border-box;
 
   &::after {
-    content: "";
+    content: '';
     height: 70px;
     width: 1px;
     position: absolute;
     left: -1px;
     top: 65%;
-    transition: top 600ms ease, opacity 600ms ease;
+    transition:
+      top 600ms ease,
+      opacity 600ms ease;
     background: linear-gradient(transparent, mediumslateblue, transparent);
     box-shadow: 0 0 30px mediumslateblue;
     opacity: 0;
@@ -40,10 +42,7 @@ const StyledWrapper = styled.div`
     flex-direction: column;
     justify-content: flex-start; /* Выравнивание контента по верху */
     align-items: center;
-    background-image: radial-gradient(
-      rgba(255, 255, 255, 0.1) 1px,
-      transparent 1px
-    );
+    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
     background-position: 50% 50%;
     background-size: 1.1rem 1.1rem;
     padding: 0.8rem; /* Было 1.5rem (исходно 2rem) */
@@ -55,7 +54,7 @@ const StyledWrapper = styled.div`
   }
 
   .card-title {
-    color: #fff; 
+    color: #fff;
     font-size: 1.4rem; /* Увеличено с 1.2rem */
     font-weight: bold;
     margin-bottom: 0.6rem; /* Увеличено с 0.5rem */
@@ -68,7 +67,7 @@ const StyledWrapper = styled.div`
   }
 
   /* Адаптивность из примера */
-  @media(max-width: 700px) {
+  @media (max-width: 700px) {
     padding: 0.75rem;
     border-radius: 1rem;
     .card-content-inner {
@@ -83,7 +82,7 @@ const StyledWrapper = styled.div`
     }
   }
 
-  @media(max-width: 600px) {
+  @media (max-width: 600px) {
     .card-content-inner {
       padding: 0.6rem; /* Было 1rem */
       min-height: 100px; /* Было 150px */
@@ -106,6 +105,6 @@ const UiverseCard: React.FC<UiverseCardProps> = ({ title, description }) => {
       </div>
     </StyledWrapper>
   );
-}
+};
 
 export default UiverseCard;

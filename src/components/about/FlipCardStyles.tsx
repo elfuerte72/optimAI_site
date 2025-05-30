@@ -35,7 +35,8 @@ const StyledWrapper = styled.div`
     border-radius: 12px;
   }
 
-  .front, .back {
+  .front,
+  .back {
     background-color: #151515;
     position: absolute;
     width: 100%;
@@ -61,7 +62,15 @@ const StyledWrapper = styled.div`
     display: block;
     width: 160px;
     height: 160%;
-    background: linear-gradient(90deg, transparent, #3b82f6, #8b5cf6, #6366f1, #3b82f6, transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      #3b82f6,
+      #8b5cf6,
+      #6366f1,
+      #3b82f6,
+      transparent
+    );
     animation: rotation_481 5000ms infinite linear;
   }
 
@@ -84,13 +93,13 @@ const StyledWrapper = styled.div`
   .card:hover .content {
     transform: rotateY(180deg);
   }
-  
+
   /* Reverse the front and back sides to show photo first */
   .front {
     transform: rotateY(0deg);
     color: white;
   }
-  
+
   .back {
     transform: rotateY(180deg);
   }
@@ -130,14 +139,14 @@ const StyledWrapper = styled.div`
     height: 160px;
     box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
   }
-  
+
   .name-container {
     width: 100%;
     text-align: center;
     margin-top: 0.5rem;
     padding: 0 0.5rem;
   }
-  
+
   .founder-name {
     font-size: 14px;
     color: #6366f1;
@@ -160,7 +169,7 @@ const StyledWrapper = styled.div`
     left: 50%;
     transform: translateX(-50%);
   }
-  
+
   /* Removed description section as it's no longer needed */
 
   .title {

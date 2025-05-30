@@ -19,13 +19,27 @@ interface TestimonialSliderProps {
 
 // SVG иконки для навигации (минималистичные, белые)
 const LeftArrowIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="h-6 w-6 text-white"
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
   </svg>
 );
 
 const RightArrowIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="h-6 w-6 text-white"
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
   </svg>
 );
@@ -38,7 +52,7 @@ const TestimonialSlider: React.FC<TestimonialSliderProps> = ({ testimonials }) =
 
   // Эффект для анимации перелистывания отзывов
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
     // Enhanced page turn animation
@@ -52,7 +66,7 @@ const TestimonialSlider: React.FC<TestimonialSliderProps> = ({ testimonials }) =
           scale: 1,
           z: 0,
           duration: 0.8,
-          ease: "power3.out",
+          ease: 'power3.out',
         });
       } else {
         const direction = index < currentIndex ? -1 : 1;
@@ -62,49 +76,53 @@ const TestimonialSlider: React.FC<TestimonialSliderProps> = ({ testimonials }) =
           scale: 0.9,
           z: -100,
           duration: 0.8,
-          ease: "power3.out",
+          ease: 'power3.out',
         });
       }
     });
   }, [currentIndex]);
-  
+
   // Эффект для анимации скроллинга
   useEffect(() => {
     if (!containerRef.current || !bookRef.current) return;
-    
+
     // Начальное состояние - невидимый и смещенный вниз
     gsap.set(containerRef.current, {
       opacity: 0,
       y: 50,
     });
-    
+
     // Создаем анимацию скроллинга
     const scrollAnimation = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        start: "top 80%", // Начинаем анимацию, когда верх элемента достигает 80% высоты экрана
-        end: "bottom 20%",
-        toggleActions: "play none none reverse", // play при входе, reverse при выходе
+        start: 'top 80%', // Начинаем анимацию, когда верх элемента достигает 80% высоты экрана
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse', // play при входе, reverse при выходе
         markers: false, // Для отладки можно установить true
-      }
+      },
     });
-    
+
     // Анимация появления
     scrollAnimation.to(containerRef.current, {
       opacity: 1,
       y: 0,
       duration: 0.8,
-      ease: "power3.out",
+      ease: 'power3.out',
     });
-    
+
     // Анимация карточки с небольшой задержкой
-    scrollAnimation.from(bookRef.current, {
-      scale: 0.95,
-      opacity: 0.9,
-      duration: 0.6,
-      ease: "power2.out",
-    }, "-=0.4");
-    
+    scrollAnimation.from(
+      bookRef.current,
+      {
+        scale: 0.95,
+        opacity: 0.9,
+        duration: 0.6,
+        ease: 'power2.out',
+      },
+      '-=0.4'
+    );
+
     // Очистка при размонтировании
     return () => {
       if (scrollAnimation.scrollTrigger) {
@@ -123,32 +141,38 @@ const TestimonialSlider: React.FC<TestimonialSliderProps> = ({ testimonials }) =
   };
 
   if (!testimonials || testimonials.length === 0) {
-    return <p className="text-white text-center">Нет доступных отзывов.</p>;
+    return <p className="text-center text-white">Нет доступных отзывов.</p>;
   }
 
   return (
-    <div ref={containerRef} className="flex flex-col items-center max-w-2xl mx-auto mt-0">
+    <div ref={containerRef} className="mx-auto mt-0 flex max-w-2xl flex-col items-center">
       {/* Testimonial Container */}
-      <div ref={bookRef} className="relative w-full max-w-2xl h-auto min-h-[380px] perspective-1000" style={{ perspective: "1200px" }}>
+      <div
+        ref={bookRef}
+        className="perspective-1000 relative h-auto min-h-[380px] w-full max-w-2xl"
+        style={{ perspective: '1200px' }}
+      >
         {testimonials.map((testimonial, index) => (
           <div
             key={index}
             ref={(el) => {
               pageRefs.current[index] = el;
             }}
-            className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] rounded-xl border border-[#FFFFFF25] p-6 md:p-8 shadow-2xl"
+            className="absolute inset-0 rounded-xl border border-[#FFFFFF25] bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] p-6 shadow-2xl md:p-8"
             style={{
-              transformStyle: "preserve-3d",
-              backfaceVisibility: "hidden",
+              transformStyle: 'preserve-3d',
+              backfaceVisibility: 'hidden',
             }}
           >
-            <div className="h-full flex flex-col text-center">
-              <div className="flex-1 flex flex-col justify-center">
-                <h3 className="text-xl font-medium mb-2 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+            <div className="flex h-full flex-col text-center">
+              <div className="flex flex-1 flex-col justify-center">
+                <h3 className="mb-2 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-xl font-medium text-transparent">
                   {testimonial.name}
                 </h3>
-                <p className="text-xs text-[#FFFFFF70] mb-4 font-light italic">Отзыв участника</p>
-                <p className="text-base md:text-lg leading-relaxed text-[#F5F5F5] font-light">{testimonial.text}</p>
+                <p className="mb-4 text-xs font-light text-[#FFFFFF70] italic">Отзыв участника</p>
+                <p className="text-base leading-relaxed font-light text-[#F5F5F5] md:text-lg">
+                  {testimonial.text}
+                </p>
               </div>
 
               {/* Удалено отображение номера страницы */}
@@ -158,13 +182,20 @@ const TestimonialSlider: React.FC<TestimonialSliderProps> = ({ testimonials }) =
       </div>
 
       {/* Navigation */}
-      <div className="flex items-center gap-4 mt-6">
+      <div className="mt-6 flex items-center gap-4">
         <button
           onClick={prevPage}
-          className="w-9 h-9 rounded-full bg-[#FFFFFF15] border border-[#FFFFFF25] flex items-center justify-center hover:bg-[#FFFFFF25] hover:scale-110 transition-all duration-300"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-[#FFFFFF25] bg-[#FFFFFF15] transition-all duration-300 hover:scale-110 hover:bg-[#FFFFFF25]"
           aria-label="Previous testimonial"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <polyline points="15,18 9,12 15,6"></polyline>
           </svg>
         </button>
@@ -175,10 +206,10 @@ const TestimonialSlider: React.FC<TestimonialSliderProps> = ({ testimonials }) =
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-500 ${
+              className={`h-2 w-2 rounded-full transition-all duration-500 ${
                 index === currentIndex
-                  ? "bg-gradient-to-r from-blue-400 to-purple-500 scale-125 shadow-lg"
-                  : "bg-[#FFFFFF25] hover:bg-[#FFFFFF40] hover:scale-110"
+                  ? 'scale-125 bg-gradient-to-r from-blue-400 to-purple-500 shadow-lg'
+                  : 'bg-[#FFFFFF25] hover:scale-110 hover:bg-[#FFFFFF40]'
               }`}
               aria-label={`Go to testimonial ${index + 1}`}
             />
@@ -187,17 +218,23 @@ const TestimonialSlider: React.FC<TestimonialSliderProps> = ({ testimonials }) =
 
         <button
           onClick={nextPage}
-          className="w-9 h-9 rounded-full bg-[#FFFFFF15] border border-[#FFFFFF25] flex items-center justify-center hover:bg-[#FFFFFF25] hover:scale-110 transition-all duration-300"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-[#FFFFFF25] bg-[#FFFFFF15] transition-all duration-300 hover:scale-110 hover:bg-[#FFFFFF25]"
           aria-label="Next testimonial"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <polyline points="9,18 15,12 9,6"></polyline>
           </svg>
         </button>
       </div>
     </div>
   );
-
 };
 
 export default TestimonialSlider;

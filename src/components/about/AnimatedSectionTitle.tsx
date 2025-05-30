@@ -11,10 +11,10 @@ interface AnimatedSectionTitleProps {
 const AnimatedSectionTitle = forwardRef<HTMLHeadingElement, AnimatedSectionTitleProps>(
   ({ children, className }, ref) => {
     return (
-      <h2 
+      <h2
         ref={ref}
         className={cn(
-          "text-4xl sm:text-5xl font-bold tracking-tight text-center text-neutral-100 opacity-0",
+          'text-center text-4xl font-bold tracking-tight text-neutral-100 opacity-0 sm:text-5xl',
           className
         )}
       >

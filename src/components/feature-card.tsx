@@ -12,13 +12,13 @@ type FeatureCardProps = {
   index: number;
 };
 
-export default function FeatureCard({ 
-  title, 
-  description, 
+export default function FeatureCard({
+  title,
+  description,
   icon,
   category,
   detailsText = 'Подробнее',
-  index 
+  index,
 }: FeatureCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -35,10 +35,13 @@ export default function FeatureCard({
 
   useEffect(() => {
     if (isMobile) {
-      const interval = setInterval(() => {
-        setShouldAnimate(true);
-        setTimeout(() => setShouldAnimate(false), 2000);
-      }, 10000 + index * 2000);
+      const interval = setInterval(
+        () => {
+          setShouldAnimate(true);
+          setTimeout(() => setShouldAnimate(false), 2000);
+        },
+        10000 + index * 2000
+      );
       return () => clearInterval(interval);
     }
   }, [isMobile, index]);
@@ -47,7 +50,7 @@ export default function FeatureCard({
 
   return (
     <motion.div
-      className="relative bg-zinc-800/70 backdrop-filter backdrop-blur-md p-6 rounded-lg border border-zinc-700 hover:border-zinc-600 shadow-lg transition-all duration-300 transform hover:scale-105"
+      className="relative transform rounded-lg border border-zinc-700 bg-zinc-800/70 p-6 shadow-lg backdrop-blur-md backdrop-filter transition-all duration-300 hover:scale-105 hover:border-zinc-600"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
@@ -60,42 +63,44 @@ export default function FeatureCard({
         {glowActive && (
           <>
             <motion.div
-              className="absolute inset-0 -z-10 rounded-lg bg-gradient-to-r from-blue-500/10 via-purple-500/5 to-indigo-500/10 blur-lg pointer-events-none"
+              className="pointer-events-none absolute inset-0 -z-10 rounded-lg bg-gradient-to-r from-blue-500/10 via-purple-500/5 to-indigo-500/10 blur-lg"
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 0.4, 0.2, 0.4, 0] }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 2, ease: "easeInOut", times: [0, 0.25, 0.5, 0.75, 1] }}
+              transition={{ duration: 2, ease: 'easeInOut', times: [0, 0.25, 0.5, 0.75, 1] }}
             />
             <motion.div
-              className="absolute inset-0 -z-5 rounded-lg border border-white/10 pointer-events-none"
+              className="pointer-events-none absolute inset-0 -z-5 rounded-lg border border-white/10"
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.6 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             />
             <motion.div
-              className="absolute top-6 left-6 w-24 h-8 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 blur-md pointer-events-none"
+              className="pointer-events-none absolute top-6 left-6 h-8 w-24 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 blur-md"
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 0.5, 0.3, 0.5, 0] }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 2.2, ease: "easeInOut", times: [0, 0.25, 0.5, 0.75, 1] }}
+              transition={{ duration: 2.2, ease: 'easeInOut', times: [0, 0.25, 0.5, 0.75, 1] }}
             />
           </>
         )}
       </AnimatePresence>
 
       {/* Контейнер для иконки */}
-      <div className="h-48 bg-zinc-700 rounded-lg mb-4 flex items-center justify-center">
-        {icon} 
+      <div className="mb-4 flex h-48 items-center justify-center rounded-lg bg-zinc-700">
+        {icon}
       </div>
-      
+
       {/* Контент карточки */}
       <div className="relative z-10">
-        <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
-        <p className="text-zinc-300 text-sm mb-4">{description}</p>
-        <div className="mt-auto flex justify-between items-center pt-4 border-t border-zinc-700/50">
+        <h3 className="mb-2 text-xl font-semibold text-white">{title}</h3>
+        <p className="mb-4 text-sm text-zinc-300">{description}</p>
+        <div className="mt-auto flex items-center justify-between border-t border-zinc-700/50 pt-4">
           <span className="text-sm text-zinc-400">{category}</span>
-          <span className="text-sm font-medium text-sky-400 hover:text-sky-300 cursor-pointer">{detailsText}</span>
+          <span className="cursor-pointer text-sm font-medium text-sky-400 hover:text-sky-300">
+            {detailsText}
+          </span>
         </div>
       </div>
     </motion.div>

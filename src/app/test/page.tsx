@@ -2,51 +2,51 @@ import Image from 'next/image';
 
 export default function TestPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background min-h-screen">
       {/* Hero section with Tailwind CSS classes */}
-      <section className="container mx-auto py-16 px-4">
-        <h1 className="text-4xl font-bold text-primary mb-6">Тестовая страница Tailwind CSS v4</h1>
-        <p className="text-lg text-foreground mb-8">
+      <section className="container mx-auto px-4 py-16">
+        <h1 className="text-primary mb-6 text-4xl font-bold">Тестовая страница Tailwind CSS v4</h1>
+        <p className="text-foreground mb-8 text-lg">
           Эта страница тестирует работу Tailwind CSS v4 с Next.js 15.3.0
         </p>
-        
+
         {/* Карточки с разными цветами и стилями */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
-          <div className="bg-primary text-primary-foreground p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-2">Primary Card</h3>
+        <div className="my-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="bg-primary text-primary-foreground rounded-lg p-6 shadow-lg">
+            <h3 className="mb-2 text-xl font-semibold">Primary Card</h3>
             <p>Это карточка с основным цветом</p>
           </div>
-          
-          <div className="bg-secondary text-secondary-foreground p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-2">Secondary Card</h3>
+
+          <div className="bg-secondary text-secondary-foreground rounded-lg p-6 shadow-lg">
+            <h3 className="mb-2 text-xl font-semibold">Secondary Card</h3>
             <p>Это карточка со вторичным цветом</p>
           </div>
-          
-          <div className="bg-accent text-accent-foreground p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-2">Accent Card</h3>
+
+          <div className="bg-accent text-accent-foreground rounded-lg p-6 shadow-lg">
+            <h3 className="mb-2 text-xl font-semibold">Accent Card</h3>
             <p>Это карточка с акцентным цветом</p>
           </div>
         </div>
-        
+
         {/* Секция с кнопками разных стилей */}
-        <div className="flex flex-wrap gap-4 mb-8">
-          <button className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:opacity-90 transition-opacity">
+        <div className="mb-8 flex flex-wrap gap-4">
+          <button className="bg-primary text-primary-foreground rounded-md px-4 py-2 transition-opacity hover:opacity-90">
             Primary Button
           </button>
-          <button className="bg-secondary text-secondary-foreground px-4 py-2 rounded-md hover:opacity-90 transition-opacity">
+          <button className="bg-secondary text-secondary-foreground rounded-md px-4 py-2 transition-opacity hover:opacity-90">
             Secondary Button
           </button>
-          <button className="bg-destructive text-destructive-foreground px-4 py-2 rounded-md hover:opacity-90 transition-opacity">
+          <button className="bg-destructive text-destructive-foreground rounded-md px-4 py-2 transition-opacity hover:opacity-90">
             Destructive Button
           </button>
-          <button className="bg-muted text-muted-foreground px-4 py-2 rounded-md hover:opacity-90 transition-opacity">
+          <button className="bg-muted text-muted-foreground rounded-md px-4 py-2 transition-opacity hover:opacity-90">
             Muted Button
           </button>
         </div>
-        
+
         {/* Тестирование утилитарных классов размеров, отступов и т.д. */}
         <div className="space-y-4">
-          <div className="p-4 bg-muted rounded-lg">
+          <div className="bg-muted rounded-lg p-4">
             <p className="text-xs">Text Extra Small</p>
             <p className="text-sm">Text Small</p>
             <p className="text-base">Text Base</p>
@@ -55,15 +55,15 @@ export default function TestPage() {
             <p className="text-2xl">Text 2XL</p>
             <p className="text-3xl">Text 3XL</p>
           </div>
-          
-          <div className="flex gap-4 flex-wrap">
-            <div className="size-16 bg-primary rounded-full flex items-center justify-center text-primary-foreground">
+
+          <div className="flex flex-wrap gap-4">
+            <div className="bg-primary text-primary-foreground flex size-16 items-center justify-center rounded-full">
               Circle
             </div>
-            <div className="size-16 bg-secondary rounded-lg flex items-center justify-center text-secondary-foreground">
+            <div className="bg-secondary text-secondary-foreground flex size-16 items-center justify-center rounded-lg">
               Square
             </div>
-            <div className="w-32 h-16 bg-accent rounded-md flex items-center justify-center text-accent-foreground">
+            <div className="bg-accent text-accent-foreground flex h-16 w-32 items-center justify-center rounded-md">
               Rectangle
             </div>
           </div>

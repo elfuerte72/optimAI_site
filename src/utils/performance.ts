@@ -5,7 +5,9 @@
  * @param callback The function to throttle
  * @returns A throttled function that executes at most once per animation frame
  */
-export const rafThrottle = <T extends (...args: any[]) => any>(callback: T): ((...args: Parameters<T>) => void) => {
+export const rafThrottle = <T extends (...args: any[]) => any>(
+  callback: T
+): ((...args: Parameters<T>) => void) => {
   let requestId: number | null = null;
 
   return (...args: Parameters<T>) => {

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 interface PackageItem {
   name: string;
-  description: string; 
+  description: string;
 }
 
 interface PackagesCardProps {
@@ -25,7 +25,7 @@ const PackagesCard: React.FC<PackagesCardProps> = ({ packages }) => {
       </div>
     </StyledWrapper>
   );
-}
+};
 
 const StyledWrapper = styled.div`
   display: flex; /* Added to center the card if needed */
@@ -76,7 +76,9 @@ const StyledWrapper = styled.div`
     opacity: 0;
     max-height: 0;
     overflow: hidden;
-    transition: opacity 0.4s ease-in-out 0.1s, max-height 0.4s ease-in-out 0.1s; /* Delay appearance */
+    transition:
+      opacity 0.4s ease-in-out 0.1s,
+      max-height 0.4s ease-in-out 0.1s; /* Delay appearance */
     white-space: normal;
     word-break: break-word;
     line-height: 1.4;
@@ -92,7 +94,8 @@ const StyledWrapper = styled.div`
   }
 
   /* Original span styles, now applied to .package-name by default */
-  .card p span { /* This will now primarily style .package-name, details are overridden */
+  .card p span {
+    /* This will now primarily style .package-name, details are overridden */
     padding: 0.4em; /* Increased padding slightly */
     text-align: center;
     transform: rotate(0deg); /* Start with no rotation for better readability */
@@ -108,12 +111,13 @@ const StyledWrapper = styled.div`
     word-break: break-word; /* Break words to prevent overflow */
   }
 
-  .card p:hover .package-name { /* Style for name on hover if different from details */
+  .card p:hover .package-name {
+    /* Style for name on hover if different from details */
     transform: rotate(0deg); /* Keep rotation at 0 on hover */
   }
 
   .card p::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;

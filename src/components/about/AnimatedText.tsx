@@ -34,7 +34,7 @@ const AnimatedText: React.FC<AnimatedTextProps> = ({
 
     const container = containerRef.current;
     const wordElements = container.querySelectorAll('.animated-word');
-    
+
     // Устанавливаем начальные стили
     gsap.set(container, { opacity: 1 });
     gsap.set(wordElements, { opacity: 0, y: 20 });
@@ -45,7 +45,7 @@ const AnimatedText: React.FC<AnimatedTextProps> = ({
         trigger: container,
         start: 'top bottom-=100px',
         toggleActions: 'play none none none',
-      }
+      },
     });
 
     // Анимируем каждое слово с задержкой
@@ -55,7 +55,7 @@ const AnimatedText: React.FC<AnimatedTextProps> = ({
       duration: 0.6,
       stagger: staggerDelay,
       ease: 'power3.out',
-      delay: delay
+      delay: delay,
     });
 
     return () => {
@@ -67,13 +67,10 @@ const AnimatedText: React.FC<AnimatedTextProps> = ({
   }, [delay, staggerDelay]);
 
   return (
-    <div 
-      ref={containerRef} 
-      className={`overflow-hidden opacity-0 ${className}`}
-    >
+    <div ref={containerRef} className={`overflow-hidden opacity-0 ${className}`}>
       <div className={`${fontSize} ${fontWeight} ${textColor} leading-relaxed`}>
         {words.map((word, index) => (
-          <span key={`word-${index}`} className="animated-word inline-block mx-1 first:ml-0">
+          <span key={`word-${index}`} className="animated-word mx-1 inline-block first:ml-0">
             {word}
           </span>
         ))}

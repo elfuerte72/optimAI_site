@@ -14,8 +14,8 @@ import eventBus from '@/lib/eventBus';
 // Create a context to expose the processAndSendMessage function
 export const ChatContext = createContext<{
   processAndSendMessage: (text: string) => Promise<void>;
-}>({ 
-  processAndSendMessage: async () => {} 
+}>({
+  processAndSendMessage: async () => {},
 });
 
 interface Message {
@@ -35,19 +35,19 @@ export default function ChatSection() {
   const [isTyping, setIsTyping] = useState(false);
   const [apiAvailable, setApiAvailable] = useState<boolean | null>(null);
   // Удалена функция автоскроллинга по запросу пользователя
-  
+
   // Проверка доступности API при монтировании компонента
   useEffect(() => {
     if (apiAvailable === null) {
       checkApiHealth()
-        .then(available => {
+        .then((available) => {
           setApiAvailable(available);
           // Приветственное сообщение удалено по запросу пользователя
         })
         .catch(() => setApiAvailable(false));
     }
   }, [apiAvailable]);
-  
+
   // Автоскроллинг удален по запросу пользователя
 
   const processAndSendMessage = async (text: string) => {
@@ -63,13 +63,13 @@ export default function ChatSection() {
       text: text,
       sender: 'user',
     };
-    
+
     // Добавляем сообщение пользователя
     setMessages((prevMessages) => [...prevMessages, userMessage]);
-    
+
     // Показываем индикатор набора текста
     setIsTyping(true);
-    
+
     try {
       // Если API недоступен, используем локальный ответ
       if (!apiAvailable) {
@@ -79,30 +79,30 @@ export default function ChatSection() {
             text: 'Извините, сервер бота в данный момент недоступен. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.',
             sender: 'bot',
           };
-          
+
           setMessages((prevMessages) => [...prevMessages, botResponse]);
           setIsTyping(false);
         }, 1000);
         return;
       }
-      
+
       // Формируем историю сообщений для API
       const apiMessages: ApiMessage[] = messages
-        .filter(msg => msg.sender === 'user' || msg.sender === 'bot')
-        .map(msg => ({
+        .filter((msg) => msg.sender === 'user' || msg.sender === 'bot')
+        .map((msg) => ({
           role: msg.sender === 'user' ? 'user' : 'assistant',
-          content: msg.text
+          content: msg.text,
         }));
-      
+
       // Добавляем текущее сообщение пользователя
       apiMessages.push({
         role: 'user',
-        content: text
+        content: text,
       });
 
       // Отправляем запрос к API
       const response = await sendMessage(apiMessages);
-      
+
       if (response && response.message) {
         // Добавляем ответ от бота
         const botMessage: Message = {
@@ -110,7 +110,7 @@ export default function ChatSection() {
           text: response.message.content,
           sender: 'bot',
         };
-        
+
         setMessages((prevMessages) => [...prevMessages, botMessage]);
       } else {
         // В случае проблем с API
@@ -119,18 +119,18 @@ export default function ChatSection() {
           text: 'Извините, возникла ошибка при обработке запроса. Пожалуйста, попробуйте еще раз позже.',
           sender: 'bot',
         };
-        
+
         setMessages((prevMessages) => [...prevMessages, errorMessage]);
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      
+
       const errorMessage: Message = {
         id: `bot-${Date.now()}`,
         text: 'Извините, возникла ошибка при отправке сообщения. Пожалуйста, проверьте ваше соединение и попробуйте снова.',
         sender: 'bot',
       };
-      
+
       setMessages((prevMessages) => [...prevMessages, errorMessage]);
     } finally {
       setIsTyping(false);
@@ -143,17 +143,17 @@ export default function ChatSection() {
     processAndSendMessage(inputValue);
     setInputValue('');
   };
-  
+
   // Подписываемся на события отправки сообщений из кнопок
   useEffect(() => {
     const handleQuickQuestion = (question: string) => {
       console.log('Получено сообщение от кнопки:', question);
       processAndSendMessage(question);
     };
-    
+
     // Подписываемся на события от Event Bus
     eventBus.on('send_message', handleQuickQuestion);
-    
+
     // Отписываемся при уничтожении компонента
     return () => {
       eventBus.off('send_message', handleQuickQuestion);
@@ -168,24 +168,28 @@ export default function ChatSection() {
 
   return (
     <ChatContext.Provider value={{ processAndSendMessage }}>
-      <section className="w-full max-w-4xl mx-auto">
-        <Card className={cn(
-          "mt-4 mb-8 mx-auto bg-black border-0 overflow-hidden rounded-xl shadow-lg",
-          messages.length > 0 ? "chat-dialog-expanded" : "chat-dialog"
-        )}>
+      <section className="mx-auto w-full max-w-4xl">
+        <Card
+          className={cn(
+            'mx-auto mt-4 mb-8 overflow-hidden rounded-xl border-0 bg-black shadow-lg',
+            messages.length > 0 ? 'chat-dialog-expanded' : 'chat-dialog'
+          )}
+        >
           {isChatOpen && (
-            <ScrollArea className={cn(
-              "flex-grow p-4 sm:p-6 border-b border-neutral-800",
-              messages.length > 0 ? "chat-scroll-area-expanded" : "chat-scroll-area"
-            )}>
-              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <ScrollArea
+              className={cn(
+                'flex-grow border-b border-neutral-800 p-4 sm:p-6',
+                messages.length > 0 ? 'chat-scroll-area-expanded' : 'chat-scroll-area'
+              )}
+            >
+              <div className="flex-1 space-y-4 overflow-y-auto p-4">
                 {messages.map((msg) => (
                   <div
                     key={msg.id}
                     className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`rounded-lg px-4 py-2 max-w-[80%] ${msg.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-neutral-800 text-white'}`}
+                      className={`max-w-[80%] rounded-lg px-4 py-2 ${msg.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-neutral-800 text-white'}`}
                     >
                       {msg.text}
                     </div>
@@ -193,11 +197,17 @@ export default function ChatSection() {
                 ))}
                 {isTyping && (
                   <div className="flex justify-start">
-                    <div className="rounded-lg px-4 py-2 bg-neutral-800 text-white">
+                    <div className="rounded-lg bg-neutral-800 px-4 py-2 text-white">
                       <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                        <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400"></div>
+                        <div
+                          className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
+                          style={{ animationDelay: '0.2s' }}
+                        ></div>
+                        <div
+                          className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
+                          style={{ animationDelay: '0.4s' }}
+                        ></div>
                       </div>
                     </div>
                   </div>
@@ -208,8 +218,8 @@ export default function ChatSection() {
           )}
 
           {/* Форма отправки */}
-          <div className="p-4 sm:p-6 bg-black border-0">
-            <form 
+          <div className="border-0 bg-black p-4 sm:p-6">
+            <form
               onSubmit={(e: FormEvent) => {
                 e.preventDefault();
                 if (inputValue.trim()) {
@@ -219,10 +229,12 @@ export default function ChatSection() {
               }}
               className="flex w-full items-center space-x-2 border-0"
             >
-              <div className="flex-grow mr-2">
-                <StyledInput 
+              <div className="mr-2 flex-grow">
+                <StyledInput
                   value={inputValue}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setInputValue(e.target.value)
+                  }
                   onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                       e.preventDefault();
@@ -240,7 +252,7 @@ export default function ChatSection() {
                 variant="outline"
                 size="icon"
                 disabled={!inputValue.trim()}
-                className="border-none bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:text-white focus-visible:ring-white shrink-0 rounded-lg transition-all duration-300 ease-in-out"
+                className="shrink-0 rounded-lg border-none bg-gradient-to-r from-blue-600 to-purple-600 text-white transition-all duration-300 ease-in-out hover:from-blue-500 hover:to-purple-500 hover:text-white focus-visible:ring-white"
               >
                 <Send className="h-5 w-5" />
               </Button>

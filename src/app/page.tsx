@@ -27,8 +27,8 @@ const sectionVariants: Variants = {
 };
 
 // Варианты для анимации "печатающегося" текста
-const heroLine1Words = "Ваш проводник в мир".split(" ");
-const heroLine2Words = "искусственного интеллекта".split(" ");
+const heroLine1Words = 'Ваш проводник в мир'.split(' ');
+const heroLine2Words = 'искусственного интеллекта'.split(' ');
 
 const wordVariants: Variants = {
   hidden: { opacity: 0, y: 10 },
@@ -46,29 +46,26 @@ const wordVariants: Variants = {
 // Удалена анимация Light Streaks в пользу нового компонента
 
 export default function HomePage() {
-
   return (
-    <div className="flex flex-col min-h-screen bg-black text-white">
+    <div className="flex min-h-screen flex-col bg-black text-white">
       <Navbar />
 
       {/* Hero Section */}
       <motion.section
-        className="relative flex flex-col items-center justify-center text-center px-4 sm:px-6 lg:px-8 py-16 md:py-20 lg:py-24 overflow-hidden bg-black"
+        className="relative flex flex-col items-center justify-center overflow-hidden bg-black px-4 py-16 text-center sm:px-6 md:py-20 lg:px-8 lg:py-24"
         initial="hidden"
         animate="visible"
         variants={sectionVariants}
       >
         <div className="relative z-10 flex flex-col items-center">
           <LogoAnimation />
-          
-          <motion.h1 
-            className="text-2xl sm:text-3xl md:text-4xl font-normal tracking-tight text-white font-press-start-hero text-center"
-          >
+
+          <motion.h1 className="font-press-start-hero text-center text-2xl font-normal tracking-tight text-white sm:text-3xl md:text-4xl">
             <div>
               {heroLine1Words.map((word, i) => (
                 <motion.span
                   key={`l1-${word}-${i}`}
-                  className="inline-block mr-3 md:mr-4"
+                  className="mr-3 inline-block md:mr-4"
                   variants={wordVariants}
                   initial="hidden"
                   animate="visible"
@@ -82,7 +79,7 @@ export default function HomePage() {
               {heroLine2Words.map((word, i) => (
                 <motion.span
                   key={`l2-${word}-${i}`}
-                  className="inline-block mr-3 md:mr-4"
+                  className="mr-3 inline-block md:mr-4"
                   variants={wordVariants}
                   initial="hidden"
                   animate="visible"
@@ -98,7 +95,7 @@ export default function HomePage() {
 
       {/* Chat Section */}
       <ChatSection />
-      
+
       {/* Кнопки быстрых вопросов */}
       <QuickQuestionButtons />
 
@@ -111,37 +108,38 @@ export default function HomePage() {
 
       {/* Testimonials Section */}
       <motion.section
-        className="py-12 md:py-16 bg-black text-center px-4 sm:px-6 lg:px-8"
+        className="bg-black px-4 py-12 text-center sm:px-6 md:py-16 lg:px-8"
         initial="hidden"
         animate="visible"
         variants={sectionVariants}
       >
-        <div className="max-w-6xl mx-auto">
-          <h2 
+        <div className="mx-auto max-w-6xl">
+          <h2
             ref={(el) => {
               if (!el) return;
-              
+
               // Создаем анимацию с триггером при скроллинге
               setTimeout(() => {
                 // Создаем анимацию с триггером при скроллинге
-                gsap.fromTo(el, 
+                gsap.fromTo(
+                  el,
                   { opacity: 0, y: 30 }, // начальное состояние
-                  { 
-                    opacity: 1, 
-                    y: 0, 
+                  {
+                    opacity: 1,
+                    y: 0,
                     duration: 0.8,
-                    ease: "power3.out",
+                    ease: 'power3.out',
                     scrollTrigger: {
                       trigger: el,
-                      start: "top 80%",
-                      toggleActions: "play none none reverse",
-                      markers: false
-                    }
+                      start: 'top 80%',
+                      toggleActions: 'play none none reverse',
+                      markers: false,
+                    },
                   }
                 );
               }, 100);
             }}
-            className={`text-2xl sm:text-3xl font-bold tracking-tight leading-relaxed bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 ${pacificoFont.className} mb-4 md:mb-6 py-2`}
+            className={`bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 bg-clip-text text-2xl leading-relaxed font-bold tracking-tight text-transparent sm:text-3xl ${pacificoFont.className} mb-4 py-2 md:mb-6`}
           >
             Отзывы наших клиентов
           </h2>
@@ -150,12 +148,12 @@ export default function HomePage() {
       </motion.section>
 
       {/* CTA Section - Moved to bottom of page before footer */}
-      <section className="py-12 md:py-16 bg-black text-center">
+      <section className="bg-black py-12 text-center md:py-16">
         <Link
           href="https://t.me/optimaai_tg"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-gray-400 hover:text-white font-medium transition-colors duration-300 text-xl px-6 py-3"
+          className="px-6 py-3 text-xl font-medium text-gray-400 transition-colors duration-300 hover:text-white"
         >
           Связаться с нами
         </Link>
@@ -164,4 +162,4 @@ export default function HomePage() {
       {/* Footer будет добавлен автоматически из RootLayout */}
     </div>
   );
-} 
+}

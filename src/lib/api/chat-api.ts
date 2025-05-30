@@ -25,14 +25,14 @@ export interface ChatResponse {
 
 /**
  * Базовый URL API бэкенда
- * 
+ *
  * В продакшене нужно использовать относительный URL или URL с правильным доменом
  */
 const API_BASE_URL = typeof window !== 'undefined' ? '/api' : 'http://localhost:8000';
 
 /**
  * Отправка сообщения боту и получение ответа
- * 
+ *
  * @param messages История сообщений
  * @param useCache Использовать кэширование
  * @returns Ответ от бота
@@ -72,7 +72,7 @@ export async function sendMessage(
 
 /**
  * Проверка доступности API
- * 
+ *
  * @returns true, если API доступен
  */
 export async function checkApiHealth(): Promise<boolean> {
@@ -80,7 +80,7 @@ export async function checkApiHealth(): Promise<boolean> {
     // Временное решение для тестирования: считаем API доступным
     // В продакшене нужно реализовать проксирование через Next.js API Routes
     return true;
-    
+
     /* Настоящая проверка будет выглядеть так:
     const response = await fetch(`${API_BASE_URL}/health`, {
       method: 'GET',

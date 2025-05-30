@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React from 'react';
 import styled from 'styled-components';
@@ -23,7 +23,7 @@ const PriceButton: React.FC<PriceButtonProps> = ({ href, download }) => {
       </a>
     </StyledWrapper>
   );
-}
+};
 
 const StyledWrapper = styled.div`
   display: flex; // Added to center the button if the wrapper is used for layout
@@ -44,14 +44,9 @@ const StyledWrapper = styled.div`
     transition: 0.5s;
     animation: gradient_301 5s ease infinite;
     border: double 4px transparent;
-    background-image: linear-gradient(#212121, #212121),
-      linear-gradient(
-        137.48deg,
-        #ffdb3b 10%,
-        #fe53bb 45%,
-        #8f51ea 67%,
-        #0044ff 87%
-      );
+    background-image:
+      linear-gradient(#212121, #212121),
+      linear-gradient(137.48deg, #ffdb3b 10%, #fe53bb 45%, #8f51ea 67%, #0044ff 87%);
     background-origin: border-box;
     background-clip: content-box, border-box;
     text-decoration: none; // Remove underline from <a> tag
@@ -70,7 +65,7 @@ const StyledWrapper = styled.div`
 
   strong {
     z-index: 2;
-    font-family: "Avalors Personal Use"; /* Make sure this font is available */
+    font-family: 'Avalors Personal Use'; /* Make sure this font is available */
     font-size: 16px; /* Увеличиваем размер шрифта */
     font-weight: bold; /* Делаем шрифт жирнее */
     letter-spacing: 3px; /* Можно немного уменьшить межбуквенное расстояние, если текст стал слишком широким */
@@ -128,7 +123,7 @@ const StyledWrapper = styled.div`
   }
 
   #stars::after {
-    content: "";
+    content: '';
     position: absolute;
     top: -10rem;
     left: -100rem;
@@ -143,7 +138,7 @@ const StyledWrapper = styled.div`
   }
 
   #stars::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: -50%;

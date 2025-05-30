@@ -40,13 +40,13 @@ export default {
     ['bg-card-foreground', { backgroundColor: 'hsl(var(--card-foreground))' }],
     ['border-border', { borderColor: 'hsl(var(--border))' }],
     ['outline-ring', { outlineColor: 'hsl(var(--ring))' }],
-    
+
     // Определение border-radius через переменные
     ['rounded-lg', { borderRadius: 'var(--radius)' }],
     ['rounded-md', { borderRadius: 'calc(var(--radius) - 2px)' }],
     ['rounded-sm', { borderRadius: 'calc(var(--radius) - 4px)' }],
   ],
-  
+
   // Определение темной темы через CSS-переменные
   theme: {
     // Определение контейнера
@@ -58,7 +58,7 @@ export default {
       },
     },
   },
-  
+
   // Анимации для Tailwind CSS v4
   animation: {
     keyframes: {
@@ -72,10 +72,10 @@ export default {
       },
     },
     durations: {
-      'accordion': '0.2s',
+      accordion: '0.2s',
     },
     timingFns: {
-      'accordion': 'ease-out',
+      accordion: 'ease-out',
     },
     properties: {
       'accordion-down': {
@@ -90,7 +90,7 @@ export default {
       },
     },
   },
-  
+
   // Tailwind v4 больше не использует plugins так, как раньше
   // Вместо этого используется встроенная функциональность
   darkMode: 'class',

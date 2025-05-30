@@ -16,8 +16,8 @@ interface AccordionProps {
 export default function Accordion({
   buttonText,
   children,
-  buttonClassName = "text-lg font-semibold text-sky-400 hover:text-sky-300 transition-colors duration-300 py-3 px-6 rounded-lg border border-sky-500/50 hover:border-sky-400/80 focus:outline-none focus:ring-2 focus:ring-sky-500/50 focus:ring-offset-2 focus:ring-offset-black flex items-center justify-center group",
-  contentClassName = "mt-4 p-6 bg-zinc-800/50 border border-zinc-700 rounded-lg shadow-md",
+  buttonClassName = 'text-lg font-semibold text-sky-400 hover:text-sky-300 transition-colors duration-300 py-3 px-6 rounded-lg border border-sky-500/50 hover:border-sky-400/80 focus:outline-none focus:ring-2 focus:ring-sky-500/50 focus:ring-offset-2 focus:ring-offset-black flex items-center justify-center group',
+  contentClassName = 'mt-4 p-6 bg-zinc-800/50 border border-zinc-700 rounded-lg shadow-md',
   initiallyOpen = false,
 }: AccordionProps) {
   const [isOpen, setIsOpen] = useState(initiallyOpen);
@@ -26,14 +26,10 @@ export default function Accordion({
 
   return (
     <div className="w-full">
-      <button
-        onClick={toggleOpen}
-        className={`${buttonClassName} w-full`}
-        aria-expanded={isOpen}
-      >
+      <button onClick={toggleOpen} className={`${buttonClassName} w-full`} aria-expanded={isOpen}>
         <span>{buttonText}</span>
         <ChevronDownIcon
-          className={`ml-2 h-5 w-5 text-sky-400 group-hover:text-sky-300 transition-transform duration-300 ${
+          className={`ml-2 h-5 w-5 text-sky-400 transition-transform duration-300 group-hover:text-sky-300 ${
             isOpen ? 'rotate-180' : ''
           }`}
         />

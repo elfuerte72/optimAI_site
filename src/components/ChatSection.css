@@ -15,3 +15,26 @@
   -webkit-appearance: none !important;
   appearance: none !important;
 }
+
+/* Стили для чат-диалога */
+.chat-dialog {
+  max-width: 400px;
+  width: 100%;
+  transition: max-width 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+
+/* Расширенный размер для чат-диалога с сообщениями */
+.chat-dialog-expanded {
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Стили для области прокрутки чата */
+.chat-scroll-area {
+  height: 400px;
+}
+
+/* Расширенная область прокрутки для чата с сообщениями */
+.chat-scroll-area-expanded {
+  height: 500px;
+}

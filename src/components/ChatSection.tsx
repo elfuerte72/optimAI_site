@@ -169,9 +169,15 @@ export default function ChatSection() {
   return (
     <ChatContext.Provider value={{ processAndSendMessage }}>
       <section className="w-full max-w-4xl mx-auto">
-        <Card className="mt-4 mb-8 mx-auto bg-black border-0 overflow-hidden rounded-xl shadow-lg max-w-md">
+        <Card className={cn(
+          "mt-4 mb-8 mx-auto bg-black border-0 overflow-hidden rounded-xl shadow-lg",
+          messages.length > 0 ? "chat-dialog-expanded" : "chat-dialog"
+        )}>
           {isChatOpen && (
-            <ScrollArea className="flex-grow h-96 p-4 sm:p-6 border-b border-neutral-800">
+            <ScrollArea className={cn(
+              "flex-grow p-4 sm:p-6 border-b border-neutral-800",
+              messages.length > 0 ? "chat-scroll-area-expanded" : "chat-scroll-area"
+            )}>
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {messages.map((msg) => (
                   <div

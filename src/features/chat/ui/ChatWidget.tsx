@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid';
-import { sendMessage, Message as ApiMessage, checkApiHealth } from '@/lib/api/chat-api';
+import { sendMessage, Message as ApiMessage, checkApiHealth } from '../api/sendMessage';
 
 interface Message {
   id: number;

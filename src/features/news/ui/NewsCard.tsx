@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
-import { NewsItem } from './NewsTypes';
+import { NewsItem } from '@entities/news';
 
 interface NewsCardProps {
   news: NewsItem;

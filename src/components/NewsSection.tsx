@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { motion, Variants } from 'framer-motion';
-import { pacificoFont } from '@/lib/fonts';
+import { pacificoFont } from '@shared/lib';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Button } from '@/components/ui/button';

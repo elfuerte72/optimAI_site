@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { fontSans, notoSansJP } from '@/lib/fonts';
+import { fontSans, notoSansJP } from '@shared/lib';
 import Accordion from '@/components/Accordion';
 import {
   Card,

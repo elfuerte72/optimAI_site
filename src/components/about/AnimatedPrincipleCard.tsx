@@ -2,7 +2,7 @@
 
 import React, { useRef, forwardRef } from 'react';
 import { LucideIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@shared/lib';
 import { gsap } from 'gsap'; // Import GSAP
 import { useGSAP } from '@gsap/react'; // Import useGSAP
 

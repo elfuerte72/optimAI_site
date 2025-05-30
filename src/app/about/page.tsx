@@ -13,7 +13,7 @@ import { motion, AnimatePresence, Variants } from 'framer-motion';
 import FlipCard from '@/components/about/FlipCard';
 import FlipCardStyles from '@/components/about/FlipCardStyles';
 import Navbar from '@/components/layout/Navbar';
-import { pacificoFont, pressStartFont, robotoCondensedFont } from '@/lib/fonts';
+import { pacificoFont, pressStartFont, robotoCondensedFont } from '@shared/lib';
 import AnimatedText from '@/components/about/AnimatedText';
 
 gsap.registerPlugin(ScrollTrigger);

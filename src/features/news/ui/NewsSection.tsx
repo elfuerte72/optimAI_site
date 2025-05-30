@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import { motion, Variants } from 'framer-motion';
-import { pacificoFont } from '@/lib/fonts';
+import { pacificoFont } from '@shared/lib';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { NewsCard } from './NewsCard';
-import { newsItems } from './NewsData';
+import { newsItems } from '@entities/newsData';
 
 // Регистрируем плагин ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);

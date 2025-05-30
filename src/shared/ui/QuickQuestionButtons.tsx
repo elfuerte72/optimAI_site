@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import StyledButton from './StyledButton';
-import eventBus from '@/lib/eventBus';
+import { eventBus } from '@features/chat';
 
 export default function QuickQuestionButtons() {
   const [clickedButton, setClickedButton] = useState<string | null>(null);

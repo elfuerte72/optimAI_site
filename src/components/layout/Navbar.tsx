@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { rafThrottle } from '@/utils/performance';
+import { rafThrottle } from '@shared/lib';
+import { SOCIAL_LINKS } from '@shared/config';
 import '@/styles/navbar.css';
 import { motion } from 'framer-motion';
 
@@ -149,7 +150,7 @@ const Navbar = () => {
         </nav>
 
         <a
-          href="https://t.me/optimaai_tg"
+          href={SOCIAL_LINKS.telegram}
           target="_blank"
           rel="noopener noreferrer"
           className="group relative mb-8"

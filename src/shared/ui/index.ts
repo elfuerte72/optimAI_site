@@ -21,3 +21,8 @@ export { default as UiverseCard } from './UiverseCard';
 export { default as CustomStyledButton } from './CustomStyledButton';
 export { default as PriceButton } from './PriceButton';
 export { default as BrainIcon } from './BrainIcon';
+
+// Динамические обертки для оптимизации
+export { default as LogoAnimationWrapper } from './LogoAnimationWrapper';
+export { default as UiverseCardWrapper } from './UiverseCardWrapper';
+export { default as FadeInSectionWrapper } from './FadeInSectionWrapper';

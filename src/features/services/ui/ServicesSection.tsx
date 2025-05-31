@@ -1,82 +1,34 @@
-'use client';
+import React from 'react';
+import dynamic from 'next/dynamic';
 
-import type React from 'react';
-
-import { useState } from 'react';
-import { BookOpen, Cog, Bot } from 'lucide-react';
-import { ServiceCard } from '../';
-
-type ServiceItem = {
-  id: string;
-  title: string;
-  icon: React.ReactNode;
-  details: string[];
-};
-
-const services: ServiceItem[] = [
-  {
-    id: 'education',
-    title: 'Обучение',
-    icon: (
-      <BookOpen className="h-8 w-8 text-white transition-all duration-500 group-hover:scale-110" />
-    ),
-    details: [
-      'Форматы: Prompting / Метапромптинг',
-      'Формат: онлайн/офлайн, индивидуальные и групповые занятия',
-      'Ценность: навык эффективной работы с ИИ, экономия времени, повышение продуктивности',
-    ],
-  },
-  {
-    id: 'automation',
-    title: 'Автоматизация',
-    icon: <Cog className="h-8 w-8 text-white transition-all duration-500 group-hover:scale-110" />,
-    details: [
-      'Внедрение ИИ в CRM, Notion, таблицы, мессенджеры и др.',
-      'Адаптация под текущую систему клиента',
-      'Постподдержка и обучение',
-    ],
-  },
-  {
-    id: 'agents',
-    title: 'Создание агентов',
-    icon: <Bot className="h-8 w-8 text-white transition-all duration-500 group-hover:scale-110" />,
-    details: [
-      'ИИ-ассистенты и кастомные LLM',
-      'Развёртывание локально (на ресурсах клиента) или через Яндекс/Сбер/другое',
-      'Полный цикл: разработка, интеграция, обучение, поддержка',
-    ],
-  },
-];
-
-export default function ServicesSection() {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-
-  const toggleDetails = (id: string) => {
-    setExpandedId(expandedId === id ? null : id);
-  };
-
-  return (
+// Динамический импорт клиентского компонента
+const ClientServicesSection = dynamic(() => import('./ClientServicesSection'), {
+  ssr: false,
+  loading: () => (
     <section className="bg-black px-4 py-20 md:px-8">
       <div className="mx-auto max-w-7xl">
         <h2 className="mb-12 text-center text-4xl font-light tracking-wide text-gray-300">
           Наши услуги
         </h2>
-
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((service, index) => (
-            <ServiceCard
-              key={service.id}
-              id={service.id}
-              title={service.title}
-              icon={service.icon}
-              details={service.details}
-              isExpanded={expandedId === service.id}
-              onToggle={toggleDetails}
-              index={index}
-            />
+          {[...Array(3)].map((_, index) => (
+            <div key={index} className="group relative overflow-hidden rounded-xl border border-gray-700 bg-gray-800 p-6 transition-all duration-300 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20">
+              <div className="flex items-center space-x-4">
+                <div className="h-8 w-8 bg-gray-600 rounded animate-pulse"></div>
+                <div className="h-6 w-24 bg-gray-600 rounded animate-pulse"></div>
+              </div>
+              <div className="mt-4 space-y-2">
+                <div className="h-4 bg-gray-600 rounded animate-pulse"></div>
+                <div className="h-4 bg-gray-600 rounded w-3/4 animate-pulse"></div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
     </section>
-  );
+  ),
+});
+
+export default function ServicesSection() {
+  return <ClientServicesSection />;
 }

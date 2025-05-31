@@ -1,16 +1,9 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 
 export default function Footer() {
-  // Используем useState и useEffect для избежания несоответствия SSR и CSR
-  const [currentYear, setCurrentYear] = useState(2024);
-
-  useEffect(() => {
-    setCurrentYear(new Date().getFullYear());
-  }, []);
+  // Получаем текущий год на сервере
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer className="mt-auto w-full bg-black py-12">

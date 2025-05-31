@@ -20,3 +20,4 @@ export { default as LogoAnimation } from './LogoAnimation';
 export { default as UiverseCard } from './UiverseCard';
 export { default as CustomStyledButton } from './CustomStyledButton';
 export { default as PriceButton } from './PriceButton';
+export { default as BrainIcon } from './BrainIcon';

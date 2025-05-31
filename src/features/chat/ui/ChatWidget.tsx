@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid';
 import { sendMessage, ApiMessage, checkApiHealth } from '../api/sendMessage';
+import { BrainIcon } from '@shared/ui';
 
 interface Message {
   id: number;
@@ -168,12 +169,8 @@ export default function ChatWidget({
           >
             {' '}
             {/* Added hover animation and centering */}
-            <img
-              src="/images/robot-svgrepo-com.svg"
-              alt="Открыть чат"
-              className="h-7 w-7 object-contain"
-            />{' '}
-            {/* New icon */}
+            <BrainIcon className="h-7 w-7 text-white" />
+            {/* Brain AI icon */}
           </motion.div>
         )}
       </motion.button>

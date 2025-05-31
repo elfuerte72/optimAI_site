@@ -139,7 +139,7 @@ export default function ServiceCard({
         >
           <ul className="py-4">
             {details.map((detail, i) => (
-              <li key={i} className="relative py-2 pl-6 text-sm text-gray-300">
+              <li key={i} className="relative py-2 pl-6 text-base text-gray-300">
                 <span className="absolute top-2.5 left-0 text-white">•</span>
                 {detail}
               </li>

@@ -4,7 +4,7 @@ import type React from 'react';
 
 import { useState } from 'react';
 import { BookOpen, Cog, Bot } from 'lucide-react';
-import ServiceCard from './ServiceCard';
+import { ServiceCard } from '../';
 
 type ServiceItem = {
   id: string;

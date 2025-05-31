@@ -1,6 +1,6 @@
 // Используем системный шрифт по умолчанию
 import { GeistSans } from 'geist/font/sans';
-import { Noto_Sans_JP, Pacifico, Press_Start_2P, Roboto_Condensed } from 'next/font/google';
+import { Noto_Sans_JP, Pacifico, Roboto_Condensed } from 'next/font/google';
 
 export const fontSans = GeistSans;
 
@@ -18,14 +18,6 @@ export const pacificoFont = Pacifico({
   weight: ['400'],
   display: 'swap',
   variable: '--font-pacifico',
-});
-
-// Настраиваем Press Start 2P
-export const pressStartFont = Press_Start_2P({
-  subsets: ['latin'],
-  weight: ['400'],
-  display: 'swap',
-  variable: '--font-press-start',
 });
 
 // Настраиваем Roboto Condensed

@@ -27,42 +27,52 @@ src/
 ## Слои архитектуры
 
 ### 1. App Layer (`src/app/`)
+
 - Next.js маршруты и страницы
 - Глобальные стили и конфигурация
 - API endpoints
 
 ### 2. Features Layer (`src/features/`)
+
 Изолированные фичи приложения:
 
 #### Chat Feature (`features/chat/`)
+
 - `ui/` - ChatWidget, ChatSection
 - `model/` - useChat хук, типы, eventBus
 - `api/` - sendMessage, checkApiHealth
 
 #### News Feature (`features/news/`)
+
 - `ui/` - NewsSection, NewsCard
 - `model/` - пока заглушки
 - `api/` - пока заглушки
 
 ### 3. Shared Layer (`src/shared/`)
+
 Переиспользуемые элементы:
 
 #### UI (`shared/ui/`)
+
 - StyledButton
 - StyledInput
 - QuickQuestionButtons
 
 #### Lib (`shared/lib/`)
+
 - cn (className утилита)
 - fonts (шрифты)
 - performance (оптимизации)
 - StyledComponentsRegistry
 
 #### Config (`shared/config/`)
+
 - Глобальные конфигурации (пока пусто)
 
 ### 4. Entities Layer (`src/entities/`)
+
 Доменные типы и данные:
+
 - news.ts - типы новостей
 - newsData.ts - данные новостей
 
@@ -82,18 +92,21 @@ src/
 ## Примеры использования
 
 ### Импорт компонентов чата:
+
 ```typescript
 import { ChatWidget, ChatSection } from '@features/chat';
 import { useChat } from '@features/chat';
 ```
 
 ### Импорт shared компонентов:
+
 ```typescript
 import { StyledButton, StyledInput } from '@shared/ui';
 import { cn, rafThrottle } from '@shared/lib';
 ```
 
 ### Импорт entities:
+
 ```typescript
 import { NewsItem, newsItems } from '@entities/news';
 ```

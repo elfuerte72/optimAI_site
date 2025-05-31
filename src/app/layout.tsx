@@ -5,9 +5,10 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono'; // Optional: if mono is also used from Geist
 import { ChatWidget } from '@features/chat';
 import { StyledComponentsRegistry } from '@shared/lib';
+import { QueryProvider } from './providers';
 
 // Динамический импорт Footer для оптимизации загрузки
-const Footer = dynamic(() => import('@shared/ui/Footer'), {
+const Footer = dynamic(() => import('@shared/ui').then((mod) => ({ default: mod.Footer })), {
   ssr: true,
 });
 
@@ -91,7 +92,9 @@ export default function RootLayout({
     <html lang="ru" className={`${GeistSans.variable} ${GeistMono.variable} dark`}>
       <body className="flex min-h-screen flex-col bg-black font-sans antialiased">
         <main className="flex-grow">
-          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+          <QueryProvider>
+            <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+          </QueryProvider>
         </main>
         <Footer />
         <ChatWidget />

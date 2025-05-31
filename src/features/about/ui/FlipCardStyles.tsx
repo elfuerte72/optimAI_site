@@ -8,7 +8,7 @@ interface FlipCardStylesProps {
 }
 
 const FlipCardStyles: React.FC<FlipCardStylesProps> = ({ children }) => {
-  return <StyledWrapper>{children}</StyledWrapper>;
+  return <StyledWrapper suppressHydrationWarning>{children}</StyledWrapper>;
 };
 
 const StyledWrapper = styled.div`

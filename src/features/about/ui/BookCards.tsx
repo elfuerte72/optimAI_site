@@ -12,21 +12,21 @@ const values = [
     id: 'flexibility',
     title: 'Гибкость',
     subtitle: 'Умение адаптироваться',
-    content: 'Гибкость — подстраиваемся под задачу клиента.',
+    content: '',
     color: 'from-blue-400 to-blue-600',
   },
   {
     id: 'openness',
     title: 'Открытость',
     subtitle: 'Делиться знаниями и опытом',
-    content: 'Открытость — делимся знаниями и кодом.',
+    content: '',
     color: 'from-green-400 to-green-600',
   },
   {
     id: 'innovation',
     title: 'Инновации',
     subtitle: 'Держать руку на пульсе технологических изменений в мире',
-    content: 'Движение — всегда держим руку на пульсе технологий.',
+    content: '',
     color: 'from-purple-400 to-purple-600',
   },
 ];
@@ -157,8 +157,11 @@ export function BookCards() {
                 >
                   {value.title}
                 </h3>
-                <p className="mb-4 text-xs text-white italic">{value.subtitle}</p>
-                <p className={`text-sm leading-relaxed text-white ${notoSansJapanese.className}`}>
+                <p className="mb-4 text-lg text-white italic">{value.subtitle}</p>
+                <p
+                  className={`text-sm leading-relaxed text-[#FFFFFF] ${notoSansJapanese.className}`}
+                  suppressHydrationWarning
+                >
                   {value.content}
                 </p>
               </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import TestimonialSlider, { Testimonial } from './TestimonialSlider';
+import { TestimonialSlider, Testimonial } from '../';
 
 const TestimonialSliderWrapper = () => {
   // Используем те же данные отзывов, что и в оригинальном компоненте

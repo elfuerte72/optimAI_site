@@ -143,7 +143,7 @@ const LogoAnimation = () => {
 const AboutPage: React.FC = () => {
   const pageRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
-  const principlesTitleRef = useRef<HTMLHeadingElement>(null);
+  const _principlesTitleRef = useRef<HTMLHeadingElement>(null);
   const sectionCardRefs = useRef<Array<HTMLElement | null>>([]); // Для Миссии и Команды
   const valueCardRefs = useRef<Array<HTMLDivElement | null>>([]); // Для Гибкость, Открытость, Движение
   const valuesTextRef = useRef<HTMLParagraphElement>(null);
@@ -153,7 +153,7 @@ const AboutPage: React.FC = () => {
   const addToSectionCardRefs = (el: HTMLElement | null) => {
     if (el && !sectionCardRefs.current.includes(el)) sectionCardRefs.current.push(el);
   };
-  const addToValueCardRefs = (el: HTMLDivElement | null) => {
+  const _addToValueCardRefs = (el: HTMLDivElement | null) => {
     if (el && !valueCardRefs.current.includes(el)) valueCardRefs.current.push(el);
   };
 
@@ -367,19 +367,19 @@ const AboutPage: React.FC = () => {
       {
         id: 'flexibility',
         title: 'Гибкость',
-        text: 'Подстраиваемся под задачу клиента.',
+        text: '',
         icon: <GitFork size={28} className="value-card-icon text-emerald-400" />,
       },
       {
         id: 'openness',
         title: 'Открытость',
-        text: 'Делимся знаниями и кодом.',
+        text: '',
         icon: <BookOpen size={28} className="value-card-icon text-amber-400" />,
       },
       {
         id: 'movement',
         title: 'Движение',
-        text: 'Всегда держим руку на пульсе технологий.',
+        text: '',
         icon: <TrendingUp size={28} className="value-card-icon text-rose-400" />,
       },
     ],
@@ -453,7 +453,7 @@ const AboutPage: React.FC = () => {
             {icon}
           </div>
           <h3 className="mb-2 text-xl font-semibold text-neutral-100">{title}</h3>
-          <p className="text-sm leading-relaxed text-neutral-400">{text}</p>
+          <p className="text-sm leading-relaxed text-[#FFFFFF]">{text}</p>
         </div>
       </div>
     )
@@ -520,8 +520,8 @@ const AboutPage: React.FC = () => {
                 <h3 className="mb-2 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-xl font-medium text-transparent">
                   {content.mission.title}
                 </h3>
-                <p className="mb-4 text-xs font-light text-[#FFFFFF70] italic">Наша главная цель</p>
-                <p className="text-sm leading-relaxed font-light text-[#F5F5F5]">
+
+                <p className="text-lg leading-relaxed font-light text-[#F5F5F5]">
                   Объединять людей и технологии.
                 </p>
               </div>

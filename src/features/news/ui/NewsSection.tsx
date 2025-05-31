@@ -8,7 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Button } from '@shared/ui';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-import { NewsCard } from './NewsCard';
+import { NewsCard } from '../';
 import { newsItems } from '@entities/newsData';
 
 // Регистрируем плагин ScrollTrigger

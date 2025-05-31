@@ -1,6 +1,14 @@
 'use client';
 
-import { useState, FormEvent, useEffect, useRef, createContext, useContext } from 'react';
+import {
+  useState,
+  FormEvent,
+  useEffect,
+  useRef,
+  createContext,
+  useContext,
+  useCallback,
+} from 'react';
 import { Send } from 'lucide-react';
 import { StyledInput } from '@shared/ui';
 import { cn } from '@shared/lib';
@@ -15,7 +23,7 @@ import eventBus from '../model/eventBus';
 export const ChatContext = createContext<{
   processAndSendMessage: (text: string) => Promise<void>;
 }>({
-  processAndSendMessage: async () => { },
+  processAndSendMessage: async () => {},
 });
 
 interface Message {
@@ -50,95 +58,98 @@ export default function ChatSection() {
 
   // Автоскроллинг удален по запросу пользователя
 
-  const processAndSendMessage = async (text: string) => {
-    if (text.trim() === '') return;
+  const processAndSendMessage = useCallback(
+    async (text: string) => {
+      if (text.trim() === '') return;
 
-    // Автоматически открываем чат при отправке сообщения
-    if (!isChatOpen) {
-      setIsChatOpen(true);
-    }
+      // Автоматически открываем чат при отправке сообщения
+      if (!isChatOpen) {
+        setIsChatOpen(true);
+      }
 
-    const userMessage: Message = {
-      id: `user-${Date.now()}`,
-      text: text,
-      sender: 'user',
-    };
+      const userMessage: Message = {
+        id: `user-${Date.now()}`,
+        text: text,
+        sender: 'user',
+      };
 
-    // Добавляем сообщение пользователя
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
+      // Добавляем сообщение пользователя
+      setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-    // Показываем индикатор набора текста
-    setIsTyping(true);
+      // Показываем индикатор набора текста
+      setIsTyping(true);
 
-    try {
-      // Если API недоступен, используем локальный ответ
-      if (!apiAvailable) {
-        setTimeout(() => {
-          const botResponse: Message = {
+      try {
+        // Если API недоступен, используем локальный ответ
+        if (!apiAvailable) {
+          setTimeout(() => {
+            const botResponse: Message = {
+              id: `bot-${Date.now()}`,
+              text: 'Извините, сервер бота в данный момент недоступен. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.',
+              sender: 'bot',
+            };
+
+            setMessages((prevMessages) => [...prevMessages, botResponse]);
+            setIsTyping(false);
+          }, 1000);
+          return;
+        }
+
+        // Формируем историю сообщений для API
+        const apiMessages: ApiMessage[] = messages
+          .filter((msg) => msg.sender === 'user' || msg.sender === 'bot')
+          .map((msg) => ({
+            role: msg.sender === 'user' ? 'user' : 'assistant',
+            content: msg.text,
+          }));
+
+        // Добавляем текущее сообщение пользователя
+        apiMessages.push({
+          role: 'user',
+          content: text,
+        });
+
+        // Отправляем запрос к API
+        const response = await sendMessage(apiMessages);
+
+        if (response && response.message) {
+          // Добавляем ответ от бота
+          const botMessage: Message = {
             id: `bot-${Date.now()}`,
-            text: 'Извините, сервер бота в данный момент недоступен. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.',
+            text: response.message.content,
             sender: 'bot',
           };
 
-          setMessages((prevMessages) => [...prevMessages, botResponse]);
-          setIsTyping(false);
-        }, 1000);
-        return;
-      }
+          setMessages((prevMessages) => [...prevMessages, botMessage]);
+        } else {
+          // В случае проблем с API
+          const errorMessage: Message = {
+            id: `bot-${Date.now()}`,
+            text: 'Извините, возникла ошибка при обработке запроса. Пожалуйста, попробуйте еще раз позже.',
+            sender: 'bot',
+          };
 
-      // Формируем историю сообщений для API
-      const apiMessages: ApiMessage[] = messages
-        .filter((msg) => msg.sender === 'user' || msg.sender === 'bot')
-        .map((msg) => ({
-          role: msg.sender === 'user' ? 'user' : 'assistant',
-          content: msg.text,
-        }));
+          setMessages((prevMessages) => [...prevMessages, errorMessage]);
+        }
+      } catch (error) {
+        console.error('Error sending message:', error);
 
-      // Добавляем текущее сообщение пользователя
-      apiMessages.push({
-        role: 'user',
-        content: text,
-      });
-
-      // Отправляем запрос к API
-      const response = await sendMessage(apiMessages);
-
-      if (response && response.message) {
-        // Добавляем ответ от бота
-        const botMessage: Message = {
-          id: `bot-${Date.now()}`,
-          text: response.message.content,
-          sender: 'bot',
-        };
-
-        setMessages((prevMessages) => [...prevMessages, botMessage]);
-      } else {
-        // В случае проблем с API
         const errorMessage: Message = {
           id: `bot-${Date.now()}`,
-          text: 'Извините, возникла ошибка при обработке запроса. Пожалуйста, попробуйте еще раз позже.',
+          text: 'Извините, возникла ошибка при отправке сообщения. Пожалуйста, проверьте ваше соединение и попробуйте снова.',
           sender: 'bot',
         };
 
         setMessages((prevMessages) => [...prevMessages, errorMessage]);
+      } finally {
+        setIsTyping(false);
+        // Автоскроллинг после получения ответа удален по запросу пользователя
       }
-    } catch (error) {
-      console.error('Error sending message:', error);
+    },
+    [messages, isChatOpen, apiAvailable]
+  );
 
-      const errorMessage: Message = {
-        id: `bot-${Date.now()}`,
-        text: 'Извините, возникла ошибка при отправке сообщения. Пожалуйста, проверьте ваше соединение и попробуйте снова.',
-        sender: 'bot',
-      };
-
-      setMessages((prevMessages) => [...prevMessages, errorMessage]);
-    } finally {
-      setIsTyping(false);
-      // Автоскроллинг после получения ответа удален по запросу пользователя
-    }
-  };
-
-  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const _handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     processAndSendMessage(inputValue);
     setInputValue('');

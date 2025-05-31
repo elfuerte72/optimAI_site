@@ -11,7 +11,9 @@
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md}'",
     "check-unused": "ts-prune -p tsconfig.json",
     "analyze": "ANALYZE=true next build",
-    "ci-check": "npm run lint && npm run build && npm audit --audit-level=high"
+    "ci-check": "npm run lint && npm run build && npm audit --audit-level=high",
+    "lighthouse": "node scripts/lighthouse-audit.js",
+    "lighthouse:build": "npm run build && npm run lighthouse"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -56,6 +58,8 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "lighthouse": "^12.2.1",
+    "chrome-launcher": "^1.1.2",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4",

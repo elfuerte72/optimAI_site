@@ -143,7 +143,7 @@ const LogoAnimation = () => {
 const AboutPage: React.FC = () => {
   const pageRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
-  const principlesTitleRef = useRef<HTMLHeadingElement>(null);
+  const _principlesTitleRef = useRef<HTMLHeadingElement>(null);
   const sectionCardRefs = useRef<Array<HTMLElement | null>>([]); // Для Миссии и Команды
   const valueCardRefs = useRef<Array<HTMLDivElement | null>>([]); // Для Гибкость, Открытость, Движение
   const valuesTextRef = useRef<HTMLParagraphElement>(null);
@@ -153,7 +153,7 @@ const AboutPage: React.FC = () => {
   const addToSectionCardRefs = (el: HTMLElement | null) => {
     if (el && !sectionCardRefs.current.includes(el)) sectionCardRefs.current.push(el);
   };
-  const addToValueCardRefs = (el: HTMLDivElement | null) => {
+  const _addToValueCardRefs = (el: HTMLDivElement | null) => {
     if (el && !valueCardRefs.current.includes(el)) valueCardRefs.current.push(el);
   };
 

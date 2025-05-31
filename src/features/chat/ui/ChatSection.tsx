@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent, useEffect, useRef, createContext, useContext } from 'react';
+import { useState, FormEvent, useEffect, useRef, createContext, useContext, useCallback } from 'react';
 import { Send } from 'lucide-react';
 import { StyledInput } from '@shared/ui';
 import { cn } from '@shared/lib';
@@ -50,7 +50,7 @@ export default function ChatSection() {
 
   // Автоскроллинг удален по запросу пользователя
 
-  const processAndSendMessage = async (text: string) => {
+  const processAndSendMessage = useCallback(async (text: string) => {
     if (text.trim() === '') return;
 
     // Автоматически открываем чат при отправке сообщения
@@ -136,9 +136,9 @@ export default function ChatSection() {
       setIsTyping(false);
       // Автоскроллинг после получения ответа удален по запросу пользователя
     }
-  };
+  }, [messages, isChatOpen, apiAvailable]);
 
-  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const _handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     processAndSendMessage(inputValue);
     setInputValue('');

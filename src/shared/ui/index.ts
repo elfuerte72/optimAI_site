@@ -9,7 +9,6 @@ export { ScrollArea, ScrollBar } from './ScrollArea';
 export { Input } from './Input';
 export { FadeInSection } from './FadeInSection';
 export { default as LogoAnimation } from './LogoAnimation';
-export { default as FeatureCard } from './FeatureCard';
 export { default as UiverseCard } from './UiverseCard';
 export { default as CustomStyledButton } from './CustomStyledButton';
 export { default as PriceButton } from './PriceButton';

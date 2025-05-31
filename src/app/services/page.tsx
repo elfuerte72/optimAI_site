@@ -45,7 +45,7 @@ interface PackageDataItem {
 }
 
 // Данные о курсах из academy.md
-const courses: Course[] = [
+const _courses: Course[] = [
   {
     title: 'Экспресс-интенсив',
     duration: '1 занятие (3 ч)',
@@ -89,7 +89,7 @@ const courses: Course[] = [
 ];
 
 // Пакеты курсов
-const packages: CoursePackage[] = [
+const _packages: CoursePackage[] = [
   {
     title: 'AI-Full Stack',
     description: '3 продвинутых курса, 12 занятий (6 нед)',
@@ -111,7 +111,7 @@ const packages: CoursePackage[] = [
 ];
 
 export default function Services() {
-  const packageDataForCard: PackageDataItem[] = [];
+  const _packageDataForCard: PackageDataItem[] = [];
 
   return (
     <main className={`${fontSans.className} min-h-screen bg-black text-white`}>

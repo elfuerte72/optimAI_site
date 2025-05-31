@@ -15,7 +15,7 @@ const StyledInput: React.FC<StyledInputProps> = ({
   value,
   onChange,
   onKeyDown,
-  placeholder = 'Спросите что-нибудь...',
+  placeholder: _placeholder = 'Спросите что-нибудь...',
   label = 'Сообщение',
 }) => {
   return (

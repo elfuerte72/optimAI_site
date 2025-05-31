@@ -8,7 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Button } from '@shared/ui';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-import { NewsCard } from './NewsCard';
+import { NewsCard } from '../';
 import { newsItems } from '@entities/newsData';
 
 // Регистрируем плагин ScrollTrigger
@@ -100,9 +100,8 @@ export default function NewsSection() {
               {newsItems.map((_, index) => (
                 <div
                   key={index}
-                  className={`h-2 w-2 rounded-full ${
-                    index === currentIndex ? 'bg-blue-500' : 'bg-neutral-700'
-                  }`}
+                  className={`h-2 w-2 rounded-full ${index === currentIndex ? 'bg-blue-500' : 'bg-neutral-700'
+                    }`}
                   onClick={() => {
                     setCurrentIndex(index);
                     setExpandedNewsId(null);

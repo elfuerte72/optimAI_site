@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 // Компонент навигационной панели в стиле Apple
 const Navbar = () => {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
+  const [_scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isContactHovered, setIsContactHovered] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -134,9 +134,8 @@ const Navbar = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 <span
-                  className={`text-xl font-medium tracking-tight text-white ${
-                    pathname === link.path ? 'font-semibold' : ''
-                  }`}
+                  className={`text-xl font-medium tracking-tight text-white ${pathname === link.path ? 'font-semibold' : ''
+                    }`}
                 >
                   {link.name}
                 </span>

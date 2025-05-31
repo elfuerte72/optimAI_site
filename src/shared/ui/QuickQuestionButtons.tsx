@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import StyledButton from './StyledButton';
+import { StyledButton } from './';
 import { eventBus } from '@features/chat';
 
 export default function QuickQuestionButtons() {

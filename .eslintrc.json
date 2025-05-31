@@ -1,5 +1,6 @@
 {
   "extends": ["next/core-web-vitals"],
+  "ignorePatterns": ["public/sw.js", "public/workbox-*.js"],
   "plugins": ["unused-imports"],
   "rules": {
     "react/react-in-jsx-scope": "off",
@@ -16,6 +17,7 @@
       }
     ],
     "@next/next/no-img-element": "off",
-    "jsx-a11y/alt-text": "warn"
+    "jsx-a11y/alt-text": "warn",
+    "import/no-anonymous-default-export": "off"
   }
 }

@@ -1,0 +1,41 @@
+{
+  "name": "OptimaAI — Сила в простоте",
+  "short_name": "OptimaAI",
+  "description": "Интеграция искусственного интеллекта в бизнес. Обучение, автоматизация, создание AI-агентов.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["business", "productivity", "education"],
+  "shortcuts": [
+    {
+      "name": "Чат с AI",
+      "short_name": "Чат",
+      "description": "Открыть чат с искусственным интеллектом",
+      "url": "/?chat=open",
+      "icons": [
+        {
+          "src": "/icons/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

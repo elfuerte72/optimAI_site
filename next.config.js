@@ -30,34 +30,34 @@ const nextConfig = {
   },
   async headers() {
     const TELEGRAM_API_DOMAIN = 'api.telegram.org';
-    // Add other external domains your app connects to for content, scripts, etc.
-    // Example: Vercel Blob Storage, analytics, etc.
-    const VERCEL_BLOB_DOMAIN = '*.public.blob.vercel-storage.com'; // If using Vercel Blob
+    const GOOGLE_FONTS_DOMAIN = 'fonts.googleapis.com fonts.gstatic.com';
+    const VERCEL_BLOB_DOMAIN = '*.public.blob.vercel-storage.com';
 
-    // A basic CSP policy. This should be carefully reviewed and extended based on the application's needs.
-    // 'unsafe-eval' and 'unsafe-inline' should ideally be removed by refactoring or using nonces/hashes.
+    // CSP политика с учётом development/production
+    const isDev = process.env.NODE_ENV === 'development';
     const cspDirectives = {
       'default-src': "'self'",
-      'script-src': "'self' 'unsafe-eval' 'unsafe-inline'", // Next.js in dev often needs unsafe-eval/inline
-      'style-src': "'self' 'unsafe-inline'", // unsafe-inline for legacy styles, next/font inline styles
-      'img-src': "'self' data: ${VERCEL_BLOB_DOMAIN}", // Allow self, data URIs, and Vercel blob storage for images
-      'font-src': "'self'", // next/font might inline some font data or load from self
-      'connect-src': `'self' https://${TELEGRAM_API_DOMAIN} ${VERCEL_BLOB_DOMAIN}`, // For Telegram API, Vercel Blob, and self
+      'script-src': isDev ? "'self' 'unsafe-eval' 'unsafe-inline'" : "'self'", // unsafe-eval для dev
+      'style-src': `'self' 'unsafe-inline' ${GOOGLE_FONTS_DOMAIN}`, // unsafe-inline для CSS-in-JS и Google Fonts
+      'img-src': `'self' data: ${VERCEL_BLOB_DOMAIN}`, // self, data URIs и Vercel blob storage
+      'font-src': `'self' ${GOOGLE_FONTS_DOMAIN}`, // self и Google Fonts
+      'connect-src': `'self' https://${TELEGRAM_API_DOMAIN} ${VERCEL_BLOB_DOMAIN}`,
       'frame-src': "'self'",
       'object-src': "'none'",
       'base-uri': "'self'",
       'form-action': "'self'",
       'frame-ancestors': "'none'",
-      // upgrade-insecure-requests: "", // Not needed if HSTS is well configured
+      'upgrade-insecure-requests': '',
+      'block-all-mixed-content': '',
     };
 
     const cspValue = Object.entries(cspDirectives)
-      .map(([key, value]) => `${key} ${value}`)
+      .map(([key, value]) => value ? `${key} ${value}` : key)
       .join('; ');
 
     return [
       {
-        source: '/:path*', // Apply to all paths
+        source: '/:path*',
         headers: [
           {
             key: 'Content-Security-Policy',
@@ -65,10 +65,7 @@ const nextConfig = {
           },
           {
             key: 'Strict-Transport-Security',
-            // Start with a shorter max-age for testing, then increase.
-            // e.g., max-age=600; includeSubDomains (10 minutes)
-            // Production: max-age=63072000; includeSubDomains; preload
-            value: 'max-age=31536000; includeSubDomains; preload',
+            value: 'max-age=31536000; includeSubDomains; preload', // 365 дней
           },
           {
             key: 'X-Content-Type-Options',
@@ -86,11 +83,10 @@ const nextConfig = {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
-          // Permissions-Policy can be added here for finer control over browser features
-          // {
-          //   key: 'Permissions-Policy',
-          //   value: 'camera=(), microphone=(), geolocation=()' // Example: disable some features
-          // }
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()'
+          }
         ],
       },
     ];

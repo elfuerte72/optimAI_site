@@ -10,16 +10,16 @@ import { BookCards, FlipCard, FlipCardStyles, AnimatedText } from '@features/abo
 import { motion, AnimatePresence } from 'framer-motion';
 import { Navbar } from '@shared/ui';
 import { pacificoFont, robotoCondensedFont } from '@shared/lib';
+import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Текстовый логотип вместо изображения
-const LogoAnimation = () => {
+// Кастомный LogoAnimation с обрезанным изображением для страницы "О нас"
+const CompactLogoAnimation = () => {
   const [isLogoHovered, setIsLogoHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Определяем, является ли устройство мобильным при монтировании и при изменении размера окна
   useEffect(() => {
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -31,36 +31,39 @@ const LogoAnimation = () => {
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
-  // На мобильных устройствах активируем анимацию периодически
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
     if (isMobile) {
       interval = setInterval(() => {
         setIsAnimating(true);
-        setTimeout(() => setIsAnimating(false), 3000); // Анимация длится 3 секунды
-      }, 8000); // Запускать каждые 8 секунд
+        setTimeout(() => setIsAnimating(false), 3000);
+      }, 8000);
     }
 
     return () => clearInterval(interval);
   }, [isMobile]);
 
-  // Объединяем состояния hover для десктопа и автоматической анимации для мобильных
   const shouldAnimate = isLogoHovered || isAnimating;
 
   return (
     <motion.div
-      className="relative isolate mb-0 text-center"
+      className="relative isolate mb-0"
       onHoverStart={() => !isMobile && setIsLogoHovered(true)}
       onHoverEnd={() => !isMobile && setIsLogoHovered(false)}
     >
-      {/* Текстовый логотип */}
-      <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-        <span className="text-white">Optima</span>
-        <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-          AI
-        </span>
-      </h1>
+      {/* Основной логотип с обрезкой снизу */}
+      <div className="relative overflow-hidden" style={{ height: '70px' }}>
+        <Image
+          src="/images/logo-updated.png"
+          alt="OptimaAI Logo"
+          width={288}
+          height={96}
+          priority
+          className="relative z-10"
+          style={{ marginTop: '-13px' }}
+        />
+      </div>
 
       {/* Внешнее свечение */}
       <AnimatePresence>
@@ -83,7 +86,7 @@ const LogoAnimation = () => {
         )}
       </AnimatePresence>
 
-      {/* Внутреннее свечение - более интенсивное */}
+      {/* Внутреннее свечение */}
       <AnimatePresence>
         {shouldAnimate && (
           <motion.div
@@ -139,6 +142,8 @@ const LogoAnimation = () => {
     </motion.div>
   );
 };
+
+
 
 const ClientAboutPage: React.FC = () => {
   const pageRef = useRef<HTMLDivElement>(null);
@@ -421,12 +426,12 @@ const ClientAboutPage: React.FC = () => {
     >
       <Navbar />
       <main className="mx-auto w-full max-w-3xl space-y-16 px-4 pt-16 pb-20 sm:space-y-24 sm:px-6 sm:pt-24 sm:pb-28 lg:px-8">
-        <div ref={heroContentRef} className="relative space-y-2 text-center sm:space-y-4">
+        <div ref={heroContentRef} className="relative space-y-0 text-center">
           <div className="flex justify-center">
-            <LogoAnimation />
+            <CompactLogoAnimation />
           </div>
           <motion.h2
-            className={`bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 bg-clip-text text-xl leading-relaxed font-light tracking-tight text-transparent sm:text-2xl lg:text-3xl ${pacificoFont.className} mt-0 py-1`}
+            className={`bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 bg-clip-text text-xl leading-relaxed font-light tracking-tight text-transparent sm:text-2xl lg:text-3xl ${pacificoFont.className} -mt-3 py-1`}
             initial="hidden"
             animate="visible"
             variants={{

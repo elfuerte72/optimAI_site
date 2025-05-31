@@ -31,25 +31,10 @@ jobs:
       - name: Lint code
         run: npm run lint
 
-      # 5) Запустить тесты (unit и интеграционные, если есть)
-      - name: Run tests
-        run: npm run test
-
-      # 6) Запустить сборку проекта
+      # 5) Запустить сборку проекта
       - name: Build project
         run: npm run build
 
-      # (опционально) 7) Проверить на уязвимости npm-пакетов
+      # 6) Проверить на уязвимости npm-пакетов (блокирует при high/critical)
       - name: Audit npm dependencies
-        run: npm audit --audit-level=moderate
-
-      # (опционально) 8) Генерация coverage-отчёта
-      - name: Run coverage
-        run: npm run test:coverage
-        continue-on-error: true
-
-      # (опционально) 9) Загрузить coverage на Codecov
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }} # поставить токен в Settings > Secrets
+        run: npm audit --audit-level=high

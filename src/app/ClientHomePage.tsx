@@ -42,7 +42,7 @@ const MotionSection = dynamic(() => import('framer-motion').then(mod => ({ defau
 
 const MotionH1 = dynamic(() => import('framer-motion').then(mod => ({ default: mod.motion.h1 })), {
   ssr: false,
-  loading: () => <h1 />,
+  loading: () => <h1 className="sr-only">Загрузка заголовка...</h1>,
 });
 
 const MotionSpan = dynamic(() => import('framer-motion').then(mod => ({ default: mod.motion.span })), {
@@ -57,94 +57,107 @@ const heroLine2Words = 'искусственного интеллекта'.split
 export default function ClientHomePage() {
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">
-      <Navbar />
+      <header role="banner">
+        <Navbar />
+      </header>
 
-      {/* Hero Section */}
-      <MotionSection
-        className="relative flex flex-col items-center justify-center overflow-hidden bg-black px-4 py-16 text-center sm:px-6 md:py-20 lg:px-8 lg:py-24"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-      >
-        <div className="relative z-10 flex flex-col items-center">
-          <LogoAnimation />
+      <main role="main">
+        {/* Hero Section */}
+        <MotionSection
+          className="relative flex flex-col items-center justify-center overflow-hidden bg-black px-4 py-16 text-center sm:px-6 md:py-20 lg:px-8 lg:py-24"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          aria-label="Главная секция"
+        >
+          <div className="relative z-10 flex flex-col items-center">
+            <LogoAnimation />
 
-          <MotionH1 className="font-press-start-hero text-center text-2xl font-normal tracking-tight text-white sm:text-3xl md:text-4xl">
-            <div>
-              {heroLine1Words.map((word, i) => (
-                <MotionSpan
-                  key={`l1-${word}-${i}`}
-                  className="mr-3 inline-block md:mr-4"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: i * 0.15,
-                    duration: 0.4,
-                    ease: 'easeOut',
-                  }}
-                >
-                  {word}
-                </MotionSpan>
-              ))}
-            </div>
-            <div>
-              {heroLine2Words.map((word, i) => (
-                <MotionSpan
-                  key={`l2-${word}-${i}`}
-                  className="mr-3 inline-block md:mr-4"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: (heroLine1Words.length + i) * 0.15,
-                    duration: 0.4,
-                    ease: 'easeOut',
-                  }}
-                >
-                  {word}
-                </MotionSpan>
-              ))}
-            </div>
-          </MotionH1>
-        </div>
-      </MotionSection>
+            <MotionH1 className="font-press-start-hero text-center text-2xl font-normal tracking-tight text-white sm:text-3xl md:text-4xl">
+              <div>
+                {heroLine1Words.map((word, i) => (
+                  <MotionSpan
+                    key={`l1-${word}-${i}`}
+                    className="mr-3 inline-block md:mr-4"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      delay: i * 0.15,
+                      duration: 0.4,
+                      ease: 'easeOut',
+                    }}
+                  >
+                    {word}
+                  </MotionSpan>
+                ))}
+              </div>
+              <div>
+                {heroLine2Words.map((word, i) => (
+                  <MotionSpan
+                    key={`l2-${word}-${i}`}
+                    className="mr-3 inline-block md:mr-4"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      delay: (heroLine1Words.length + i) * 0.15,
+                      duration: 0.4,
+                      ease: 'easeOut',
+                    }}
+                  >
+                    {word}
+                  </MotionSpan>
+                ))}
+              </div>
+            </MotionH1>
+          </div>
+        </MotionSection>
 
-      {/* Chat Section */}
-      <ChatSection />
+        {/* Chat Section */}
+        <section aria-label="Чат с ИИ">
+          <ChatSection />
+        </section>
 
-      {/* Кнопки быстрых вопросов */}
-      <QuickQuestionButtons />
+        {/* Кнопки быстрых вопросов */}
+        <section aria-label="Быстрые вопросы">
+          <QuickQuestionButtons />
+        </section>
 
-      {/* News Section */}
-      <NewsSection />
+        {/* News Section */}
+        <section aria-label="Новости искусственного интеллекта">
+          <NewsSection />
+        </section>
 
-      {/* Testimonials Section */}
-      <MotionSection
-        className="bg-black px-4 py-12 text-center sm:px-6 md:py-16 lg:px-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-      >
-        <div className="mx-auto max-w-6xl">
-          <h2
-            className={`bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 bg-clip-text text-2xl leading-relaxed font-bold tracking-tight text-transparent sm:text-3xl ${pacificoFont.className} mb-4 py-2 md:mb-6`}
-          >
-            Отзывы наших клиентов
-          </h2>
-          <TestimonialSliderWrapper />
-        </div>
-      </MotionSection>
+        {/* Testimonials Section */}
+        <MotionSection
+          className="bg-black px-4 py-12 text-center sm:px-6 md:py-16 lg:px-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          aria-label="Отзывы клиентов"
+        >
+          <div className="mx-auto max-w-6xl">
+            <h2
+              className={`bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 bg-clip-text text-2xl leading-relaxed font-bold tracking-tight text-transparent sm:text-3xl ${pacificoFont.className} mb-4 py-2 md:mb-6`}
+            >
+              Отзывы наших клиентов
+            </h2>
+            <TestimonialSliderWrapper />
+          </div>
+        </MotionSection>
+      </main>
 
       {/* CTA Section */}
-      <section className="bg-black py-12 text-center md:py-16">
+      <footer role="contentinfo" className="bg-black py-12 text-center md:py-16">
         <Link
           href="https://t.me/optimaai_tg"
           target="_blank"
           rel="noopener noreferrer"
-          className="px-6 py-3 text-xl font-medium text-gray-400 transition-colors duration-300 hover:text-white"
+          className="px-6 py-3 text-xl font-medium text-gray-400 transition-colors duration-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+          aria-label="Связаться с нами через Telegram"
         >
           Связаться с нами
         </Link>
-      </section>
+      </footer>
     </div>
   );
 }

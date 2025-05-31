@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+const config = {
   // Tailwind v4 конфигурация
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -95,3 +95,5 @@ export default {
   // Вместо этого используется встроенная функциональность
   darkMode: 'class',
 };
+
+export default config;

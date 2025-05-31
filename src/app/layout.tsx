@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
   description:
     'OptimaAI — интеграция искусственного интеллекта в бизнес. Обучение, автоматизация, создание AI-агентов.',
-  manifest: '/site.webmanifest',
+  manifest: '/manifest.json',
   icons: {
     icon: [
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
@@ -81,6 +81,10 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: '#000000',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
@@ -90,6 +94,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" className={`${GeistSans.variable} ${GeistMono.variable} dark`}>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/icons/icon-192x192.png" sizes="192x192" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="apple-mobile-web-app-title" content="OptimaAI" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+      </head>
       <body className="flex min-h-screen flex-col bg-black font-sans antialiased">
         <main className="flex-grow">
           <QueryProvider>

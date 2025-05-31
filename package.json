@@ -9,7 +9,8 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md}'",
     "check-unused": "ts-prune -p tsconfig.json",
-    "analyze": "ANALYZE=true next build"
+    "analyze": "ANALYZE=true next build",
+    "ci-check": "npm run lint && npm run build && npm audit --audit-level=high"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

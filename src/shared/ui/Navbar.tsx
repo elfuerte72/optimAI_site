@@ -134,8 +134,9 @@ const Navbar = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 <span
-                  className={`text-xl font-medium tracking-tight text-white ${pathname === link.path ? 'font-semibold' : ''
-                    }`}
+                  className={`text-xl font-medium tracking-tight text-white ${
+                    pathname === link.path ? 'font-semibold' : ''
+                  }`}
                 >
                   {link.name}
                 </span>

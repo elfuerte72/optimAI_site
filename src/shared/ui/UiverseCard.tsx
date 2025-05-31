@@ -62,8 +62,8 @@ const StyledWrapper = styled.div`
 
   .card-description {
     color: rgb(255 255 255 / 75%);
-    line-height: 1.4rem; /* Увеличено с 1.3rem */
-    font-size: 1rem; /* Увеличено с 0.85rem */
+    line-height: 1.5rem; /* Увеличено с 1.4rem */
+    font-size: 1.1rem; /* Увеличено с 1rem */
   }
 
   /* Адаптивность из примера */
@@ -78,7 +78,7 @@ const StyledWrapper = styled.div`
       font-size: 1.25rem; /* Увеличено с 1.1rem */
     }
     .card-description {
-      font-size: 0.9rem; /* Увеличено с 0.8rem */
+      font-size: 1rem; /* Увеличено с 0.9rem */
     }
   }
 
@@ -91,7 +91,7 @@ const StyledWrapper = styled.div`
       font-size: 1.1rem; /* Увеличено с 1.0rem */
     }
     .card-description {
-      font-size: 0.85rem; /* Увеличено с 0.75rem */
+      font-size: 0.95rem; /* Увеличено с 0.85rem */
     }
   }
 `;

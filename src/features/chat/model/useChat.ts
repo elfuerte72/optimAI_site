@@ -24,77 +24,80 @@ export const useChat = (): UseChatReturn => {
       .catch(() => setApiAvailable(false));
   }, []);
 
-  const sendChatMessage = useCallback(async (text: string) => {
-    if (text.trim() === '') return;
+  const sendChatMessage = useCallback(
+    async (text: string) => {
+      if (text.trim() === '') return;
 
-    const userMessage: Message = {
-      id: `user-${Date.now()}`,
-      text: text.trim(),
-      sender: 'user',
-      timestamp: new Date(),
-    };
+      const userMessage: Message = {
+        id: `user-${Date.now()}`,
+        text: text.trim(),
+        sender: 'user',
+        timestamp: new Date(),
+      };
 
-    setMessages((prev) => [...prev, userMessage]);
-    setIsLoading(true);
+      setMessages((prev) => [...prev, userMessage]);
+      setIsLoading(true);
 
-    try {
-      if (!apiAvailable) {
-        // Локальный ответ, если API недоступен
-        setTimeout(() => {
+      try {
+        if (!apiAvailable) {
+          // Локальный ответ, если API недоступен
+          setTimeout(() => {
+            const botMessage: Message = {
+              id: `bot-${Date.now()}`,
+              text: 'Извините, сервер бота в данный момент недоступен. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.',
+              sender: 'bot',
+              timestamp: new Date(),
+            };
+            setMessages((prev) => [...prev, botMessage]);
+            setIsLoading(false);
+          }, 1000);
+          return;
+        }
+
+        // Подготавливаем историю сообщений для API
+        const apiMessages: ApiMessage[] = messages
+          .filter((msg) => msg.sender === 'user' || msg.sender === 'bot')
+          .map((msg) => ({
+            role: msg.sender === 'user' ? 'user' : 'assistant',
+            content: msg.text,
+          }));
+
+        // Добавляем текущее сообщение
+        apiMessages.push({
+          role: 'user',
+          content: text.trim(),
+        });
+
+        // Отправляем запрос к API
+        const response = await sendMessage(apiMessages);
+
+        if (response && response.message) {
           const botMessage: Message = {
             id: `bot-${Date.now()}`,
-            text: 'Извините, сервер бота в данный момент недоступен. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.',
+            text: response.message.content,
             sender: 'bot',
             timestamp: new Date(),
           };
           setMessages((prev) => [...prev, botMessage]);
-          setIsLoading(false);
-        }, 1000);
-        return;
-      }
+        } else {
+          throw new Error('Invalid API response');
+        }
+      } catch (error) {
+        console.error('Error sending message:', error);
 
-      // Подготавливаем историю сообщений для API
-      const apiMessages: ApiMessage[] = messages
-        .filter((msg) => msg.sender === 'user' || msg.sender === 'bot')
-        .map((msg) => ({
-          role: msg.sender === 'user' ? 'user' : 'assistant',
-          content: msg.text,
-        }));
-
-      // Добавляем текущее сообщение
-      apiMessages.push({
-        role: 'user',
-        content: text.trim(),
-      });
-
-      // Отправляем запрос к API
-      const response = await sendMessage(apiMessages);
-
-      if (response && response.message) {
-        const botMessage: Message = {
+        const errorMessage: Message = {
           id: `bot-${Date.now()}`,
-          text: response.message.content,
+          text: 'Произошла ошибка при получении ответа. Пожалуйста, попробуйте еще раз позже.',
           sender: 'bot',
           timestamp: new Date(),
         };
-        setMessages((prev) => [...prev, botMessage]);
-      } else {
-        throw new Error('Invalid API response');
+        setMessages((prev) => [...prev, errorMessage]);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error('Error sending message:', error);
-
-      const errorMessage: Message = {
-        id: `bot-${Date.now()}`,
-        text: 'Произошла ошибка при получении ответа. Пожалуйста, попробуйте еще раз позже.',
-        sender: 'bot',
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [messages, apiAvailable]);
+    },
+    [messages, apiAvailable]
+  );
 
   const clearMessages = useCallback(() => {
     setMessages([]);

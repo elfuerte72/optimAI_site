@@ -4,7 +4,15 @@ export { default as QuickQuestionButtons } from './QuickQuestionButtons';
 export { default as Navbar } from './Navbar';
 export { default as Footer } from './Footer';
 export { Button } from './Button';
-export { Card, CardHeader, CardFooter, CardTitle, CardAction, CardDescription, CardContent } from './Card';
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardAction,
+  CardDescription,
+  CardContent,
+} from './Card';
 export { ScrollArea, ScrollBar } from './ScrollArea';
 export { Input } from './Input';
 export { FadeInSection } from './FadeInSection';

@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import { fontSans, notoSansJP } from '@shared/lib';
 
-
 import { FadeInSection, UiverseCard, CustomStyledButton, PriceButton, Navbar } from '@shared/ui';
 
 export const metadata: Metadata = {
@@ -168,7 +167,7 @@ export default function Services() {
                 </div>
                 <div>
                   <h3 className="mb-2 text-xl font-bold">Формулы правильного запроса</h3>
-                  <p className="text-gray-400">
+                  <p className="text-base text-gray-400">
                     Понимание и схемы, которые заставляют нейросети выдавать максимально точные
                     ответы.
                   </p>
@@ -193,7 +192,7 @@ export default function Services() {
                 </div>
                 <div>
                   <h3 className="mb-2 text-xl font-bold">Понимание мета-промтинга</h3>
-                  <p className="text-gray-400">
+                  <p className="text-base text-gray-400">
                     Умение строить цепочки Chain-of-Thought, многошаговые схемы, превращающие один
                     промт в законченный проект.
                   </p>
@@ -219,7 +218,7 @@ export default function Services() {
                 </div>
                 <div>
                   <h3 className="mb-2 text-xl font-bold">Визуальный продакшен</h3>
-                  <p className="text-gray-400">
+                  <p className="text-base text-gray-400">
                     Генерация изображений, видео, рекламы и бренд-гайдов за минуты, а не недели.
                   </p>
                 </div>
@@ -244,7 +243,9 @@ export default function Services() {
                 </div>
                 <div>
                   <h3 className="mb-2 text-xl font-bold">Интеграция</h3>
-                  <p className="text-gray-400">Базовые навыки API, создание собственных ботов.</p>
+                  <p className="text-base text-gray-400">
+                    Базовые навыки API, создание собственных ботов.
+                  </p>
                 </div>
               </div>
             </div>
@@ -432,7 +433,7 @@ export default function Services() {
                 <p className="text-xl font-bold">
                   Итог: прокачка промптинга = конкурентное преимущество.
                 </p>
-                <p className="mt-2 text-gray-400">
+                <p className="mt-2 text-base text-gray-400">
                   Умеете задавать правильные вопросы → получаете точные ответы → принимаете лучшие
                   решения быстрее других.
                 </p>

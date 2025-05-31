@@ -7,7 +7,7 @@ import { ChatWidget } from '@features/chat';
 import { StyledComponentsRegistry } from '@shared/lib';
 
 // Динамический импорт Footer для оптимизации загрузки
-const Footer = dynamic(() => import('@shared/ui').then(mod => ({ default: mod.Footer })), {
+const Footer = dynamic(() => import('@shared/ui').then((mod) => ({ default: mod.Footer })), {
   ssr: true,
 });
 

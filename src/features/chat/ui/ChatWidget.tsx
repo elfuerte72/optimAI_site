@@ -208,10 +208,11 @@ export default function ChatWidget({
                   className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[75%] rounded-lg p-3 shadow ${msg.sender === 'user'
+                    className={`max-w-[75%] rounded-lg p-3 shadow ${
+                      msg.sender === 'user'
                         ? 'rounded-br-none bg-zinc-700 text-white'
                         : 'rounded-bl-none bg-zinc-800 text-zinc-200'
-                      }`}
+                    }`}
                   >
                     <p className="text-sm leading-snug">{msg.text}</p>
                     <p className="mt-1.5 text-right text-xs opacity-60">

@@ -57,7 +57,8 @@ export async function sendMessage(
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       throw new Error(
-        `API Error: ${response.status} ${response.statusText} - ${errorData.detail || 'Unknown error'
+        `API Error: ${response.status} ${response.statusText} - ${
+          errorData.detail || 'Unknown error'
         }`
       );
     }

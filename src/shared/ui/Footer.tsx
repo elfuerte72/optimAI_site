@@ -43,11 +43,6 @@ export default function Footer() {
                   optimaai@yandex.ru
                 </a>
               </li>
-              <li className="text-gray-400">
-                <a href="tel:+79957728193" className="transition-colors hover:text-white">
-                  +79957728193
-                </a>
-              </li>
             </ul>
             <div className="mt-4 flex space-x-4">
               <a

@@ -1,41 +1,53 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
-import globals from "globals";
-import tseslint from "typescript-eslint";
+// @ts-check
+import js from '@eslint/js';
+import { FlatCompat } from '@eslint/eslintrc';
+import unusedImports from 'eslint-plugin-unused-imports';
+import nextPlugin from '@next/eslint-plugin-next';
+import globals from 'globals';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
-  resolvePluginsRelativeTo: __dirname,
+  recommendedConfig: js.configs.recommended,
 });
 
-export default tseslint.config(
+export default [
   {
-    ignores: ["node_modules/", ".next/"],
+    ignores: ['node_modules/**', '.next/**', 'dist/**'],
   },
-  ...compat.extends("next/core-web-vitals"),
+  ...compat.extends('next/core-web-vitals'),
   {
-    files: ["**/*.{js,mjs,cjs,ts,tsx}"],
+    files: ['**/*.{js,mjs,cjs,jsx,ts,tsx}'],
     languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.node,
       },
     },
-    rules: {
-      "react/react-in-jsx-scope": "off",
-      "react/prop-types": "off",
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": ["warn", {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_",
-        "caughtErrorsIgnorePattern": "^_"
-      }],
-      "@next/next/no-img-element": "off",
-      "jsx-a11y/alt-text": "warn",
+    plugins: {
+      'unused-imports': unusedImports,
+      '@next/next': nextPlugin,
     },
-  }
-);
+    rules: {
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+      'no-unused-vars': 'off',
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+        },
+      ],
+      '@next/next/no-img-element': 'off',
+      'jsx-a11y/alt-text': 'warn',
+    },
+  },
+];

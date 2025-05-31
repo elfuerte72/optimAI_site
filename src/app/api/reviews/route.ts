@@ -67,16 +67,18 @@ export async function GET(request: Request) {
       if (!['Обучение', 'Автоматизация', 'Агенты'].includes(category)) {
         return NextResponse.json({ error: 'Недопустимая категория.' }, { status: 400 });
       }
-      filteredReviews = allReviews.filter(review => review.category === category);
+      filteredReviews = allReviews.filter((review) => review.category === category);
     }
 
     // Имитация небольшой задержки API
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     return NextResponse.json(filteredReviews);
-
   } catch (error) {
     console.error('Ошибка в /api/reviews:', error);
-    return NextResponse.json({ error: 'Внутренняя ошибка сервера при получении отзывов.' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Внутренняя ошибка сервера при получении отзывов.' },
+      { status: 500 }
+    );
   }
-} 
+}

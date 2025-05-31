@@ -1,22 +1,8 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
-import Image from 'next/image';
-import { fontSans, notoSansJP } from '@/lib/fonts';
-import Accordion from '@/components/Accordion';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card';
-import { FadeInSection } from '@/components/ui/fade-in-section';
-import UiverseCard from '@/components/ui/UiverseCard';
-import CustomStyledButton from '@/components/ui/CustomStyledButton';
-import PriceButton from '@/components/ui/PriceButton';
-import Navbar from '@/components/layout/Navbar';
-import PackagesCard from '@/components/ui/PackagesCard';
+import { fontSans, notoSansJP } from '@shared/lib';
+
+
+import { FadeInSection, UiverseCard, CustomStyledButton, PriceButton, Navbar } from '@shared/ui';
 
 export const metadata: Metadata = {
   title: 'Услуги обучения | Академия Optima AI',

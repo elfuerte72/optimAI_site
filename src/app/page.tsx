@@ -1,24 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
-import Navbar from '@/components/layout/Navbar';
-import ServicesSection from '@/components/services-section';
-import ChatSection from '@/components/ChatSection'; // Import ChatSection
-import NewsSection from '@/components/news/NewsSection'; // Import NewsSection
-import LogoAnimation from '@/components/logo-animation';
-import FeatureCard from '@/components/feature-card';
+import { Navbar, LogoAnimation } from '@shared/ui';
+import { ChatSection } from '@features/chat'; // Import ChatSection
+import { NewsSection } from '@features/news'; // Import NewsSection
 import { motion, Variants } from 'framer-motion';
-import { pacificoFont } from '@/lib/fonts';
+import { pacificoFont } from '@shared/lib';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 // Регистрируем плагин ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
-import TestimonialSliderWrapper from '@/components/TestimonialSliderWrapper';
-import { useState, useEffect } from 'react';
-import QuickQuestionButtons from '@/components/QuickQuestionButtons';
-import '@/components/StyledButton.css'; // Import the CSS for styled buttons
+import { TestimonialSliderWrapper } from '@features/reviews';
+import { QuickQuestionButtons } from '@shared/ui';
+import '@shared/ui/StyledButton.css'; // Import the CSS for styled buttons
 
 // Простые варианты анимации для блоков
 const sectionVariants: Variants = {

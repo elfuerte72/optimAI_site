@@ -3,11 +3,11 @@ import './globals.css';
 import dynamic from 'next/dynamic';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono'; // Optional: if mono is also used from Geist
-import ChatWidget from '@/components/chatbot/ChatWidget';
-import StyledComponentsRegistry from '@/lib/StyledComponentsRegistry';
+import { ChatWidget } from '@features/chat';
+import { StyledComponentsRegistry } from '@shared/lib';
 
 // Динамический импорт Footer для оптимизации загрузки
-const Footer = dynamic(() => import('@/components/layout/Footer'), {
+const Footer = dynamic(() => import('@shared/ui/Footer'), {
   ssr: true,
 });
 

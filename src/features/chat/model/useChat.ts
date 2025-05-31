@@ -1,14 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { sendMessage, Message as ApiMessage, checkApiHealth } from '../api/sendMessage';
-
-export interface Message {
-  id: string;
-  text: string;
-  sender: 'user' | 'bot';
-  timestamp: Date;
-}
+import { sendMessage, ApiMessage, checkApiHealth } from '../api/sendMessage';
+import type { Message } from './types';
 
 export interface UseChatReturn {
   messages: Message[];
@@ -89,7 +83,7 @@ export const useChat = (): UseChatReturn => {
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      
+
       const errorMessage: Message = {
         id: `bot-${Date.now()}`,
         text: 'Произошла ошибка при получении ответа. Пожалуйста, попробуйте еще раз позже.',

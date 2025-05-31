@@ -1,21 +1,21 @@
 'use client';
 
 import { useState, FormEvent, useEffect, useRef, createContext, useContext } from 'react';
-import { Send, Loader2 } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { StyledInput } from '@shared/ui';
 import { cn } from '@shared/lib';
 import './ChatSection.css';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { sendMessage, Message as ApiMessage, checkApiHealth } from '../api/sendMessage';
+import { Button } from '@shared/ui';
+import { Card } from '@shared/ui';
+import { ScrollArea } from '@shared/ui';
+import { sendMessage, ApiMessage, checkApiHealth } from '../api/sendMessage';
 import eventBus from '../model/eventBus';
 
 // Create a context to expose the processAndSendMessage function
 export const ChatContext = createContext<{
   processAndSendMessage: (text: string) => Promise<void>;
 }>({
-  processAndSendMessage: async () => {},
+  processAndSendMessage: async () => { },
 });
 
 interface Message {

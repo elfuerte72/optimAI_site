@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid';
-import { sendMessage, Message as ApiMessage, checkApiHealth } from '../api/sendMessage';
+import { sendMessage, ApiMessage, checkApiHealth } from '../api/sendMessage';
 
 interface Message {
   id: number;
@@ -208,11 +208,10 @@ export default function ChatWidget({
                   className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[75%] rounded-lg p-3 shadow ${
-                      msg.sender === 'user'
+                    className={`max-w-[75%] rounded-lg p-3 shadow ${msg.sender === 'user'
                         ? 'rounded-br-none bg-zinc-700 text-white'
                         : 'rounded-bl-none bg-zinc-800 text-zinc-200'
-                    }`}
+                      }`}
                   >
                     <p className="text-sm leading-snug">{msg.text}</p>
                     <p className="mt-1.5 text-right text-xs opacity-60">

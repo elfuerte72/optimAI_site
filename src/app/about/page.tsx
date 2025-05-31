@@ -5,16 +5,11 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import Lenis from '@studio-freight/lenis';
-import { Eye, Gem, Target, Users, GitFork, BookOpen, TrendingUp } from 'lucide-react';
-import NewPrinciplesSection from '@/components/about/NewPrinciplesSection';
-import { BookCards } from '@/components/about/cards-princ';
-import Image from 'next/image';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
-import FlipCard from '@/components/about/FlipCard';
-import FlipCardStyles from '@/components/about/FlipCardStyles';
-import Navbar from '@/components/layout/Navbar';
-import { pacificoFont, pressStartFont, robotoCondensedFont } from '@shared/lib';
-import AnimatedText from '@/components/about/AnimatedText';
+import { Target, Users, GitFork, BookOpen, TrendingUp } from 'lucide-react';
+import { BookCards, FlipCard, FlipCardStyles, AnimatedText } from '@features/about';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Navbar } from '@shared/ui';
+import { pacificoFont, robotoCondensedFont } from '@shared/lib';
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Card } from '@/components/ui/card';
+import { Card } from '@shared/ui';
 import { NewsItem } from '@entities/news';
 
 interface NewsCardProps {

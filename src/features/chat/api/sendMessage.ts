@@ -2,19 +2,19 @@
  * API-клиент для взаимодействия с чат-ботом
  */
 
-export interface Message {
+export interface ApiMessage {
   role: 'system' | 'user' | 'assistant';
   content: string;
 }
 
 export interface ChatRequest {
-  messages: Message[];
+  messages: ApiMessage[];
   stream?: boolean;
   use_cache?: boolean;
 }
 
-export interface ChatResponse {
-  message: Message;
+export interface ApiChatResponse {
+  message: ApiMessage;
   finish_reason?: string;
   usage?: {
     prompt_tokens: number;
@@ -38,9 +38,9 @@ const API_BASE_URL = typeof window !== 'undefined' ? '/api' : 'http://localhost:
  * @returns Ответ от бота
  */
 export async function sendMessage(
-  messages: Message[],
+  messages: ApiMessage[],
   useCache: boolean = true
-): Promise<ChatResponse> {
+): Promise<ApiChatResponse> {
   try {
     const response = await fetch(`${API_BASE_URL}/chat`, {
       method: 'POST',
@@ -57,8 +57,7 @@ export async function sendMessage(
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       throw new Error(
-        `API Error: ${response.status} ${response.statusText} - ${
-          errorData.detail || 'Unknown error'
+        `API Error: ${response.status} ${response.statusText} - ${errorData.detail || 'Unknown error'
         }`
       );
     }

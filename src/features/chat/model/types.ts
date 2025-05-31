@@ -9,7 +9,7 @@ export interface ChatContextType {
   processAndSendMessage: (text: string) => Promise<void>;
 }
 
-export interface ApiMessage {
+export interface ModelApiMessage {
   role: 'user' | 'assistant';
   content: string;
 }

@@ -5,7 +5,7 @@ import { motion, Variants } from 'framer-motion';
 import { pacificoFont } from '@shared/lib';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Button } from '@/components/ui/button';
+import { Button } from '@shared/ui';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { NewsCard } from './NewsCard';

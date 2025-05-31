@@ -1,4 +1,4 @@
-import { NewsItem } from './NewsTypes';
+import { NewsItem } from './news';
 
 // Массив с данными новостей
 export const newsItems: NewsItem[] = [

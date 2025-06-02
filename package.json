@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --no-lint",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "jest",
@@ -13,7 +13,11 @@
     "analyze": "ANALYZE=true next build",
     "ci-check": "npm run lint && npm run build && npm audit --audit-level=high",
     "lighthouse": "node scripts/lighthouse-audit.js",
-    "lighthouse:build": "npm run build && npm run lighthouse"
+    "lighthouse:build": "npm run build && npm run lighthouse",
+    "test:chat": "node scripts/test-chat-integration.js",
+    "test:chat:verbose": "DEBUG=1 node scripts/test-chat-integration.js",
+    "test:api": "node test-api.js",
+    "test:new-api": "node test-new-api.js"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

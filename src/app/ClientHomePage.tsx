@@ -35,6 +35,11 @@ const QuickQuestionButtons = dynamic(() => import('@shared/ui').then(mod => ({ d
   loading: () => <div className="h-16" />,
 });
 
+const ChatWidget = dynamic(() => import('@features/chat/ui/ChatWidget'), {
+  ssr: false,
+  loading: () => null,
+});
+
 const MotionSection = dynamic(() => import('framer-motion').then(mod => ({ default: mod.motion.section })), {
   ssr: false,
   loading: () => <section />,
@@ -158,6 +163,9 @@ export default function ClientHomePage() {
           Связаться с нами
         </Link>
       </footer>
+      
+      {/* Чат-виджет для быстрого доступа (без приветственного сообщения) */}
+      <ChatWidget />
     </div>
   );
 }

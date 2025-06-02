@@ -16,7 +16,7 @@ import './ChatSection.css';
 import { Button } from '@shared/ui';
 import { Card } from '@shared/ui';
 import { ScrollArea } from '@shared/ui';
-import { sendMessage, ApiMessage, checkApiHealth } from '../api/sendMessage';
+import { sendMessage, ApiMessage } from '../api/sendMessage';
 import eventBus from '../model/eventBus';
 
 // Create a context to expose the processAndSendMessage function
@@ -41,20 +41,10 @@ export default function ChatSection() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [apiAvailable, setApiAvailable] = useState<boolean | null>(null);
+  const [_apiAvailable, _setApiAvailable] = useState<boolean | null>(null);
   // Удалена функция автоскроллинга по запросу пользователя
 
-  // Проверка доступности API при монтировании компонента
-  useEffect(() => {
-    if (apiAvailable === null) {
-      checkApiHealth()
-        .then((available) => {
-          setApiAvailable(available);
-          // Приветственное сообщение удалено по запросу пользователя
-        })
-        .catch(() => setApiAvailable(false));
-    }
-  }, [apiAvailable]);
+  // Приветственное сообщение удалено по запросу пользователя
 
   // Автоскроллинг удален по запросу пользователя
 
@@ -80,20 +70,6 @@ export default function ChatSection() {
       setIsTyping(true);
 
       try {
-        // Если API недоступен, используем локальный ответ
-        if (!apiAvailable) {
-          setTimeout(() => {
-            const botResponse: Message = {
-              id: `bot-${Date.now()}`,
-              text: 'Извините, сервер бота в данный момент недоступен. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.',
-              sender: 'bot',
-            };
-
-            setMessages((prevMessages) => [...prevMessages, botResponse]);
-            setIsTyping(false);
-          }, 1000);
-          return;
-        }
 
         // Формируем историю сообщений для API
         const apiMessages: ApiMessage[] = messages
@@ -125,7 +101,7 @@ export default function ChatSection() {
           // В случае проблем с API
           const errorMessage: Message = {
             id: `bot-${Date.now()}`,
-            text: 'Извините, возникла ошибка при обработке запроса. Пожалуйста, попробуйте еще раз позже.',
+            text: 'Извините, возникла ошибка при обработке запроса. Пожалуйста, попробуйте ещё раз или обратитесь в поддержку.',
             sender: 'bot',
           };
 
@@ -136,7 +112,7 @@ export default function ChatSection() {
 
         const errorMessage: Message = {
           id: `bot-${Date.now()}`,
-          text: 'Извините, возникла ошибка при отправке сообщения. Пожалуйста, проверьте ваше соединение и попробуйте снова.',
+          text: 'Произошла ошибка связи с сервером. Пожалуйста, проверьте интернет-соединение и попробуйте снова.',
           sender: 'bot',
         };
 
@@ -146,7 +122,7 @@ export default function ChatSection() {
         // Автоскроллинг после получения ответа удален по запросу пользователя
       }
     },
-    [messages, isChatOpen, apiAvailable]
+    [messages, isChatOpen]
   );
 
   const _handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {

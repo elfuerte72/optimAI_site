@@ -1,0 +1,50 @@
+
+> optima-ai@0.1.0 dev
+> next dev
+
+   ▲ Next.js 15.3.0
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.135:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+> [PWA] PWA support is disabled
+> [PWA] PWA support is disabled
+ ✓ Ready in 2.9s
+ ✓ Compiled /middleware in 150ms (108 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 1715ms (1971 modules)
+ GET / 200 in 2308ms
+ ✓ Compiled /api/chat in 468ms (1990 modules)
+Отправка запроса к бэкенду: http://localhost:8000/chat
+ POST /api/chat 200 in 4235ms
+ ✓ Compiled /api/health in 284ms (1992 modules)
+ GET /api/health 200 in 327ms
+Отправка запроса к бэкенду: http://localhost:8000/chat
+ POST /api/chat 200 in 3946ms
+Отправка запроса к бэкенду: http://localhost:8000/chat
+ POST /api/chat 200 in 4773ms
+Отправка запроса к бэкенду: http://localhost:8000/chat
+ POST /api/chat 200 in 4460ms
+Отправка запроса к бэкенду: http://localhost:8000/chat
+ HEAD / 200 in 252ms
+ POST /api/chat 200 in 73151ms
+   Reload env: .env
+ ✓ Compiled in 753ms (2080 modules)
+   Reload env: .env
+ ✓ Compiled in 200ms (2080 modules)
+   Reload env: .env
+ ✓ Compiled in 394ms (2080 modules)
+   Reload env: .env
+ ✓ Compiled in 228ms (2080 modules)
+   Reload env: .env
+ ✓ Compiled in 176ms (2080 modules)
+   Reload env: .env
+ ✓ Compiled in 167ms (2080 modules)
+   Reload env: .env
+ ✓ Compiled in 239ms (2080 modules)
+ ✓ Compiled in 2.2s (1986 modules)
+ ✓ Compiled in 1040ms (1986 modules)
+ ✓ Compiled in 306ms (1986 modules)
+ ✓ Compiled in 358ms (902 modules)
+ ✓ Compiled in 203ms (902 modules)

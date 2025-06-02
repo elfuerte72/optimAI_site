@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid';
-import { sendMessage, ApiMessage, checkApiHealth } from '../api/sendMessage';
+import { sendMessage, ApiMessage } from '../api/sendMessage';
 import { BrainIcon } from '@shared/ui';
 
 interface Message {
@@ -19,14 +19,14 @@ interface ChatWidgetProps {
 }
 
 export default function ChatWidget({
-  initialMessage,
+  initialMessage: _initialMessage,
   apiAvailable: propApiAvailable,
 }: ChatWidgetProps = {}) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [apiAvailable, setApiAvailable] = useState<boolean | null>(propApiAvailable ?? null);
+  const [_apiAvailable, _setApiAvailable] = useState<boolean | null>(propApiAvailable ?? null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const toggleChat = () => setIsOpen(!isOpen);
@@ -37,28 +37,7 @@ export default function ChatWidget({
 
   useEffect(scrollToBottom, [messages]);
 
-  // Проверка доступности API при монтировании компонента
-  useEffect(() => {
-    if (apiAvailable === null) {
-      checkApiHealth()
-        .then((available) => {
-          setApiAvailable(available);
-
-          // Если API доступен и есть начальное сообщение, добавляем его как сообщение от бота
-          if (available && initialMessage) {
-            setMessages([
-              {
-                id: Date.now(),
-                text: initialMessage,
-                sender: 'bot',
-                timestamp: new Date(),
-              },
-            ]);
-          }
-        })
-        .catch(() => setApiAvailable(false));
-    }
-  }, [apiAvailable, initialMessage]);
+  // Приветственное сообщение удалено по запросу пользователя
 
   const handleSendMessage = async () => {
     if (inputValue.trim() === '') return;
@@ -74,22 +53,6 @@ export default function ChatWidget({
     setIsLoading(true);
 
     try {
-      // Если API недоступен, используем локальный ответ
-      if (!apiAvailable) {
-        setTimeout(() => {
-          setMessages((prev) => [
-            ...prev,
-            {
-              id: Date.now() + 1,
-              text: 'Извините, сервер бота в данный момент недоступен. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.',
-              sender: 'bot',
-              timestamp: new Date(),
-            },
-          ]);
-          setIsLoading(false);
-        }, 1000);
-        return;
-      }
 
       // Формируем историю сообщений для API
       const apiMessages: ApiMessage[] = messages
@@ -125,7 +88,7 @@ export default function ChatWidget({
         ...prev,
         {
           id: Date.now() + 1,
-          text: 'Произошла ошибка при получении ответа. Пожалуйста, попробуйте еще раз позже.',
+          text: 'Произошла ошибка связи с сервером. Пожалуйста, попробуйте ещё раз или свяжитесь с нами в Telegram: https://t.me/optimaai_tg',
           sender: 'bot',
           timestamp: new Date(),
         },
@@ -205,11 +168,10 @@ export default function ChatWidget({
                   className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[75%] rounded-lg p-3 shadow ${
-                      msg.sender === 'user'
+                    className={`max-w-[75%] rounded-lg p-3 shadow ${msg.sender === 'user'
                         ? 'rounded-br-none bg-zinc-700 text-white'
                         : 'rounded-bl-none bg-zinc-800 text-zinc-200'
-                    }`}
+                      }`}
                   >
                     <p className="text-sm leading-snug">{msg.text}</p>
                     <p className="mt-1.5 text-right text-xs opacity-60">

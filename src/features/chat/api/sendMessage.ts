@@ -16,6 +16,9 @@ export interface ChatRequest {
 export interface ApiChatResponse {
   message: ApiMessage;
   finish_reason?: string;
+  processing_time?: number;
+  from_cache?: boolean;
+  model?: string;
   usage?: {
     prompt_tokens: number;
     completion_tokens: number;
@@ -25,10 +28,9 @@ export interface ApiChatResponse {
 
 /**
  * Базовый URL API бэкенда
- *
- * В продакшене нужно использовать относительный URL или URL с правильным доменом
+ * Используем Next.js API Routes для проксирования запросов к бэкенду
  */
-const API_BASE_URL = typeof window !== 'undefined' ? '/api' : 'http://localhost:8000';
+const API_BASE_URL = '/api';
 
 /**
  * Отправка сообщения боту и получение ответа
@@ -56,9 +58,15 @@ export async function sendMessage(
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
+      
+      // Если есть сообщение об ошибке в формате бота, возвращаем его
+      if (errorData.message) {
+        return errorData as ApiChatResponse;
+      }
+      
       throw new Error(
         `API Error: ${response.status} ${response.statusText} - ${
-          errorData.detail || 'Unknown error'
+          errorData.error || errorData.detail || 'Unknown error'
         }`
       );
     }
@@ -77,20 +85,16 @@ export async function sendMessage(
  */
 export async function checkApiHealth(): Promise<boolean> {
   try {
-    // Временное решение для тестирования: считаем API доступным
-    // В продакшене нужно реализовать проксирование через Next.js API Routes
-    return true;
-
-    /* Настоящая проверка будет выглядеть так:
     const response = await fetch(`${API_BASE_URL}/health`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
       },
+      // Не кэшируем запрос для актуальной проверки
+      cache: 'no-store',
     });
     
     return response.ok;
-    */
   } catch (error) {
     console.error('API health check failed:', error);
     return false;

@@ -59,10 +59,13 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Ошибка в /api/chat:', error);
     
+    // Безопасное получение сообщения об ошибке
+    const errorText = error instanceof Error ? error.message : String(error);
+    
     // Проверяем, есть ли проблема с подключением к бэкенду
-    const isConnectionError = error.message.includes('ECONNREFUSED') || 
-                             error.message.includes('fetch failed') ||
-                             error.message.includes('network');
+    const isConnectionError = errorText.includes('ECONNREFUSED') || 
+                             errorText.includes('fetch failed') ||
+                             errorText.includes('network');
     
     let errorMessage = 'Внутренняя ошибка сервера.';
     let botMessage = 'Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже.';

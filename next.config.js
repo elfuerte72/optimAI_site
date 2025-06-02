@@ -37,7 +37,7 @@ const nextConfig = {
     const isDev = process.env.NODE_ENV === 'development';
     const cspDirectives = {
       'default-src': "'self'",
-      'script-src': isDev ? "'self' 'unsafe-eval' 'unsafe-inline'" : "'self'", // unsafe-eval для dev
+      'script-src': isDev ? "'self' 'unsafe-eval' 'unsafe-inline'" : "'self' 'unsafe-inline'", // unsafe-inline нужен для Next.js
       'style-src': `'self' 'unsafe-inline' ${GOOGLE_FONTS_DOMAIN}`, // unsafe-inline для CSS-in-JS и Google Fonts
       'img-src': `'self' data: ${VERCEL_BLOB_DOMAIN}`, // self, data URIs и Vercel blob storage
       'font-src': `'self' ${GOOGLE_FONTS_DOMAIN}`, // self и Google Fonts

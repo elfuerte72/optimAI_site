@@ -115,61 +115,78 @@ const Navbar = () => {
           transition: 'opacity 0.3s ease, visibility 0.3s ease',
         }}
         onClick={() => setIsMenuOpen(false)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsMenuOpen(false);
+          }
+        }}
+        role="button"
+        tabIndex={isMenuOpen ? 0 : -1}
+        aria-label="Закрыть меню"
       />
 
-      <div
+      <nav
         className="gpu-accelerated nav-mobile-menu-bg fixed top-0 bottom-0 left-0 z-40 flex w-56 flex-col px-6 pt-24 backdrop-blur-lg will-change-transform md:w-64"
         style={{
           transform: isMenuOpen ? 'translateX(0)' : 'translateX(-100%)',
           transition: 'transform 0.3s ease',
           visibility: isMenuOpen ? 'visible' : 'hidden',
         }}
+        id="mobile-menu"
+        role="navigation"
+        aria-label="Главное меню"
       >
-        <nav className="flex flex-grow flex-col gap-8">
+        <div className="flex flex-grow flex-col gap-8" role="list">
           {navLinks.map((link) => (
-            <div key={link.path}>
+            <div key={link.path} role="listitem">
               <Link
                 href={link.path}
-                className="group relative"
+                className="group relative focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black rounded"
                 onClick={() => setIsMenuOpen(false)}
+                aria-current={pathname === link.path ? 'page' : undefined}
               >
                 <span
-                  className={`text-xl font-medium tracking-tight text-white ${
-                    pathname === link.path ? 'font-semibold' : ''
-                  }`}
+                  className={`text-xl font-medium tracking-tight text-white ${pathname === link.path ? 'font-semibold' : ''
+                    }`}
                 >
                   {link.name}
                 </span>
 
                 {pathname === link.path && (
-                  <span className="absolute top-1/2 -left-3 h-4 w-0.5 -translate-y-1/2 rounded-full bg-white" />
+                  <span
+                    className="absolute top-1/2 -left-3 h-4 w-0.5 -translate-y-1/2 rounded-full bg-white"
+                    aria-hidden="true"
+                  />
                 )}
               </Link>
             </div>
           ))}
-        </nav>
+        </div>
 
         <a
           href={SOCIAL_LINKS.telegram}
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative mb-8"
+          className="group relative mb-8 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black rounded"
           onClick={() => setIsMenuOpen(false)}
           onMouseEnter={() => setIsContactHovered(true)}
           onMouseLeave={() => setIsContactHovered(false)}
+          aria-label="Связаться с менеджером через Telegram"
         >
           <span className="font-tight flex items-center text-xl text-white">
             <svg
               className={`mr-2 h-5 w-5 transform transition-transform duration-300 ${isContactHovered ? 'translate-x-1' : ''}`}
               fill="currentColor"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"></path>
             </svg>
             Связаться с менеджером
           </span>
         </a>
-      </div>
+      </nav>
     </>
   );
 };

@@ -16,14 +16,14 @@ import './ChatSection.css';
 import { Button } from '@shared/ui';
 import { Card } from '@shared/ui';
 import { ScrollArea } from '@shared/ui';
-import { sendMessage, ApiMessage, checkApiHealth } from '../api/sendMessage';
+import { sendMessage, ApiMessage } from '../api/sendMessage';
 import eventBus from '../model/eventBus';
 
 // Create a context to expose the processAndSendMessage function
 export const ChatContext = createContext<{
   processAndSendMessage: (text: string) => Promise<void>;
 }>({
-  processAndSendMessage: async () => {},
+  processAndSendMessage: async () => { },
 });
 
 interface Message {
@@ -41,20 +41,10 @@ export default function ChatSection() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [apiAvailable, setApiAvailable] = useState<boolean | null>(null);
+  const [_apiAvailable, _setApiAvailable] = useState<boolean | null>(null);
   // Удалена функция автоскроллинга по запросу пользователя
 
-  // Проверка доступности API при монтировании компонента
-  useEffect(() => {
-    if (apiAvailable === null) {
-      checkApiHealth()
-        .then((available) => {
-          setApiAvailable(available);
-          // Приветственное сообщение удалено по запросу пользователя
-        })
-        .catch(() => setApiAvailable(false));
-    }
-  }, [apiAvailable]);
+  // Приветственное сообщение удалено по запросу пользователя
 
   // Автоскроллинг удален по запросу пользователя
 
@@ -80,20 +70,6 @@ export default function ChatSection() {
       setIsTyping(true);
 
       try {
-        // Если API недоступен, используем локальный ответ
-        if (!apiAvailable) {
-          setTimeout(() => {
-            const botResponse: Message = {
-              id: `bot-${Date.now()}`,
-              text: 'Извините, сервер бота в данный момент недоступен. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.',
-              sender: 'bot',
-            };
-
-            setMessages((prevMessages) => [...prevMessages, botResponse]);
-            setIsTyping(false);
-          }, 1000);
-          return;
-        }
 
         // Формируем историю сообщений для API
         const apiMessages: ApiMessage[] = messages
@@ -125,7 +101,7 @@ export default function ChatSection() {
           // В случае проблем с API
           const errorMessage: Message = {
             id: `bot-${Date.now()}`,
-            text: 'Извините, возникла ошибка при обработке запроса. Пожалуйста, попробуйте еще раз позже.',
+            text: 'Извините, возникла ошибка при обработке запроса. Пожалуйста, попробуйте ещё раз или обратитесь в поддержку.',
             sender: 'bot',
           };
 
@@ -136,7 +112,7 @@ export default function ChatSection() {
 
         const errorMessage: Message = {
           id: `bot-${Date.now()}`,
-          text: 'Извините, возникла ошибка при отправке сообщения. Пожалуйста, проверьте ваше соединение и попробуйте снова.',
+          text: 'Произошла ошибка связи с сервером. Пожалуйста, проверьте интернет-соединение и попробуйте снова.',
           sender: 'bot',
         };
 
@@ -146,7 +122,7 @@ export default function ChatSection() {
         // Автоскроллинг после получения ответа удален по запросу пользователя
       }
     },
-    [messages, isChatOpen, apiAvailable]
+    [messages, isChatOpen]
   );
 
   const _handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -179,12 +155,14 @@ export default function ChatSection() {
 
   return (
     <ChatContext.Provider value={{ processAndSendMessage }}>
-      <section className="mx-auto w-full max-w-4xl">
+      <section className="mx-auto w-full max-w-4xl" aria-label="Чат с ИИ-ассистентом">
         <Card
           className={cn(
             'mx-auto mt-4 mb-8 overflow-hidden rounded-xl border-0 bg-black shadow-lg',
             messages.length > 0 ? 'chat-dialog-expanded' : 'chat-dialog'
           )}
+          role="region"
+          aria-label="Область чата"
         >
           {isChatOpen && (
             <ScrollArea
@@ -192,12 +170,17 @@ export default function ChatSection() {
                 'flex-grow border-b border-neutral-800 p-4 sm:p-6',
                 messages.length > 0 ? 'chat-scroll-area-expanded' : 'chat-scroll-area'
               )}
+              role="log"
+              aria-live="polite"
+              aria-label="История сообщений"
             >
               <div className="flex-1 space-y-4 overflow-y-auto p-4">
                 {messages.map((msg) => (
                   <div
                     key={msg.id}
                     className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                    role="article"
+                    aria-label={`Сообщение от ${msg.sender === 'user' ? 'пользователя' : 'ассистента'}`}
                   >
                     <div
                       className={`max-w-[80%] rounded-lg px-4 py-2 ${msg.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-neutral-800 text-white'}`}
@@ -207,19 +190,22 @@ export default function ChatSection() {
                   </div>
                 ))}
                 {isTyping && (
-                  <div className="flex justify-start">
+                  <div className="flex justify-start" aria-live="polite" aria-label="Ассистент печатает">
                     <div className="rounded-lg bg-neutral-800 px-4 py-2 text-white">
                       <div className="flex space-x-1">
-                        <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400"></div>
+                        <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" aria-hidden="true"></div>
                         <div
                           className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
                           style={{ animationDelay: '0.2s' }}
+                          aria-hidden="true"
                         ></div>
                         <div
                           className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
                           style={{ animationDelay: '0.4s' }}
+                          aria-hidden="true"
                         ></div>
                       </div>
+                      <span className="sr-only">Ассистент печатает ответ</span>
                     </div>
                   </div>
                 )}
@@ -239,6 +225,7 @@ export default function ChatSection() {
                 }
               }}
               className="flex w-full items-center space-x-2 border-0"
+              aria-label="Отправка сообщения"
             >
               <div className="mr-2 flex-grow">
                 <StyledInput
@@ -256,7 +243,12 @@ export default function ChatSection() {
                     }
                   }}
                   label="Сообщение"
+                  aria-label="Введите ваше сообщение"
+                  aria-describedby="chat-input-help"
                 />
+                <div id="chat-input-help" className="sr-only">
+                  Введите ваш вопрос и нажмите Enter или кнопку отправки
+                </div>
               </div>
               <Button
                 type="submit"
@@ -264,8 +256,9 @@ export default function ChatSection() {
                 size="icon"
                 disabled={!inputValue.trim()}
                 className="shrink-0 rounded-lg border-none bg-gradient-to-r from-blue-600 to-purple-600 text-white transition-all duration-300 ease-in-out hover:from-blue-500 hover:to-purple-500 hover:text-white focus-visible:ring-white"
+                aria-label="Отправить сообщение"
               >
-                <Send className="h-5 w-5" />
+                <Send className="h-5 w-5" aria-hidden="true" />
               </Button>
             </form>
           </div>

@@ -6,8 +6,8 @@ import { NextResponse } from 'next/server';
  */
 export async function GET() {
   try {
-    // URL для бэкенда
-    const apiUrl = process.env.API_URL || 'http://localhost:8000/health';
+    // URL для бэкенда согласно новой инструкции
+    const apiUrl = `${process.env.API_URL || 'http://localhost:8000'}/health`;
 
     // Отправляем запрос к бэкенду
     const response = await fetch(apiUrl, {
@@ -15,7 +15,7 @@ export async function GET() {
       headers: {
         Accept: 'application/json',
       },
-      next: { revalidate: 10 }, // Кэширование на 10 секунд
+      next: { revalidate: 30 }, // Кэширование на 30 секунд
     });
 
     // Если запрос неуспешен, возвращаем статус ошибки

@@ -26,3 +26,5 @@ export { default as BrainIcon } from './BrainIcon';
 export { default as LogoAnimationWrapper } from './LogoAnimationWrapper';
 export { default as UiverseCardWrapper } from './UiverseCardWrapper';
 export { default as FadeInSectionWrapper } from './FadeInSectionWrapper';
+export { default as CustomStyledButtonWrapper } from './CustomStyledButtonWrapper';
+export { default as PriceButtonWrapper } from './PriceButtonWrapper';

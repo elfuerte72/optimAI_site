@@ -100,12 +100,18 @@ export default function ClientNewsSection() {
               {newsItems.map((_, index) => (
                 <div
                   key={index}
-                  className={`h-2 w-2 rounded-full ${
-                    index === currentIndex ? 'bg-blue-500' : 'bg-neutral-700'
-                  }`}
+                  className={`h-2 w-2 rounded-full cursor-pointer ${index === currentIndex ? 'bg-blue-500' : 'bg-neutral-700'
+                    }`}
                   onClick={() => {
                     setCurrentIndex(index);
                     setExpandedNewsId(null);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setCurrentIndex(index);
+                      setExpandedNewsId(null);
+                    }
                   }}
                   role="button"
                   tabIndex={0}

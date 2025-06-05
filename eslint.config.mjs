@@ -3,6 +3,7 @@ import js from '@eslint/js';
 import { FlatCompat } from '@eslint/eslintrc';
 import unusedImports from 'eslint-plugin-unused-imports';
 import nextPlugin from '@next/eslint-plugin-next';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
 import globals from 'globals';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -15,9 +16,9 @@ const compat = new FlatCompat({
   recommendedConfig: js.configs.recommended,
 });
 
-export default [
+const config = [
   {
-    ignores: ['node_modules/**', '.next/**', 'dist/**'],
+    ignores: ['node_modules/**', '.next/**', 'dist/**', 'public/**', 'coverage/**', '*.bak'],
   },
   ...compat.extends('next/core-web-vitals'),
   {
@@ -31,6 +32,7 @@ export default [
     plugins: {
       'unused-imports': unusedImports,
       '@next/next': nextPlugin,
+      'jsx-a11y': jsxA11y,
     },
     rules: {
       'react/react-in-jsx-scope': 'off',
@@ -47,7 +49,27 @@ export default [
         },
       ],
       '@next/next/no-img-element': 'off',
-      'jsx-a11y/alt-text': 'warn',
+      'import/no-anonymous-default-export': 'off',
+
+      // JSX A11Y Rules - используем более мягкие настройки для CI
+      'jsx-a11y/alt-text': 'error',
+      'jsx-a11y/anchor-has-content': 'error',
+      'jsx-a11y/anchor-is-valid': 'error',
+      'jsx-a11y/aria-props': 'error',
+      'jsx-a11y/aria-proptypes': 'error',
+      'jsx-a11y/aria-unsupported-elements': 'error',
+      'jsx-a11y/click-events-have-key-events': 'error',
+      'jsx-a11y/heading-has-content': 'error',
+      'jsx-a11y/html-has-lang': 'error',
+      'jsx-a11y/img-redundant-alt': 'error',
+      'jsx-a11y/interactive-supports-focus': 'error',
+      'jsx-a11y/label-has-associated-control': 'error',
+      'jsx-a11y/no-noninteractive-element-interactions': 'error',
+      'jsx-a11y/no-static-element-interactions': 'error',
+      'jsx-a11y/role-has-required-aria-props': 'error',
+      'jsx-a11y/role-supports-aria-props': 'error',
     },
   },
 ];
+
+export default config;

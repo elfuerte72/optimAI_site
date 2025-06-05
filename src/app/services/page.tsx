@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { fontSans, notoSansJP } from '@shared/lib';
 
-import { FadeInSection, UiverseCard, CustomStyledButton, PriceButton, Navbar } from '@shared/ui';
+import { FadeInSection, UiverseCardWrapper, CustomStyledButtonWrapper, PriceButtonWrapper, Navbar } from '@shared/ui';
 
 export const metadata: Metadata = {
   title: 'Услуги обучения | Академия Optima AI',
@@ -124,9 +124,9 @@ export default function Services() {
               Курсы цифровой грамотности
             </h2>
             <div className="mx-auto grid grid-cols-1 gap-6 md:grid-cols-3">
-              <UiverseCard title="Промтинг" description="Искусство задавать вопросы." />
-              <UiverseCard title="Мета-промтинг" description="Промптинг для создания промптов." />
-              <UiverseCard title="Арт-промтинг" description="Создание визуального контента." />
+              <UiverseCardWrapper title="Промтинг" description="Искусство задавать вопросы." />
+              <UiverseCardWrapper title="Мета-промтинг" description="Промптинг для создания промптов." />
+              <UiverseCardWrapper title="Арт-промтинг" description="Создание визуального контента." />
             </div>
           </section>
         </FadeInSection>
@@ -145,7 +145,7 @@ export default function Services() {
               </defs>
             </svg>
             <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2">
-              <div className="flex gap-4">
+              <div className="flex gap-4 rounded-xl border border-gray-800 bg-black p-6 transition-all duration-300 hover:border-gray-700">
                 <div className="h-12 w-12 flex-shrink-0">
                   <svg
                     width="48"
@@ -173,7 +173,7 @@ export default function Services() {
                   </p>
                 </div>
               </div>
-              <div className="flex gap-4">
+              <div className="flex gap-4 rounded-xl border border-gray-800 bg-black p-6 transition-all duration-300 hover:border-gray-700">
                 <div className="h-12 w-12 flex-shrink-0">
                   <svg
                     width="48"
@@ -198,7 +198,7 @@ export default function Services() {
                   </p>
                 </div>
               </div>
-              <div className="flex gap-4">
+              <div className="flex gap-4 rounded-xl border border-gray-800 bg-black p-6 transition-all duration-300 hover:border-gray-700">
                 <div className="h-12 w-12 flex-shrink-0">
                   <svg
                     width="48"
@@ -223,7 +223,7 @@ export default function Services() {
                   </p>
                 </div>
               </div>
-              <div className="flex gap-4">
+              <div className="flex gap-4 rounded-xl border border-gray-800 bg-black p-6 transition-all duration-300 hover:border-gray-700">
                 <div className="h-12 w-12 flex-shrink-0">
                   <svg
                     width="48"
@@ -448,20 +448,20 @@ export default function Services() {
           <div className="mb-10 text-center">
             {' '}
             {/* Отступ снизу можно настроить */}
-            <PriceButton href="/Для стр, академия.pdf" download />
+            <PriceButtonWrapper href="/Для стр, академия.pdf" download />
           </div>
         </FadeInSection>
 
         <FadeInSection delay={0.5}>
           <div className="mb-20 text-center">
-            <CustomStyledButton
+            <CustomStyledButtonWrapper
               href="https://t.me/optimaai_tg"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Оставить заявку на обучение"
             >
               Оставить заявку
-            </CustomStyledButton>
+            </CustomStyledButtonWrapper>
           </div>
         </FadeInSection>
       </div>

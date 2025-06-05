@@ -427,30 +427,30 @@ const ClientAboutPage: React.FC = () => {
       <Navbar />
       <main className="mx-auto w-full max-w-3xl space-y-16 px-4 pt-16 pb-20 sm:space-y-24 sm:px-6 sm:pt-24 sm:pb-28 lg:px-8">
         <div ref={heroContentRef} className="relative space-y-0 text-center">
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center justify-center">
             <CompactLogoAnimation />
+            <motion.h2
+              className={`bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 bg-clip-text text-xl leading-relaxed font-thin tracking-tight text-transparent sm:text-2xl lg:text-3xl ${pacificoFont.className} mt-0 py-0 text-center w-full -ml-4`}
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
+              }}
+            >
+              {content.hero.title.split('').map((char, i) => (
+                <motion.span
+                  key={`title-${i}`}
+                  variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+                  }}
+                >
+                  {char}
+                </motion.span>
+              ))}
+            </motion.h2>
           </div>
-          <motion.h2
-            className={`bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 bg-clip-text text-xl leading-relaxed font-light tracking-tight text-transparent sm:text-2xl lg:text-3xl ${pacificoFont.className} -mt-3 py-1`}
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
-            }}
-          >
-            {content.hero.title.split('').map((char, i) => (
-              <motion.span
-                key={`title-${i}`}
-                variants={{
-                  hidden: { opacity: 0, x: -20 },
-                  visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: 'easeOut' } },
-                }}
-              >
-                {char}
-              </motion.span>
-            ))}
-          </motion.h2>
         </div>
 
         <div
@@ -460,10 +460,10 @@ const ClientAboutPage: React.FC = () => {
           <div className="mission-text-container mb-6 overflow-hidden">
             <AnimatedText
               text="Мы — энтузиасты в сфере искусственного интеллекта"
-              className={`mx-auto max-w-2xl text-center ${robotoCondensedFont.className}`}
-              fontSize="text-xl sm:text-2xl"
-              fontWeight="font-medium"
-              textColor="text-neutral-200"
+              className="mx-auto max-w-2xl text-center"
+              fontSize="text-lg"
+              fontWeight="font-light"
+              textColor="text-[#F5F5F5]"
               delay={0.2}
               staggerDelay={0.04}
             />

@@ -6,12 +6,41 @@ import styled from 'styled-components';
 interface PriceButtonProps {
   href: string;
   download?: boolean | string;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
-const PriceButton: React.FC<PriceButtonProps> = ({ href, download }) => {
+const PriceButton: React.FC<PriceButtonProps> = ({ href, download, onClick }) => {
+  // Обработчик клика по умолчанию
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (onClick) {
+      onClick(e);
+      return;
+    }
+
+    // Если href просто '#', тогда это внутренний обработчик для скачивания
+    if (href === '#') {
+      e.preventDefault();
+
+      // Создаем элемент для скачивания
+      const link = document.createElement('a');
+      link.href = '/price/OptimAI-price.jpg';
+      link.download = 'Оптима AI прайс.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
   return (
     <StyledWrapper>
-      <a href={href} download={download} className="btn" target="_blank" rel="noopener noreferrer">
+      <a
+        href={href}
+        download={download}
+        className="btn"
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={handleClick}
+      >
         <strong>ПРАЙС</strong>
         <div id="container-stars">
           <div id="stars" />

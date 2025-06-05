@@ -448,7 +448,7 @@ export default function Services() {
           <div className="mb-10 text-center">
             {' '}
             {/* Отступ снизу можно настроить */}
-            <PriceButtonWrapper href="/Для стр, академия.pdf" download />
+            <PriceButtonWrapper href="#" />
           </div>
         </FadeInSection>
 

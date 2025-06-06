@@ -143,16 +143,18 @@ const StyledWrapper = styled.div`
   .name-container {
     width: 100%;
     text-align: center;
-    margin-top: 0.5rem;
+    margin-top: -0.5rem;
     padding: 0 0.5rem;
   }
 
   .founder-name {
     font-size: 14px;
-    color: #6366f1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    color: white !important;
+    font-weight: bold;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    line-height: 1.2;
   }
 
   .front-content .badge {

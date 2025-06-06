@@ -22,7 +22,7 @@ export default function QuickQuestionButtons() {
   };
 
   return (
-    <div className="mx-auto mb-8 flex w-full max-w-4xl flex-wrap justify-center gap-2">
+    <div className="mx-auto mb-8 flex w-full max-w-4xl flex-wrap justify-center gap-2 font-inter-normal">
       <StyledButton
         onClick={() => handleQuestionClick('Чем занимается компания?')}
         className={clickedButton === 'Чем занимается компания?' ? 'opacity-70' : ''}

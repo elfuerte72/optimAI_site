@@ -135,8 +135,8 @@ export function BookCards() {
       {/* Book Container */}
       <div
         ref={bookRef}
-        className="perspective-1000 relative h-64 w-full max-w-md"
-        style={{ perspective: '1200px' }}
+        className="perspective-1000 relative w-full max-w-md"
+        style={{ perspective: '1200px', height: '160px' }}
       >
         {values.map((value, index) => (
           <div
@@ -144,20 +144,22 @@ export function BookCards() {
             ref={(el) => {
               pageRefs.current[index] = el;
             }}
-            className="absolute inset-0 rounded-xl border border-[#FFFFFF25] bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] p-5 shadow-2xl"
+            className="absolute inset-0 rounded-xl border border-[#FFFFFF15] bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] p-4 shadow-2xl transition-all duration-300 ease-in-out hover:scale-105 w-full max-w-md transform"
             style={{
               transformStyle: 'preserve-3d',
               backfaceVisibility: 'hidden',
+              height: 'auto',
+              minHeight: '160px',
             }}
           >
             <div className="flex h-full flex-col text-center">
               <div className="flex flex-1 flex-col justify-center">
                 <h3
-                  className={`mb-2 bg-gradient-to-r text-xl font-semibold ${value.color} bg-clip-text text-transparent`}
+                  className={`mb-1 bg-gradient-to-r text-lg font-semibold ${value.color} bg-clip-text text-transparent`}
                 >
                   {value.title}
                 </h3>
-                <p className="mb-4 text-lg text-white italic">{value.subtitle}</p>
+                <p className="mb-2 text-base text-white italic font-inter-normal">{value.subtitle}</p>
                 <p
                   className={`text-sm leading-relaxed text-[#FFFFFF] ${notoSansJapanese.className}`}
                   suppressHydrationWarning

@@ -143,7 +143,7 @@ const TestimonialSlider: React.FC<TestimonialSliderProps> = ({ testimonials }) =
                   {testimonial.name}
                 </h3>
                 <p className="mb-4 text-xs font-light text-[#FFFFFF70] italic">Преподаватель</p>
-                <p className="text-base leading-relaxed font-light text-[#F5F5F5] md:text-lg">
+                <p className="text-base leading-relaxed text-[#F5F5F5] md:text-lg font-inter-normal">
                   {testimonial.text}
                 </p>
               </div>

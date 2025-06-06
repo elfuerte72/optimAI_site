@@ -60,6 +60,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
   --font-mono: var(--font-geist-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace);
+  --font-inter: var(--font-inter, 'Inter', sans-serif);
 }
 
 body {
@@ -258,4 +259,12 @@ body {
   border-color: #404040; /* Equivalent to Tailwind's neutral-700 */
   border-radius: var(--radius-md); /* Make sure --radius-md is defined or replace with Tailwind e.g. rounded-lg */
   background-color: transparent; /* Or bg-black if a solid black background is preferred */
+}
+
+/* Единый класс для шрифта Inter */
+.font-inter-normal {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-weight: 400;
+  font-style: normal;
+  font-optical-sizing: auto;
 }

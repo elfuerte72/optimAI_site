@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Card } from '@shared/ui';
+import { Card, StyledButton } from '@shared/ui';
 import { NewsItem } from '@entities/news';
 
 interface NewsCardProps {
@@ -14,8 +14,7 @@ interface NewsCardProps {
 export const NewsCard = ({ news, isExpanded, onToggle }: NewsCardProps) => {
   return (
     <Card
-      className="cursor-pointer overflow-hidden rounded-xl border border-neutral-800 bg-black shadow-lg transition-all duration-300 hover:border-neutral-600"
-      onClick={onToggle}
+      className="overflow-hidden rounded-xl border border-neutral-800 bg-black shadow-lg transition-all duration-300 hover:border-neutral-600"
     >
       <div className="relative h-64 w-full">
         <Image
@@ -27,18 +26,23 @@ export const NewsCard = ({ news, isExpanded, onToggle }: NewsCardProps) => {
         />
       </div>
       <div className="p-6">
-        <h3 className="mb-2 text-xl font-bold text-white">{news.title}</h3>
+        <h3 className="mb-2 text-xl font-normal text-white">{news.title}</h3>
         {isExpanded && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="mt-4 text-gray-300"
+            className="mt-4 text-gray-300 font-inter-normal"
           >
             <p className="whitespace-pre-line">{news.content}</p>
           </motion.div>
         )}
+        <div className="mt-4 flex justify-center">
+          <StyledButton onClick={onToggle}>
+            {isExpanded ? 'Скрыть' : 'Подробнее'}
+          </StyledButton>
+        </div>
       </div>
     </Card>
   );

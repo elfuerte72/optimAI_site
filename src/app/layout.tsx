@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono'; // Optional: if mono is also used from Geist
 import { ChatWidget } from '@features/chat';
-import { StyledComponentsRegistry } from '@shared/lib';
+import { StyledComponentsRegistry, interFont } from '@shared/lib';
 import { QueryProvider } from './providers';
 
 // Динамический импорт Footer для оптимизации загрузки
@@ -93,7 +93,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={`${GeistSans.variable} ${GeistMono.variable} dark`}>
+    <html lang="ru" className={`${GeistSans.variable} ${GeistMono.variable} ${interFont.variable} dark`}>
       <head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/icons/icon-192x192.png" sizes="192x192" />

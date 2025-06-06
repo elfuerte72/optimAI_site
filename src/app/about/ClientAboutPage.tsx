@@ -475,7 +475,7 @@ const ClientAboutPage: React.FC = () => {
                 <h3 className="mb-2 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-xl font-medium text-transparent">
                   {content.mission.title}
                 </h3>
-                <p className="text-lg leading-relaxed font-light text-[#F5F5F5]">
+                <p className="text-lg leading-relaxed font-inter-normal text-[#F5F5F5]">
                   Объединять людей и технологии.
                 </p>
               </div>
@@ -483,7 +483,7 @@ const ClientAboutPage: React.FC = () => {
           </div>
         </div>
 
-        <div ref={valuesTitleRef} className="values-title-container mb-0">
+        <div ref={valuesTitleRef} className="values-title-container mb-4">
           <motion.h2
             className={`bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 bg-clip-text text-2xl leading-none font-bold tracking-tight text-transparent sm:text-3xl ${pacificoFont.className} mb-0 text-center`}
             initial="hidden"
@@ -514,7 +514,7 @@ const ClientAboutPage: React.FC = () => {
           <div className="mx-auto mb-4 h-[0.5px] w-full max-w-sm bg-white/50 opacity-70"></div>
           <p
             ref={valuesTextRef}
-            className="mx-auto mb-10 max-w-2xl text-center text-lg text-neutral-300 opacity-0 sm:text-xl"
+            className="mx-auto mb-10 max-w-2xl text-center text-lg text-neutral-300 opacity-0 sm:text-xl font-inter-normal"
           >
             Наши ценности интегрированы в повседневную работу, формируют наш подход к людям,
             решениям и развитию.

@@ -1,6 +1,6 @@
 // Используем системный шрифт по умолчанию
 import { GeistSans } from 'geist/font/sans';
-import { Noto_Sans_JP, Pacifico, Roboto_Condensed } from 'next/font/google';
+import { Noto_Sans_JP, Pacifico, Roboto_Condensed, Inter } from 'next/font/google';
 
 export const fontSans = GeistSans;
 
@@ -26,4 +26,12 @@ export const robotoCondensedFont = Roboto_Condensed({
   weight: ['400', '700'],
   display: 'swap',
   variable: '--font-roboto-condensed',
+});
+
+// Настраиваем Inter
+export const interFont = Inter({
+  subsets: ['cyrillic', 'latin'],
+  weight: ['300', '400', '500', '600'],
+  display: 'swap',
+  variable: '--font-inter',
 });

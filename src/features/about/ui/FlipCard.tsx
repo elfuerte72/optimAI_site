@@ -31,7 +31,6 @@ const FlipCard: React.FC<FlipCardProps> = ({ name, position, image }) => {
             <div className="circle" id="bottom"></div>
           </div>
           <div className="front-content">
-            <small className="badge">Сооснователь</small>
             <div className="profile-image">
               <Image
                 src={image}
@@ -42,9 +41,7 @@ const FlipCard: React.FC<FlipCardProps> = ({ name, position, image }) => {
               />
             </div>
             <div className="name-container">
-              <p className="founder-name">
-                {name}
-              </p>
+              <small className="badge">{name}</small>
             </div>
           </div>
         </div>

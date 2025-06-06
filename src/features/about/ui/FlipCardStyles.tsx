@@ -147,29 +147,17 @@ const StyledWrapper = styled.div`
     padding: 0 0.5rem;
   }
 
-  .founder-name {
-    font-size: 14px;
-    color: white !important;
-    font-weight: bold;
-    white-space: normal;
-    overflow: visible;
-    text-overflow: unset;
-    line-height: 1.2;
-  }
-
   .front-content .badge {
     background-color: #00000055;
     padding: 3px 12px;
     border-radius: 10px;
     backdrop-filter: blur(2px);
     width: fit-content;
-    margin-top: 15px;
     color: #8b5cf6;
     font-weight: 500;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    text-align: center;
+    display: block;
+    margin: 16px auto 0;
   }
 
   /* Removed description section as it's no longer needed */

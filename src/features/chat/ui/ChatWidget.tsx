@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid';
 import { sendMessage, ApiMessage } from '../api/sendMessage';
 import { BrainIcon } from '@shared/ui';
+import { ChatMessage } from './components';
 
 interface Message {
   id: number;
@@ -173,7 +174,13 @@ export default function ChatWidget({
                         : 'rounded-bl-none bg-zinc-800 text-zinc-200'
                       }`}
                   >
-                    <p className="text-sm leading-snug">{msg.text}</p>
+                    <div className="text-sm leading-snug">
+                      <ChatMessage
+                        text={msg.text}
+                        sender={msg.sender}
+                        className="!bg-transparent !border-none !p-0 !max-w-none"
+                      />
+                    </div>
                     <p className="mt-1.5 text-right text-xs opacity-60">
                       {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>

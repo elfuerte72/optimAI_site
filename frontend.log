@@ -5,105 +5,39 @@
    ▲ Next.js 15.3.0
    - Local:        http://localhost:3000
    - Network:      http://192.168.0.135:3000
-   - Environments: .env.local
+   - Environments: .env.local, .env
 
  ✓ Starting...
 > [PWA] PWA support is disabled
 > [PWA] PWA support is disabled
- ✓ Ready in 2.9s
- ✓ Compiled /middleware in 150ms (108 modules)
+ ✓ Ready in 2.2s
+ ✓ Compiled /middleware in 345ms (108 modules)
+ ○ Compiling /api/health ...
+ ✓ Compiled /api/health in 900ms (363 modules)
+ GET /api/health 200 in 1030ms
+ ✓ Compiled /api/chat in 96ms (365 modules)
+Отправка запроса к бэкенду: http://localhost:8000/chat
+ POST /api/chat 200 in 6228ms
  ○ Compiling / ...
- ✓ Compiled / in 1715ms (1971 modules)
- GET / 200 in 2308ms
- ✓ Compiled /api/chat in 468ms (1990 modules)
+ ✓ Compiled / in 6.4s (2141 modules)
+ GET / 200 in 6768ms
 Отправка запроса к бэкенду: http://localhost:8000/chat
- POST /api/chat 200 in 4235ms
- ✓ Compiled /api/health in 284ms (1992 modules)
- GET /api/health 200 in 327ms
+ POST /api/chat 200 in 7560ms
 Отправка запроса к бэкенду: http://localhost:8000/chat
- POST /api/chat 200 in 3946ms
+ POST /api/chat 200 in 6048ms
 Отправка запроса к бэкенду: http://localhost:8000/chat
- POST /api/chat 200 in 4773ms
+ POST /api/chat 200 in 2831ms
 Отправка запроса к бэкенду: http://localhost:8000/chat
- POST /api/chat 200 in 4460ms
+ POST /api/chat 200 in 6498ms
 Отправка запроса к бэкенду: http://localhost:8000/chat
- HEAD / 200 in 252ms
- POST /api/chat 200 in 73151ms
-   Reload env: .env
- ✓ Compiled in 753ms (2080 modules)
-   Reload env: .env
- ✓ Compiled in 200ms (2080 modules)
-   Reload env: .env
- ✓ Compiled in 394ms (2080 modules)
-   Reload env: .env
- ✓ Compiled in 228ms (2080 modules)
-   Reload env: .env
- ✓ Compiled in 176ms (2080 modules)
-   Reload env: .env
- ✓ Compiled in 167ms (2080 modules)
-   Reload env: .env
- ✓ Compiled in 239ms (2080 modules)
- ✓ Compiled in 2.2s (1986 modules)
- ✓ Compiled in 1040ms (1986 modules)
- ✓ Compiled in 306ms (1986 modules)
- ✓ Compiled in 358ms (902 modules)
- ✓ Compiled in 203ms (902 modules)
- GET / 200 in 323ms
- ✓ Compiled /api/chat in 449ms (1102 modules)
+ POST /api/chat 200 in 3170ms
+ GET / 200 in 263ms
+ GET /api/health 200 in 33ms
 Отправка запроса к бэкенду: http://localhost:8000/chat
- POST /api/chat 200 in 9102ms
- ✓ Compiled /api/health in 129ms (1104 modules)
- GET /api/health 200 in 158ms
 Отправка запроса к бэкенду: http://localhost:8000/chat
- GET / 200 in 236ms
- POST /api/chat 200 in 5019ms
- ○ Compiling /privacy ...
- ✓ Compiled /privacy in 752ms (2000 modules)
- GET /privacy 200 in 828ms
- ✓ Compiled /terms in 424ms (2008 modules)
- GET /terms 200 in 481ms
- GET / 200 in 35ms
- ✓ Compiled /services in 429ms (2013 modules)
- GET /services 200 in 514ms
- ○ Compiling /about ...
- ✓ Compiled /about in 4.5s (2060 modules)
- GET /about 200 in 4639ms
- GET /about 200 in 10ms
- GET / 200 in 43ms
- ✓ Compiled in 602ms (924 modules)
- GET / 200 in 30ms
- ✓ Compiled in 212ms (924 modules)
- GET / 200 in 11ms
- ✓ Compiled in 197ms (924 modules)
- GET / 200 in 12ms
- ✓ Compiled in 174ms (924 modules)
- GET / 200 in 15ms
- ✓ Compiled in 172ms (924 modules)
- GET / 200 in 13ms
- ✓ Compiled in 666ms (2044 modules)
- GET / 200 in 84ms
- ○ Compiling /_not-found ...
- ✓ Compiled /_not-found in 693ms (2034 modules)
- GET /_next/static/css/app/page.css?v=1748862221550 404 in 861ms
- GET /_next/static/css/app/layout.css?v=1748862221550 404 in 889ms
- GET /_next/static/css/app/layout.css?v=1748862221550 404 in 56ms
- GET /_next/static/css/app/page.css?v=1748862221550 404 in 56ms
- ✓ Compiled in 195ms (927 modules)
- GET / 200 in 126ms
- ✓ Compiled in 539ms (2034 modules)
- GET /_next/static/css/app/page.css?v=1748862232229 404 in 544ms
- GET /_next/static/css/app/layout.css?v=1748862232229 404 in 551ms
- GET / 200 in 19ms
- GET /_next/static/css/app/layout.css?v=1748862232910 404 in 27ms
- GET /_next/static/css/app/page.css?v=1748862232910 404 in 26ms
- GET /_next/static/css/app/page.css?v=1748862232910 404 in 31ms
- GET /_next/static/css/app/layout.css?v=1748862232910 404 in 25ms
- GET / 200 in 82ms
- GET /_next/static/css/app/page.css?v=1748862306565 404 in 60ms
- GET /_next/static/css/app/layout.css?v=1748862306565 404 in 61ms
- GET /_next/static/chunks/app-pages-internals.js 404 in 134ms
- GET /_next/static/chunks/main-app.js?v=1748862306565 404 in 135ms
- GET /_next/static/chunks/app/layout.js 404 in 135ms
- GET /_next/static/chunks/webpack.js?v=1748862306565 404 in 137ms
- GET /_next/static/chunks/app/page.js 404 in 135ms
-[?25h
+ POST /api/chat 200 in 7022ms
+ POST /api/chat 200 in 9334ms
+Отправка запроса к бэкенду: http://localhost:8000/chat
+ POST /api/chat 200 in 8727ms
+Отправка запроса к бэкенду: http://localhost:8000/chat
+ POST /api/chat 200 in 1977ms

@@ -19,6 +19,7 @@ import { ScrollArea } from '@shared/ui';
 import { sendMessage, ApiMessage } from '../api/sendMessage';
 import eventBus from '../model/eventBus';
 import gsap from 'gsap';
+import { ChatMessage } from './components';
 
 // Create a context to expose the processAndSendMessage function
 export const ChatContext = createContext<{
@@ -335,17 +336,11 @@ export default function ChatSection() {
                   <div
                     key={msg.id}
                     className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                    role="article"
-                    aria-label={`Сообщение от ${msg.sender === 'user' ? 'пользователя' : 'ассистента'}`}
                   >
-                    <div
-                      className={`max-w-[85%] rounded-lg px-4 py-3 transition-all duration-300 message-bubble ${msg.sender === 'user'
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-neutral-800 text-white border border-blue-500/30'
-                        }`}
-                    >
-                      {msg.text}
-                    </div>
+                    <ChatMessage
+                      text={msg.text}
+                      sender={msg.sender}
+                    />
                   </div>
                 ))}
                 {isTyping && (

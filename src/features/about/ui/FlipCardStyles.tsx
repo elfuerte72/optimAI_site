@@ -37,7 +37,7 @@ const StyledWrapper = styled.div`
 
   .front,
   .back {
-    background-color: #151515;
+    background-color: #000;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -115,50 +115,7 @@ const StyledWrapper = styled.div`
   }
 
   /* Front styling (already moved above) */
-  .front .front-content {
-    color: white;
-  }
 
-  .front .front-content {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .profile-image {
-    margin: 1.5rem auto 0.75rem;
-    border: 2px solid #6366f1;
-    border-radius: 50%;
-    overflow: hidden;
-    width: 160px;
-    height: 160px;
-    box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
-  }
-
-  .name-container {
-    width: 100%;
-    text-align: center;
-    margin-top: -0.5rem;
-    padding: 0 0.5rem;
-  }
-
-  .front-content .badge {
-    background-color: #00000055;
-    padding: 3px 12px;
-    border-radius: 10px;
-    backdrop-filter: blur(2px);
-    width: fit-content;
-    color: #8b5cf6;
-    font-weight: 500;
-    text-align: center;
-    display: block;
-    margin: 16px auto 0;
-  }
 
   /* Removed description section as it's no longer needed */
 
@@ -168,56 +125,6 @@ const StyledWrapper = styled.div`
     display: flex;
     justify-content: center;
     color: #6366f1;
-  }
-
-  .front .img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-
-  .circle {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    background-color: #3b82f680;
-    position: relative;
-    filter: blur(15px);
-    animation: floating 2600ms infinite linear;
-  }
-
-  #bottom {
-    background-color: #8b5cf680;
-    left: 50px;
-    top: 0px;
-    width: 150px;
-    height: 150px;
-    animation-delay: -800ms;
-  }
-
-  #right {
-    background-color: #6366f180;
-    left: 160px;
-    top: -80px;
-    width: 30px;
-    height: 30px;
-    animation-delay: -1800ms;
-  }
-
-  @keyframes floating {
-    0% {
-      transform: translateY(0px);
-    }
-
-    50% {
-      transform: translateY(10px);
-    }
-
-    100% {
-      transform: translateY(0px);
-    }
   }
 `;
 

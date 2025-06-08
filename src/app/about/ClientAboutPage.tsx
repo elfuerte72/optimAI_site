@@ -370,7 +370,7 @@ const ClientAboutPage: React.FC = () => {
       },
     ],
     team: {
-      title: 'Команда основателей',
+      title: 'Команда',
       members: [
         { name: 'Григорий Таловиков', position: 'CEO', image: '/images/2025-05-26 15.13.35.jpg' },
         {
@@ -399,16 +399,18 @@ const ClientAboutPage: React.FC = () => {
     ({ children, className, icon, title }, ref) => (
       <section
         ref={ref}
-        className={`group rounded-xl border border-neutral-700/60 bg-neutral-800 p-6 shadow-xl transition-colors duration-300 ease-in-out hover:scale-[1.02] hover:border-sky-400/80 hover:shadow-sky-500/15 sm:p-8 ${className || ''}`}
+        className={`group rounded-xl border border-neutral-700/60 bg-neutral-800 shadow-xl transition-colors duration-300 ease-in-out hover:scale-[1.02] hover:border-sky-400/80 hover:shadow-sky-500/15 px-6 pt-2 pb-6 sm:px-8 sm:pt-4 sm:pb-8 ${className || ''}`}
       >
-        <div className="mb-5 flex items-start space-x-4">
+        <div className="mb-8 flex flex-col items-center text-center">
           {icon && (
             <div className="mt-1 transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-[7deg]">
               {icon}
             </div>
           )}
           {title && (
-            <h2 className="bg-gradient-to-r from-blue-400 via-purple-500 to-indigo-400 bg-clip-text text-3xl font-semibold text-transparent sm:text-4xl">
+            <h2
+              className={`text-white text-3xl sm:text-4xl font-inter-normal pb-4`}
+            >
               {title}
             </h2>
           )}
@@ -525,13 +527,14 @@ const ClientAboutPage: React.FC = () => {
           ref={addToSectionCardRefs}
           icon={content.team.icon}
           title={content.team.title}
-          className="hover:border-indigo-400/80 hover:shadow-indigo-500/15"
+          className="hover:border-blue-400/80 hover:shadow-blue-500/15"
         >
           <FlipCardStyles>
-            <div className="mt-6 grid">
+            <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-3">
               {content.team.members.map((member, index) => (
-                <div key={index}>
-                  <FlipCard name={member.name} position={member.position} image={member.image} />
+                <div key={index} className="text-center">
+                  <FlipCard position={member.position} image={member.image} />
+                  <h3 className="mt-4 text-lg text-white font-inter-normal">{member.name}</h3>
                 </div>
               ))}
             </div>

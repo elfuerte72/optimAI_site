@@ -7,21 +7,36 @@ interface StyledInputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
   placeholder?: string;
   label?: string;
+  className?: string;
 }
 
 const StyledInput: React.FC<StyledInputProps> = ({
   value,
   onChange,
   onKeyDown,
+  onFocus,
+  onBlur,
   placeholder: _placeholder = 'Спросите что-нибудь...',
   label = 'Сообщение',
+  className,
 }) => {
   return (
     <StyledWrapper>
       <div className="form-control">
-        <input type="text" required value={value} onChange={onChange} onKeyDown={onKeyDown} />
+        <input
+          type="text"
+          required
+          value={value}
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          className={className}
+        />
         <label>
           {label.split('').map((char, index) => (
             <span key={index} style={{ transitionDelay: `${index * 50}ms` }}>

@@ -52,8 +52,8 @@ const CompactLogoAnimation = () => {
       onHoverStart={() => !isMobile && setIsLogoHovered(true)}
       onHoverEnd={() => !isMobile && setIsLogoHovered(false)}
     >
-      {/* Основной логотип с обрезкой снизу */}
-      <div className="relative overflow-hidden" style={{ height: '70px' }}>
+      {/* Основной логотип */}
+      <div className="relative overflow-hidden" style={{ height: '80px' }}>
         <Image
           src="/images/logo-updated.png"
           alt="OptimaAI Logo"
@@ -61,7 +61,7 @@ const CompactLogoAnimation = () => {
           height={96}
           priority
           className="relative z-10"
-          style={{ marginTop: '-13px' }}
+          style={{ marginTop: '-8px' }}
         />
       </div>
 
@@ -432,7 +432,7 @@ const ClientAboutPage: React.FC = () => {
           <div className="flex flex-col items-center justify-center">
             <CompactLogoAnimation />
             <motion.h2
-              className={`bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 bg-clip-text text-xl leading-relaxed font-thin tracking-tight text-transparent sm:text-2xl lg:text-3xl ${pacificoFont.className} mt-0 py-0 text-center w-full -ml-4`}
+              className={`bg-gradient-to-r from-neutral-50 via-neutral-200 to-neutral-400 bg-clip-text text-xl leading-relaxed font-thin tracking-tight text-transparent sm:text-2xl lg:text-3xl ${pacificoFont.className} mt-2 py-0 text-center w-full -ml-4`}
               initial="hidden"
               animate="visible"
               variants={{

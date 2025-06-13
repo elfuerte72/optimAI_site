@@ -1,9 +1,178 @@
-/* Стили для удаления обводки поля ввода */
+
+/* Modal overlay styles */
+.chat-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Modal content */
+.chat-modal-content {
+  width: 100%;
+  max-width: 800px;
+  height: 90vh;
+  max-height: 700px;
+  background: #000000;
+  border: 1px solid #262626;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: modalSlideIn 0.3s ease-out;
+  overflow: hidden;
+}
+
+/* Modal header */
+.chat-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #262626;
+  background: #000000;
+  flex-shrink: 0;
+}
+
+/* Messages area */
+.chat-modal-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  background: #000000;
+}
+
+.chat-modal-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-modal-messages::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.chat-modal-messages::-webkit-scrollbar-thumb {
+  background: #404040;
+  border-radius: 3px;
+}
+
+.chat-modal-messages::-webkit-scrollbar-thumb:hover {
+  background: #505050;
+}
+
+/* Input area - reduced height and semi-transparent */
+.chat-modal-input {
+  padding: 12px 20px;
+  border-top: 1px solid #262626;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(8px);
+  flex-shrink: 0;
+}
+
+/* Chat trigger input field is styled by StyledInput component */
+
+/* Scroll to bottom button */
+.chat-scroll-button {
+  position: absolute;
+  bottom: 80px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.9);
+  color: white;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.chat-scroll-button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .chat-modal-overlay {
+    padding: 8px;
+  }
+  
+  .chat-modal-content {
+    height: 95vh;
+    max-height: none;
+    border-radius: 12px;
+  }
+  
+  .chat-modal-header {
+    padding: 12px 16px;
+  }
+  
+  .chat-modal-input {
+    padding: 12px 16px;
+  }
+  
+  .chat-scroll-button {
+    bottom: 70px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-trigger-button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .chat-modal-content {
+    height: 100vh;
+    border-radius: 0;
+  }
+  
+  .chat-modal-overlay {
+    padding: 0;
+  }
+}
+
+/* Legacy styles for input field (if still needed) */
 .chat-input {
   outline: none !important;
   box-shadow: none !important;
   border-color: #262626 !important;
-  /* neutral-800 */
 }
 
 .chat-input:focus,
@@ -13,226 +182,6 @@
   outline: none !important;
   box-shadow: none !important;
   border-color: #262626 !important;
-  /* neutral-800 */
   -webkit-appearance: none !important;
   appearance: none !important;
-}
-
-/* Стили для чат-диалога */
-.chat-dialog {
-  max-width: 400px;
-  width: 100%;
-  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  max-height: 45vh;
-  transform-origin: center bottom;
-}
-
-/* Расширенный размер для чат-диалога с сообщениями */
-.chat-dialog-expanded {
-  max-width: 100%;
-  width: 100%;
-  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  max-height: 75vh;
-  transform-origin: center bottom;
-}
-
-/* Стили для области прокрутки чата */
-.chat-scroll-area {
-  height: 400px;
-  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  max-height: 30vh;
-}
-
-/* Расширенная область прокрутки для чата с сообщениями */
-.chat-scroll-area-expanded {
-  height: 500px;
-  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  max-height: 60vh;
-}
-
-/* Анимация для сообщений */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.flex-1>div[role="article"] {
-  animation: fadeIn 0.3s ease-out forwards;
-}
-
-/* Индикатор печати */
-@keyframes pulse {
-  0% {
-    opacity: 0.3;
-    transform: scale(0.8);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-
-  100% {
-    opacity: 0.3;
-    transform: scale(0.8);
-  }
-}
-
-.animate-bounce {
-  animation: pulse 1.4s infinite ease-in-out;
-}
-
-/* Красивые рамки для чата */
-.border-blue-500 {
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
-  border-color: rgba(59, 130, 246, 0.5) !important;
-}
-
-
-
-/* Кнопка скролла к низу */
-.scroll-to-bottom-btn {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: rgba(59, 130, 246, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(10px);
-  animation: fadeIn 0.3s forwards;
-  z-index: 10;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  border: none;
-  transition: all 0.2s ease;
-}
-
-.scroll-to-bottom-btn:hover {
-  background-color: rgba(59, 130, 246, 1);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
-/* Стили для прокрутки чата */
-.overflow-y-auto {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(59, 130, 246, 0.5) rgba(0, 0, 0, 0.1);
-}
-
-.overflow-y-auto::-webkit-scrollbar {
-  width: 6px;
-}
-
-.overflow-y-auto::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
-}
-
-.overflow-y-auto::-webkit-scrollbar-thumb {
-  background-color: rgba(59, 130, 246, 0.5);
-  border-radius: 3px;
-}
-
-/* Стили для улучшения видимости сообщений */
-.messages-container {
-  font-size: 1.05rem;
-  line-height: 1.5;
-  position: relative;
-  scroll-behavior: smooth;
-  will-change: scroll-position;
-  height: 100%;
-  overscroll-behavior: contain;
-}
-
-.messages-container div[role="article"]>div {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  margin-bottom: 12px;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-}
-
-/* Маркер скролла */
-.scroll-marker {
-  height: 2px;
-  width: 100%;
-  opacity: 0;
-  margin-bottom: 16px;
-}
-
-/* Уменьшение видимости поля отправки */
-.input-container {
-  opacity: 0.7;
-  transform-origin: center bottom;
-  transition: all 0.3s ease-in-out;
-}
-
-.input-container:hover,
-.input-container:focus-within {
-  opacity: 1;
-}
-
-.compact-input {
-  height: 40px;
-  font-size: 0.95rem;
-  padding: 0.5rem 1rem;
-  background-color: rgba(30, 30, 30, 0.6);
-  border-color: rgba(107, 114, 128, 0.3);
-  transition: all 0.3s ease;
-}
-
-.compact-input:focus,
-.focused-input {
-  background-color: rgba(30, 30, 30, 0.9);
-  border-color: rgba(59, 130, 246, 0.5);
-  height: 42px;
-  font-size: 1rem;
-}
-
-.send-button {
-  width: 34px;
-  height: 34px;
-  padding: 6px;
-  opacity: 0.85;
-  transition: all 0.2s ease;
-}
-
-.send-button:hover {
-  opacity: 1;
-  transform: translateY(-1px);
-}
-
-/* Стили для контейнера чата */
-.chat-section {
-  contain: layout;
-}
-
-/* Контейнер для скроллируемой области */
-.chat-scroll-container {
-  position: relative;
-  overflow: hidden;
-}
-
-/* Стиль для индикатора печати */
-.typing-indicator {
-  will-change: transform, opacity;
-}
-
-/* Пузырьки сообщений */
-.message-bubble {
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }

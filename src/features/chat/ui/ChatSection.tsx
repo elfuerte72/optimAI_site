@@ -1,4 +1,3 @@
-
 'use client';
 
 import {
@@ -34,7 +33,7 @@ interface Message {
 }
 
 // Typewriter animation component
-const TypewriterText = ({ text, speed = 30 }: { text: string; speed?: number }) => {
+const TypewriterText = ({ text, speed = 30, onComplete }: { text: string; speed?: number; onComplete?: () => void }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -43,11 +42,27 @@ const TypewriterText = ({ text, speed = 30 }: { text: string; speed?: number }) 
       const timer = setTimeout(() => {
         setDisplayedText(prev => prev + text[currentIndex]);
         setCurrentIndex(prev => prev + 1);
+
+        // Прокручиваем каждые 50 символов для длинных сообщений
+        if (currentIndex > 0 && currentIndex % 50 === 0) {
+          setTimeout(() => {
+            const messagesContainer = document.querySelector('.chat-modal-messages');
+            if (messagesContainer) {
+              messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+          }, 50);
+        }
       }, speed);
 
       return () => clearTimeout(timer);
+    } else if (currentIndex === text.length && onComplete) {
+      // Вызываем callback когда печать завершена
+      const timer = setTimeout(() => {
+        onComplete();
+      }, 100);
+      return () => clearTimeout(timer);
     }
-  }, [currentIndex, text, speed]);
+  }, [currentIndex, text, speed, onComplete]);
 
   useEffect(() => {
     setDisplayedText('');
@@ -68,9 +83,10 @@ export default function ChatSection() {
   // Smooth scroll to bottom
   const scrollToBottom = useCallback(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ 
+      messagesEndRef.current.scrollIntoView({
         behavior: 'smooth',
-        block: 'end'
+        block: 'end',
+        inline: 'nearest'
       });
     }
   }, []);
@@ -80,7 +96,7 @@ export default function ChatSection() {
     if (messages.length > 0) {
       const timer = setTimeout(() => {
         scrollToBottom();
-      }, 100);
+      }, 200); // Increased delay to ensure content is rendered
       return () => clearTimeout(timer);
     }
   }, [messages, scrollToBottom]);
@@ -213,6 +229,8 @@ export default function ChatSection() {
         <div className="flex justify-center">
           <div className="w-full max-w-md">
             <StyledInput
+              value={inputValue}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
               placeholder="Задайте вопрос ИИ-ассистенту..."
               onFocus={() => setIsChatOpen(true)}
               label="Сообщение"
@@ -252,36 +270,34 @@ export default function ChatSection() {
               </div>
 
               {/* Quick question buttons inside modal */}
-              {messages.length === 0 && (
-                <div className="border-b border-neutral-800 p-4">
-                  <div className="flex flex-wrap gap-2 justify-center">
-                    <Button
-                      onClick={() => processAndSendMessage('Чем занимается компания?')}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs bg-neutral-800 border-neutral-700 text-white hover:bg-neutral-700"
-                    >
-                      Чем занимается компания?
-                    </Button>
-                    <Button
-                      onClick={() => processAndSendMessage('Подробнее об услугах компании')}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs bg-neutral-800 border-neutral-700 text-white hover:bg-neutral-700"
-                    >
-                      Подробнее об услугах компании
-                    </Button>
-                    <Button
-                      onClick={() => processAndSendMessage('Как связаться с менеджером?')}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs bg-neutral-800 border-neutral-700 text-white hover:bg-neutral-700"
-                    >
-                      Как связаться с менеджером?
-                    </Button>
-                  </div>
+              <div className="border-b border-neutral-800 p-4">
+                <div className="flex flex-wrap gap-2 justify-center">
+                  <Button
+                    onClick={() => processAndSendMessage('Чем занимается компания?')}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs bg-neutral-800 border-neutral-700 text-white hover:bg-neutral-700"
+                  >
+                    Чем занимается компания?
+                  </Button>
+                  <Button
+                    onClick={() => processAndSendMessage('Подробнее об услугах компании')}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs bg-neutral-800 border-neutral-700 text-white hover:bg-neutral-700"
+                  >
+                    Подробнее об услугах компании
+                  </Button>
+                  <Button
+                    onClick={() => processAndSendMessage('Как связаться с менеджером?')}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs bg-neutral-800 border-neutral-700 text-white hover:bg-neutral-700"
+                  >
+                    Как связаться с менеджером?
+                  </Button>
                 </div>
-              )}
+              </div>
 
               {/* Messages area */}
               <ScrollArea
@@ -299,14 +315,20 @@ export default function ChatSection() {
                       aria-label={`Сообщение от ${msg.sender === 'user' ? 'пользователя' : 'ассистента'}`}
                     >
                       <div
-                        className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                          msg.sender === 'user' 
-                            ? 'bg-blue-600 text-white' 
-                            : 'bg-neutral-800 text-white'
-                        }`}
+                        className={`max-w-[80%] rounded-lg px-4 py-2 ${msg.sender === 'user'
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-neutral-800 text-white'
+                          }`}
                       >
                         {msg.sender === 'bot' && typingMessageId === msg.id ? (
-                          <TypewriterText text={msg.text} />
+                          <TypewriterText
+                            text={msg.text}
+                            onComplete={() => {
+                              setTimeout(() => {
+                                scrollToBottom();
+                              }, 100);
+                            }}
+                          />
                         ) : (
                           msg.text
                         )}
@@ -341,7 +363,7 @@ export default function ChatSection() {
               <div className="chat-modal-input">
                 <form
                   onSubmit={handleFormSubmit}
-                  className="flex w-full items-center space-x-2"
+                  className="flex w-full items-center gap-2"
                   aria-label="Отправка сообщения"
                 >
                   <div className="flex-grow">
@@ -359,20 +381,19 @@ export default function ChatSection() {
                           }
                         }
                       }}
+                      placeholder="Введите сообщение..."
                       label="Сообщение"
                       aria-label="Введите ваше сообщение"
                       aria-describedby="chat-input-help"
+                      className="w-full"
                     />
-                    <div id="chat-input-help" className="sr-only">
-                      Введите ваш вопрос и нажмите Enter или кнопку отправки
-                    </div>
                   </div>
                   <Button
                     type="submit"
                     variant="outline"
                     size="icon"
                     disabled={!inputValue.trim()}
-                    className="shrink-0 rounded-lg border-none bg-gradient-to-r from-blue-600 to-purple-600 text-white transition-all duration-300 ease-in-out hover:from-blue-500 hover:to-purple-500 hover:text-white focus-visible:ring-white"
+                    className="shrink-0 h-10 w-10 rounded-lg border-none bg-gradient-to-r from-blue-600 to-purple-600 text-white transition-all duration-300 ease-in-out hover:from-blue-500 hover:to-purple-500 hover:text-white focus-visible:ring-white"
                     aria-label="Отправить сообщение"
                   >
                     <Send className="h-5 w-5" aria-hidden="true" />

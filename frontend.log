@@ -10,34 +10,13 @@
  ✓ Starting...
 > [PWA] PWA support is disabled
 > [PWA] PWA support is disabled
- ✓ Ready in 2.2s
- ✓ Compiled /middleware in 345ms (108 modules)
- ○ Compiling /api/health ...
- ✓ Compiled /api/health in 900ms (363 modules)
- GET /api/health 200 in 1030ms
- ✓ Compiled /api/chat in 96ms (365 modules)
+ ✓ Ready in 2.3s
+ ✓ Compiled /middleware in 348ms (108 modules)
+ ○ Compiling /api/chat ...
+ ✓ Compiled /api/chat in 864ms (363 modules)
 Отправка запроса к бэкенду: http://localhost:8000/chat
- POST /api/chat 200 in 6228ms
- ○ Compiling / ...
- ✓ Compiled / in 6.4s (2141 modules)
- GET / 200 in 6768ms
+ POST /api/chat 200 in 5371ms
+ ✓ Compiled /api/health in 126ms (365 modules)
+ GET /api/health 200 in 154ms
 Отправка запроса к бэкенду: http://localhost:8000/chat
- POST /api/chat 200 in 7560ms
-Отправка запроса к бэкенду: http://localhost:8000/chat
- POST /api/chat 200 in 6048ms
-Отправка запроса к бэкенду: http://localhost:8000/chat
- POST /api/chat 200 in 2831ms
-Отправка запроса к бэкенду: http://localhost:8000/chat
- POST /api/chat 200 in 6498ms
-Отправка запроса к бэкенду: http://localhost:8000/chat
- POST /api/chat 200 in 3170ms
- GET / 200 in 263ms
- GET /api/health 200 in 33ms
-Отправка запроса к бэкенду: http://localhost:8000/chat
-Отправка запроса к бэкенду: http://localhost:8000/chat
- POST /api/chat 200 in 7022ms
- POST /api/chat 200 in 9334ms
-Отправка запроса к бэкенду: http://localhost:8000/chat
- POST /api/chat 200 in 8727ms
-Отправка запроса к бэкенду: http://localhost:8000/chat
- POST /api/chat 200 in 1977ms
+ POST /api/chat 200 in 5350ms

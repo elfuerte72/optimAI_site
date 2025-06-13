@@ -18,6 +18,7 @@ import { Card } from '@shared/ui';
 import { ScrollArea } from '@shared/ui';
 import { sendMessage, ApiMessage } from '../api/sendMessage';
 import eventBus from '../model/eventBus';
+import { ChatMessage } from './components/ChatMessage';
 
 // Create a context to expose the processAndSendMessage function
 export const ChatContext = createContext<{
@@ -32,10 +33,115 @@ interface Message {
   sender: 'user' | 'bot';
 }
 
-// Typewriter animation component
+// Typewriter animation component with link processing
 const TypewriterText = ({ text, speed = 30, onComplete }: { text: string; speed?: number; onComplete?: () => void }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Функция для обработки ссылок в тексте
+  const renderTextWithLinks = (inputText: string): React.ReactNode => {
+    // Специальный регекс для Telegram ссылок
+    const telegramRegex = /(?:@)?(https?:\/\/)?(?:www\.)?(t\.me|telegram\.me)\/([a-zA-Z0-9_]+)/gi;
+    
+    // Общий регекс для HTTP/HTTPS ссылок
+    const httpRegex = /(https?:\/\/[^\s]+)/gi;
+    
+    let processedText = inputText;
+    const links: Array<{ match: string; url: string; start: number; end: number }> = [];
+    
+    // Находим Telegram ссылки
+    const telegramMatches = [...inputText.matchAll(telegramRegex)];
+    telegramMatches.forEach((match) => {
+      const fullMatch = match[0];
+      let url = fullMatch;
+      
+      if (url.startsWith('@')) {
+        url = url.substring(1);
+      }
+      
+      if (!url.startsWith('http')) {
+        url = 'https://' + url;
+      }
+      
+      links.push({
+        match: fullMatch,
+        url: url,
+        start: match.index!,
+        end: match.index! + fullMatch.length
+      });
+    });
+    
+    // Находим HTTP ссылки
+    const httpMatches = [...inputText.matchAll(httpRegex)];
+    httpMatches.forEach((match) => {
+      const fullMatch = match[0];
+      const start = match.index!;
+      const end = start + fullMatch.length;
+      
+      // Проверяем, не пересекается ли с уже найденными ссылками
+      const overlaps = links.some(link => 
+        (start >= link.start && start < link.end) || 
+        (end > link.start && end <= link.end) ||
+        (start <= link.start && end >= link.end)
+      );
+      
+      if (!overlaps) {
+        links.push({
+          match: fullMatch,
+          url: fullMatch,
+          start: start,
+          end: end
+        });
+      }
+    });
+    
+    // Сортируем ссылки по позиции
+    links.sort((a, b) => a.start - b.start);
+    
+    if (links.length === 0) {
+      return inputText;
+    }
+    
+    // Создаем массив частей текста и ссылок
+    const parts: React.ReactNode[] = [];
+    let lastIndex = 0;
+    
+    links.forEach((link, index) => {
+      // Добавляем текст перед ссылкой
+      if (link.start > lastIndex) {
+        parts.push(inputText.substring(lastIndex, link.start));
+      }
+      
+      // Добавляем ссылку
+      parts.push(
+        <a
+          key={`link-${index}`}
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-400 hover:text-blue-300 underline transition-colors duration-200 cursor-pointer"
+          aria-label={`Открыть ссылку ${link.match} в новой вкладке`}
+          onClick={(e) => {
+            // Дополнительная обработка для Telegram ссылок
+            if (link.url.includes('t.me') || link.url.includes('telegram.me')) {
+              console.log('Переход на Telegram канал:', link.url);
+            }
+          }}
+        >
+          {link.match}
+        </a>
+      );
+      
+      lastIndex = link.end;
+    });
+    
+    // Добавляем оставшийся текст
+    if (lastIndex < inputText.length) {
+      parts.push(inputText.substring(lastIndex));
+    }
+    
+    return parts;
+  };
 
   useEffect(() => {
     if (currentIndex < text.length) {
@@ -69,7 +175,7 @@ const TypewriterText = ({ text, speed = 30, onComplete }: { text: string; speed?
     setCurrentIndex(0);
   }, [text]);
 
-  return <span>{displayedText}</span>;
+  return <span>{renderTextWithLinks(displayedText)}</span>;
 };
 
 export default function ChatSection() {
@@ -314,25 +420,31 @@ export default function ChatSection() {
                       role="article"
                       aria-label={`Сообщение от ${msg.sender === 'user' ? 'пользователя' : 'ассистента'}`}
                     >
-                      <div
-                        className={`max-w-[80%] rounded-lg px-4 py-2 ${msg.sender === 'user'
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-neutral-800 text-white'
-                          }`}
-                      >
-                        {msg.sender === 'bot' && typingMessageId === msg.id ? (
+                      {msg.sender === 'bot' && typingMessageId === msg.id ? (
+                        <div
+                          className="max-w-[80%] rounded-lg px-4 py-2 bg-neutral-800 text-white"
+                        >
                           <TypewriterText
                             text={msg.text}
                             onComplete={() => {
+                              // Сбрасываем typingMessageId после завершения анимации
+                              setTypingMessageId(null);
                               setTimeout(() => {
                                 scrollToBottom();
                               }, 100);
                             }}
                           />
-                        ) : (
-                          msg.text
-                        )}
-                      </div>
+                        </div>
+                      ) : (
+                        <ChatMessage
+                          text={msg.text}
+                          sender={msg.sender}
+                          className={`max-w-[80%] ${msg.sender === 'user'
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-neutral-800 text-white'
+                            }`}
+                        />
+                      )}
                     </div>
                   ))}
                   {isTyping && (

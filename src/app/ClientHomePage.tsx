@@ -157,7 +157,7 @@ export default function ClientHomePage() {
           href="https://t.me/academyOptima"
           target="_blank"
           rel="noopener noreferrer"
-          className="px-6 py-3 text-xl font-medium text-gray-400 transition-colors duration-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+          className="px-6 py-3 text-xl font-medium text-gray-400 transition-colors duration-300 hover:text-white focus:outline-none"
           aria-label="Связаться с нами через Telegram"
         >
           Связаться с нами

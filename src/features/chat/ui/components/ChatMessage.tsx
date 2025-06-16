@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Linkify from 'react-linkify';
 
 interface ChatMessageProps {
   text: string;
@@ -13,54 +12,144 @@ interface ChatMessageProps {
  * Компонент для отображения сообщения чата с автоматическим преобразованием URL в ссылки
  */
 export const ChatMessage: React.FC<ChatMessageProps> = ({ text, sender, className = '' }) => {
-  // Кастомный декоратор для ссылок
-  const componentDecorator = (decoratedHref: string, decoratedText: string, key: number) => (
-    <a
-      key={key}
-      href={decoratedHref}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-400 hover:text-blue-300 underline transition-colors duration-200"
-      aria-label={`Открыть ссылку ${decoratedText} в новой вкладке`}
-    >
-      {decoratedText}
-    </a>
-  );
-
-  // Fallback функция для случаев, когда react-linkify недоступен
+  // Отладочная информация
+  console.log('ChatMessage render:', { text, sender, hasLinks: /https?:\/\//.test(text) });
+  
+  // Улучшенная функция для обработки ссылок
   const renderTextWithLinks = (inputText: string): React.ReactNode => {
-    try {
-      // Пытаемся использовать react-linkify
-      return (
-        <Linkify componentDecorator={componentDecorator}>
-          {inputText}
-        </Linkify>
-      );
-    } catch (error) {
-      console.warn('react-linkify недоступен, используем fallback:', error);
+    // Расширенный регекс для различных типов ссылок
+    const linkRegex = /(?:https?:\/\/|www\.|@https?:\/\/)?(?:[-\w.]+\.)?(?:t\.me|telegram\.me|twitter\.com|instagram\.com|facebook\.com|vk\.com|youtube\.com|github\.com|linkedin\.com|[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(?:\.[a-zA-Z]{2,}))(?:\/[^\s]*)?/gi;
+    
+    // Специальный регекс для Telegram ссылок
+    const telegramRegex = /(?:@)?(https?:\/\/)?(?:www\.)?(t\.me|telegram\.me)\/([a-zA-Z0-9_]+)/gi;
+    
+    // Общий регекс для HTTP/HTTPS ссылок
+    const httpRegex = /(https?:\/\/[^\s]+)/gi;
+    
+    let processedText = inputText;
+    const links: Array<{ match: string; url: string; start: number; end: number }> = [];
+    
+    // Находим все ссылки
+    let match;
+    
+    // Сначала обрабатываем Telegram ссылки
+    const telegramMatches = [...inputText.matchAll(telegramRegex)];
+    telegramMatches.forEach((match) => {
+      const fullMatch = match[0];
+      let url = fullMatch;
       
-      // Fallback: ручная обработка ссылок с помощью регулярных выражений
-      const urlRegex = /(https?:\/\/[^\s]+)/g;
-      const parts = inputText.split(urlRegex);
+      // Если ссылка начинается с @, убираем @
+      if (url.startsWith('@')) {
+        url = url.substring(1);
+      }
       
-      return parts.map((part, index) => {
-        if (urlRegex.test(part)) {
-          return (
-            <a
-              key={index}
-              href={part}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-400 hover:text-blue-300 underline transition-colors duration-200"
-              aria-label={`Открыть ссылку ${part} в новой вкладке`}
-            >
-              {part}
-            </a>
-          );
-        }
-        return part;
+      // Добавляем https:// если его нет
+      if (!url.startsWith('http')) {
+        url = 'https://' + url;
+      }
+      
+      links.push({
+        match: fullMatch,
+        url: url,
+        start: match.index!,
+        end: match.index! + fullMatch.length
       });
+    });
+    
+    // Затем обрабатываем обычные HTTP ссылки
+    const httpMatches = [...inputText.matchAll(httpRegex)];
+    httpMatches.forEach((match) => {
+      const fullMatch = match[0];
+      const start = match.index!;
+      const end = start + fullMatch.length;
+      
+      // Проверяем, не пересекается ли с уже найденными ссылками
+      const overlaps = links.some(link => 
+        (start >= link.start && start < link.end) || 
+        (end > link.start && end <= link.end) ||
+        (start <= link.start && end >= link.end)
+      );
+      
+      if (!overlaps) {
+        links.push({
+          match: fullMatch,
+          url: fullMatch,
+          start: start,
+          end: end
+        });
+      }
+    });
+    
+    // Сортируем ссылки по позиции
+    links.sort((a, b) => a.start - b.start);
+    
+    if (links.length === 0) {
+      return inputText;
     }
+    
+    // Разбиваем текст на части и создаем элементы
+    const parts: React.ReactNode[] = [];
+    let lastIndex = 0;
+    
+    links.forEach((link, index) => {
+      // Добавляем текст перед ссылкой
+      if (link.start > lastIndex) {
+        parts.push(inputText.substring(lastIndex, link.start));
+      }
+      
+      // Добавляем ссылку
+      parts.push(
+        <a
+          key={`link-${index}`}
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-400 hover:text-blue-300 underline transition-colors duration-200 cursor-pointer"
+          aria-label={`Открыть ссылку ${link.match} в новой вкладке`}
+          onClick={(e) => {
+            // Дополнительная обработка для Telegram ссылок
+            if (link.url.includes('t.me') || link.url.includes('telegram.me')) {
+              // Пытаемся открыть в Telegram приложении, если доступно
+              const telegramAppUrl = link.url.replace('https://t.me/', 'tg://resolve?domain=');
+              
+              // Создаем временную ссылку для попытки открытия в приложении
+              const tempLink = document.createElement('a');
+              tempLink.href = telegramAppUrl;
+              tempLink.style.display = 'none';
+              document.body.appendChild(tempLink);
+              
+              try {
+                tempLink.click();
+                // Если приложение не открылось, откроется веб-версия
+                setTimeout(() => {
+                  if (document.body.contains(tempLink)) {
+                    window.open(link.url, '_blank', 'noopener,noreferrer');
+                  }
+                }, 500);
+              } catch (error) {
+                // Если не удалось открыть в приложении, открываем в браузере
+                window.open(link.url, '_blank', 'noopener,noreferrer');
+              } finally {
+                document.body.removeChild(tempLink);
+              }
+              
+              e.preventDefault();
+            }
+          }}
+        >
+          {link.match}
+        </a>
+      );
+      
+      lastIndex = link.end;
+    });
+    
+    // Добавляем оставшийся текст
+    if (lastIndex < inputText.length) {
+      parts.push(inputText.substring(lastIndex));
+    }
+    
+    return parts;
   };
 
   return (

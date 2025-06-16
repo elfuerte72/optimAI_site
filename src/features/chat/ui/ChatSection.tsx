@@ -1,4 +1,3 @@
-
 'use client';
 
 import {
@@ -19,6 +18,7 @@ import { Card } from '@shared/ui';
 import { ScrollArea } from '@shared/ui';
 import { sendMessage, ApiMessage } from '../api/sendMessage';
 import eventBus from '../model/eventBus';
+import { ChatMessage } from './components/ChatMessage';
 
 // Create a context to expose the processAndSendMessage function
 export const ChatContext = createContext<{
@@ -33,28 +33,149 @@ interface Message {
   sender: 'user' | 'bot';
 }
 
-// Typewriter animation component
-const TypewriterText = ({ text, speed = 30 }: { text: string; speed?: number }) => {
+// Typewriter animation component with link processing
+const TypewriterText = ({ text, speed = 30, onComplete }: { text: string; speed?: number; onComplete?: () => void }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Функция для обработки ссылок в тексте
+  const renderTextWithLinks = (inputText: string): React.ReactNode => {
+    // Специальный регекс для Telegram ссылок
+    const telegramRegex = /(?:@)?(https?:\/\/)?(?:www\.)?(t\.me|telegram\.me)\/([a-zA-Z0-9_]+)/gi;
+    
+    // Общий регекс для HTTP/HTTPS ссылок
+    const httpRegex = /(https?:\/\/[^\s]+)/gi;
+    
+    let processedText = inputText;
+    const links: Array<{ match: string; url: string; start: number; end: number }> = [];
+    
+    // Находим Telegram ссылки
+    const telegramMatches = [...inputText.matchAll(telegramRegex)];
+    telegramMatches.forEach((match) => {
+      const fullMatch = match[0];
+      let url = fullMatch;
+      
+      if (url.startsWith('@')) {
+        url = url.substring(1);
+      }
+      
+      if (!url.startsWith('http')) {
+        url = 'https://' + url;
+      }
+      
+      links.push({
+        match: fullMatch,
+        url: url,
+        start: match.index!,
+        end: match.index! + fullMatch.length
+      });
+    });
+    
+    // Находим HTTP ссылки
+    const httpMatches = [...inputText.matchAll(httpRegex)];
+    httpMatches.forEach((match) => {
+      const fullMatch = match[0];
+      const start = match.index!;
+      const end = start + fullMatch.length;
+      
+      // Проверяем, не пересекается ли с уже найденными ссылками
+      const overlaps = links.some(link => 
+        (start >= link.start && start < link.end) || 
+        (end > link.start && end <= link.end) ||
+        (start <= link.start && end >= link.end)
+      );
+      
+      if (!overlaps) {
+        links.push({
+          match: fullMatch,
+          url: fullMatch,
+          start: start,
+          end: end
+        });
+      }
+    });
+    
+    // Сортируем ссылки по позиции
+    links.sort((a, b) => a.start - b.start);
+    
+    if (links.length === 0) {
+      return inputText;
+    }
+    
+    // Создаем массив частей текста и ссылок
+    const parts: React.ReactNode[] = [];
+    let lastIndex = 0;
+    
+    links.forEach((link, index) => {
+      // Добавляем текст перед ссылкой
+      if (link.start > lastIndex) {
+        parts.push(inputText.substring(lastIndex, link.start));
+      }
+      
+      // Добавляем ссылку
+      parts.push(
+        <a
+          key={`link-${index}`}
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-400 hover:text-blue-300 underline transition-colors duration-200 cursor-pointer"
+          aria-label={`Открыть ссылку ${link.match} в новой вкладке`}
+          onClick={(e) => {
+            // Дополнительная обработка для Telegram ссылок
+            if (link.url.includes('t.me') || link.url.includes('telegram.me')) {
+              console.log('Переход на Telegram канал:', link.url);
+            }
+          }}
+        >
+          {link.match}
+        </a>
+      );
+      
+      lastIndex = link.end;
+    });
+    
+    // Добавляем оставшийся текст
+    if (lastIndex < inputText.length) {
+      parts.push(inputText.substring(lastIndex));
+    }
+    
+    return parts;
+  };
 
   useEffect(() => {
     if (currentIndex < text.length) {
       const timer = setTimeout(() => {
         setDisplayedText(prev => prev + text[currentIndex]);
         setCurrentIndex(prev => prev + 1);
+
+        // Прокручиваем каждые 50 символов для длинных сообщений
+        if (currentIndex > 0 && currentIndex % 50 === 0) {
+          setTimeout(() => {
+            const messagesContainer = document.querySelector('.chat-modal-messages');
+            if (messagesContainer) {
+              messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+          }, 50);
+        }
       }, speed);
 
       return () => clearTimeout(timer);
+    } else if (currentIndex === text.length && onComplete) {
+      // Вызываем callback когда печать завершена
+      const timer = setTimeout(() => {
+        onComplete();
+      }, 100);
+      return () => clearTimeout(timer);
     }
-  }, [currentIndex, text, speed]);
+  }, [currentIndex, text, speed, onComplete]);
 
   useEffect(() => {
     setDisplayedText('');
     setCurrentIndex(0);
   }, [text]);
 
-  return <span>{displayedText}</span>;
+  return <span>{renderTextWithLinks(displayedText)}</span>;
 };
 
 export default function ChatSection() {
@@ -68,9 +189,10 @@ export default function ChatSection() {
   // Smooth scroll to bottom
   const scrollToBottom = useCallback(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ 
+      messagesEndRef.current.scrollIntoView({
         behavior: 'smooth',
-        block: 'end'
+        block: 'end',
+        inline: 'nearest'
       });
     }
   }, []);
@@ -80,7 +202,7 @@ export default function ChatSection() {
     if (messages.length > 0) {
       const timer = setTimeout(() => {
         scrollToBottom();
-      }, 100);
+      }, 200); // Increased delay to ensure content is rendered
       return () => clearTimeout(timer);
     }
   }, [messages, scrollToBottom]);
@@ -213,6 +335,8 @@ export default function ChatSection() {
         <div className="flex justify-center">
           <div className="w-full max-w-md">
             <StyledInput
+              value={inputValue}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
               placeholder="Задайте вопрос ИИ-ассистенту..."
               onFocus={() => setIsChatOpen(true)}
               label="Сообщение"
@@ -252,36 +376,34 @@ export default function ChatSection() {
               </div>
 
               {/* Quick question buttons inside modal */}
-              {messages.length === 0 && (
-                <div className="border-b border-neutral-800 p-4">
-                  <div className="flex flex-wrap gap-2 justify-center">
-                    <Button
-                      onClick={() => processAndSendMessage('Чем занимается компания?')}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs bg-neutral-800 border-neutral-700 text-white hover:bg-neutral-700"
-                    >
-                      Чем занимается компания?
-                    </Button>
-                    <Button
-                      onClick={() => processAndSendMessage('Подробнее об услугах компании')}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs bg-neutral-800 border-neutral-700 text-white hover:bg-neutral-700"
-                    >
-                      Подробнее об услугах компании
-                    </Button>
-                    <Button
-                      onClick={() => processAndSendMessage('Как связаться с менеджером?')}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs bg-neutral-800 border-neutral-700 text-white hover:bg-neutral-700"
-                    >
-                      Как связаться с менеджером?
-                    </Button>
-                  </div>
+              <div className="border-b border-neutral-800 p-4">
+                <div className="flex flex-wrap gap-2 justify-center">
+                  <Button
+                    onClick={() => processAndSendMessage('Чем занимается компания?')}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs bg-neutral-800 border-neutral-700 text-white hover:bg-neutral-700"
+                  >
+                    Чем занимается компания?
+                  </Button>
+                  <Button
+                    onClick={() => processAndSendMessage('Подробнее об услугах компании')}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs bg-neutral-800 border-neutral-700 text-white hover:bg-neutral-700"
+                  >
+                    Подробнее об услугах компании
+                  </Button>
+                  <Button
+                    onClick={() => processAndSendMessage('Как связаться с менеджером?')}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs bg-neutral-800 border-neutral-700 text-white hover:bg-neutral-700"
+                  >
+                    Как связаться с менеджером?
+                  </Button>
                 </div>
-              )}
+              </div>
 
               {/* Messages area */}
               <ScrollArea
@@ -298,19 +420,31 @@ export default function ChatSection() {
                       role="article"
                       aria-label={`Сообщение от ${msg.sender === 'user' ? 'пользователя' : 'ассистента'}`}
                     >
-                      <div
-                        className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                          msg.sender === 'user' 
-                            ? 'bg-blue-600 text-white' 
+                      {msg.sender === 'bot' && typingMessageId === msg.id ? (
+                        <div
+                          className="max-w-[80%] rounded-lg px-4 py-2 bg-neutral-800 text-white"
+                        >
+                          <TypewriterText
+                            text={msg.text}
+                            onComplete={() => {
+                              // Сбрасываем typingMessageId после завершения анимации
+                              setTypingMessageId(null);
+                              setTimeout(() => {
+                                scrollToBottom();
+                              }, 100);
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <ChatMessage
+                          text={msg.text}
+                          sender={msg.sender}
+                          className={`max-w-[80%] ${msg.sender === 'user'
+                            ? 'bg-blue-600 text-white'
                             : 'bg-neutral-800 text-white'
-                        }`}
-                      >
-                        {msg.sender === 'bot' && typingMessageId === msg.id ? (
-                          <TypewriterText text={msg.text} />
-                        ) : (
-                          msg.text
-                        )}
-                      </div>
+                            }`}
+                        />
+                      )}
                     </div>
                   ))}
                   {isTyping && (
@@ -341,7 +475,7 @@ export default function ChatSection() {
               <div className="chat-modal-input">
                 <form
                   onSubmit={handleFormSubmit}
-                  className="flex w-full items-center space-x-2"
+                  className="flex w-full items-center gap-2"
                   aria-label="Отправка сообщения"
                 >
                   <div className="flex-grow">
@@ -359,20 +493,19 @@ export default function ChatSection() {
                           }
                         }
                       }}
+                      placeholder="Введите сообщение..."
                       label="Сообщение"
                       aria-label="Введите ваше сообщение"
                       aria-describedby="chat-input-help"
+                      className="w-full"
                     />
-                    <div id="chat-input-help" className="sr-only">
-                      Введите ваш вопрос и нажмите Enter или кнопку отправки
-                    </div>
                   </div>
                   <Button
                     type="submit"
                     variant="outline"
                     size="icon"
                     disabled={!inputValue.trim()}
-                    className="shrink-0 rounded-lg border-none bg-gradient-to-r from-blue-600 to-purple-600 text-white transition-all duration-300 ease-in-out hover:from-blue-500 hover:to-purple-500 hover:text-white focus-visible:ring-white"
+                    className="shrink-0 h-10 w-10 rounded-lg border-none bg-gradient-to-r from-blue-600 to-purple-600 text-white transition-all duration-300 ease-in-out hover:from-blue-500 hover:to-purple-500 hover:text-white focus-visible:ring-white"
                     aria-label="Отправить сообщение"
                   >
                     <Send className="h-5 w-5" aria-hidden="true" />

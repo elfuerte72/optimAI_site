@@ -111,8 +111,8 @@ const ClientPrivacyPage: React.FC = () => {
                                 <h3 className="mb-3 text-lg font-medium text-gray-200">Контактная информация для обращений:</h3>
                                 <p className="mb-2 text-gray-300">
                                     <strong>Telegram:</strong>{' '}
-                                    <a href="https://t.me/optimaai_tg" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
-                                        @optimaai_tg
+                                    <a href="https://t.me/academyOptima" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
+                                        @AcademyOptima
                                     </a>
                                 </p>
                                 <p className="text-gray-300">Срок рассмотрения обращений: до 30 дней с момента получения запроса.</p>
@@ -206,8 +206,8 @@ const ClientPrivacyPage: React.FC = () => {
                                 </p>
                                 <p className="mb-2 text-gray-300">
                                     <strong>Telegram:</strong>{' '}
-                                    <a href="https://t.me/optimaai_tg" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
-                                        @optimaai_tg
+                                    <a href="https://t.me/academyOptima" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
+                                        @AcademyOptima
                                     </a>
                                 </p>
                                 <p className="text-gray-300">

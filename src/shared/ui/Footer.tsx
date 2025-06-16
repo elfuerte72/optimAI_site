@@ -39,7 +39,7 @@ export default function Footer() {
             </ul>
             <div className="mt-4 flex space-x-4">
               <a
-                href="https://t.me/optimaai_tg"
+                href="https://t.me/academyOptima"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Telegram"

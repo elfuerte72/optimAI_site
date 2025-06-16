@@ -295,7 +295,7 @@ const ClientTermsPage: React.FC = () => {
                             <ul className="mb-6 list-disc pl-6 text-gray-300">
                                 <li>Обязательное досудебное урегулирование споров</li>
                                 <li>Срок рассмотрения претензий: 30 дней</li>
-                                <li>Претензии направляются через Telegram: @optimaai_tg</li>
+                                <li>Претензии направляются через Telegram: @AcademyOptima</li>
                             </ul>
                         </section>
 
@@ -320,8 +320,8 @@ const ClientTermsPage: React.FC = () => {
                                 </p>
                                 <p className="mb-2 text-gray-300">
                                     <strong>Telegram:</strong>{' '}
-                                    <a href="https://t.me/optimaai_tg" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
-                                        @optimaai_tg
+                                    <a href="https://t.me/academyOptima" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
+                                        @AcademyOptima
                                     </a>
                                 </p>
                                 <p className="mb-2 text-gray-300">

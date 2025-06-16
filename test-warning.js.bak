@@ -1,4 +1,0 @@
-// Этот файл содержит намеренное предупреждение ESLint для тестирования
-const unusedVariable = 'test'; // eslint-disable-line no-unused-vars
-
-console.log('Testing warning');

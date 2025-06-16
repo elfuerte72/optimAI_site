@@ -1,9 +1,0 @@
-node_modules/
-.next/
-out/
-coverage/
-*.config.js
-*.config.ts
-public/
-.env*
-*.bak

@@ -455,7 +455,7 @@ export default function Services() {
         <FadeInSection delay={0.5}>
           <div className="mb-20 text-center">
             <CustomStyledButtonWrapper
-              href="https://t.me/optimaai_tg"
+              href="https://t.me/academyOptima"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Оставить заявку на обучение"

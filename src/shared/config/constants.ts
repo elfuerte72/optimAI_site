@@ -3,5 +3,5 @@
  */
 
 export const SOCIAL_LINKS = {
-  telegram: 'https://t.me/optimaai_tg',
+  telegram: 'https://t.me/academyOptima',
 } as const;

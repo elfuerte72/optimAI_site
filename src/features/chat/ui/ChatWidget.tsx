@@ -89,7 +89,7 @@ export default function ChatWidget({
         ...prev,
         {
           id: Date.now() + 1,
-          text: 'Произошла ошибка связи с сервером. Пожалуйста, попробуйте ещё раз или свяжитесь с нами в Telegram: https://t.me/optimaai_tg',
+          text: 'Произошла ошибка связи с сервером. Пожалуйста, попробуйте ещё раз или свяжитесь с нами в Telegram: https://t.me/academyOptima',
           sender: 'bot',
           timestamp: new Date(),
         },
@@ -170,8 +170,8 @@ export default function ChatWidget({
                 >
                   <div
                     className={`max-w-[75%] rounded-lg p-3 shadow ${msg.sender === 'user'
-                        ? 'rounded-br-none bg-zinc-700 text-white'
-                        : 'rounded-bl-none bg-zinc-800 text-zinc-200'
+                      ? 'rounded-br-none bg-zinc-700 text-white'
+                      : 'rounded-bl-none bg-zinc-800 text-zinc-200'
                       }`}
                   >
                     <div className="text-sm leading-snug">

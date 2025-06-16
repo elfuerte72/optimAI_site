@@ -31,13 +31,13 @@ export async function POST(request: Request) {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
     };
-    
+
     // Добавляем обязательный API ключ
     const apiKey = process.env.API_KEY || 'api_optimaai';
     headers['X-API-Key'] = apiKey;
-    
+
     console.log(`Отправка запроса к бэкенду: ${apiUrl}`);
-    
+
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers,
@@ -58,28 +58,28 @@ export async function POST(request: Request) {
     return NextResponse.json(data);
   } catch (error) {
     console.error('Ошибка в /api/chat:', error);
-    
+
     // Безопасное получение сообщения об ошибке
     const errorText = error instanceof Error ? error.message : String(error);
-    
+
     // Проверяем, есть ли проблема с подключением к бэкенду
-    const isConnectionError = errorText.includes('ECONNREFUSED') || 
-                             errorText.includes('fetch failed') ||
-                             errorText.includes('network');
-    
+    const isConnectionError = errorText.includes('ECONNREFUSED') ||
+      errorText.includes('fetch failed') ||
+      errorText.includes('network');
+
     let errorMessage = 'Внутренняя ошибка сервера.';
     let botMessage = 'Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже.';
-    
+
     if (isConnectionError) {
       errorMessage = 'Не удалось подключиться к бэкенду.';
-      botMessage = 'Извините, сервер OptimaAI бота временно недоступен. Пожалуйста, попробуйте позже или свяжитесь с нами в Telegram: https://t.me/optimaai_tg';
+      botMessage = 'Извините, сервер OptimaAI бота временно недоступен. Пожалуйста, попробуйте позже или свяжитесь с нами в Telegram: https://t.me/academyOptima';
     }
-    
+
     if (error instanceof SyntaxError) {
       errorMessage = 'Некорректный формат запроса.';
       return NextResponse.json({ error: errorMessage }, { status: 400 });
     }
-    
+
     // Возвращаем ответ в формате бота
     return NextResponse.json(
       {

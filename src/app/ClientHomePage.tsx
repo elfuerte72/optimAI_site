@@ -154,7 +154,7 @@ export default function ClientHomePage() {
       {/* CTA Section */}
       <footer role="contentinfo" className="bg-black py-12 text-center md:py-16">
         <Link
-          href="https://t.me/optimaai_tg"
+          href="https://t.me/academyOptima"
           target="_blank"
           rel="noopener noreferrer"
           className="px-6 py-3 text-xl font-medium text-gray-400 transition-colors duration-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
@@ -163,7 +163,7 @@ export default function ClientHomePage() {
           Связаться с нами
         </Link>
       </footer>
-      
+
       {/* Чат-виджет для быстрого доступа (без приветственного сообщения) */}
       <ChatWidget />
     </div>
